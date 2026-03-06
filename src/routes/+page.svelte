@@ -109,11 +109,11 @@
 
   const clearSelection = () => {
     codigoSeleccionada = null;
-    applyEdgeFocus(null);
+    aplicarEdgeFocus(null);
   };
 
-  const applyEdgeFocus = (materiaId: string | null) => {
-    const highlightedEdgeIds = new Set(
+  const aplicarEdgeFocus = (materiaId: string | null) => {
+    const edgesActivos = new Set(
       materiaId
         ? rawEdges
             .filter(
@@ -124,11 +124,11 @@
     );
 
     edges = rawEdges.map((edge) => {
-      const isHighlighted = highlightedEdgeIds.has(edge.id);
+      const estaActivo = edgesActivos.has(edge.id);
 
       return {
         ...edge,
-        style: isHighlighted
+        style: estaActivo
           ? "stroke:#364153;stroke-width:2;opacity:1"
           : "stroke:#94a3b8;stroke-width:1;opacity:0.25",
       };
@@ -147,14 +147,14 @@
 
     const nextSelection = codigoSeleccionada === node.id ? null : node.id;
     codigoSeleccionada = nextSelection;
-    applyEdgeFocus(nextSelection);
+    aplicarEdgeFocus(nextSelection);
   };
 
   onMount(() => {
     const guardadas = localStorage.getItem(STORAGE_KEY);
     if (!guardadas) {
       aplicarStateANodes({});
-      applyEdgeFocus(null);
+      aplicarEdgeFocus(null);
       return;
     }
 
@@ -170,11 +170,11 @@
 
       calificaciones = loaded;
       aplicarStateANodes(loaded);
-      applyEdgeFocus(null);
+      aplicarEdgeFocus(null);
     } catch {
       calificaciones = {};
       aplicarStateANodes({});
-      applyEdgeFocus(null);
+      aplicarEdgeFocus(null);
     }
   });
 </script>
