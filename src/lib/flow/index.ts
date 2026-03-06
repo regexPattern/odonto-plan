@@ -16,6 +16,7 @@ export type MateriaNodeData = {
   nombre: string;
   width: number;
   height: number;
+  highlight?: "selected" | "dependiente" | "correlativa" | null;
 };
 
 export type PlanNodeType = AnioNodeType | MateriaNodeType;
@@ -133,6 +134,7 @@ const materiaNodes: MateriaNodeType[] = PLAN.anios.flatMap((a) =>
       nombre: m.nombre,
       width: m.duracion === "Anual" ? ANUAL_WIDTH : MATERIA_WIDTH,
       height: MATERIA_HEIGHT,
+      highlight: null,
     },
     type: "materia",
   })),
