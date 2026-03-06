@@ -109,20 +109,52 @@
 
   const clearSelection = () => {
     codigoSeleccionada = null;
+    applyEdgeFocus(null);
+  };
+
+  const applyEdgeFocus = (materiaId: string | null) => {
+    const highlightedEdgeIds = new Set(
+      materiaId
+        ? rawEdges
+            .filter(
+              (edge) => edge.source === materiaId || edge.target === materiaId,
+            )
+            .map((edge) => edge.id)
+        : [],
+    );
+
+    edges = rawEdges.map((edge) => {
+      const isHighlighted = highlightedEdgeIds.has(edge.id);
+
+      return {
+        ...edge,
+        style: isHighlighted
+          ? "stroke:#364153;stroke-width:2;opacity:1"
+          : "stroke:#94a3b8;stroke-width:1;opacity:0.25",
+      };
+    }) as typeof edges;
   };
 
   const handleNodeClick = ({ node }: { node: (typeof nodes)[number] }) => {
+    if (node.type === "anio") {
+      clearSelection();
+      return;
+    }
+
     if (node.type !== "materia") {
       return;
     }
 
-    codigoSeleccionada = codigoSeleccionada === node.id ? null : node.id;
+    const nextSelection = codigoSeleccionada === node.id ? null : node.id;
+    codigoSeleccionada = nextSelection;
+    applyEdgeFocus(nextSelection);
   };
 
   onMount(() => {
     const guardadas = localStorage.getItem(STORAGE_KEY);
     if (!guardadas) {
       aplicarStateANodes({});
+      applyEdgeFocus(null);
       return;
     }
 
@@ -138,9 +170,11 @@
 
       calificaciones = loaded;
       aplicarStateANodes(loaded);
+      applyEdgeFocus(null);
     } catch {
       calificaciones = {};
       aplicarStateANodes({});
+      applyEdgeFocus(null);
     }
   });
 </script>
@@ -151,6 +185,7 @@
     bind:edges
     {nodeTypes}
     fitView
+    nodesDraggable={false}
     edgesFocusable={false}
     onnodeclick={handleNodeClick}
     onpaneclick={clearSelection}

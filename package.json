@@ -30,7 +30,8 @@
   },
   "dependencies": {
     "@dagrejs/dagre": "^2.0.4",
-    "@xyflow/svelte": "^1.5.1"
+    "@xyflow/svelte": "^1.5.1",
+    "mode-watcher": "^1.1.0"
   },
   "prettier": {
     "singleQuote": false,
