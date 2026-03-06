@@ -41,33 +41,38 @@
 
 <Panel position="top-right">
   <section
-    class="w-[300px] divide-y-2 divide-slate-300 border-2 border-slate-300 bg-slate-100/50 backdrop-blur-lg *:p-4"
+    class="w-[300px] border-2 border-slate-300 bg-slate-100/50 text-sm backdrop-blur-lg"
   >
-    <div class="font-semibold">Materia seleccionada</div>
     {#if materia}
-      <div class="space-y-4">
-        <h2 class="font-semibold">{materia.nombre}</h2>
-        <div>
-          <p><span class="font-medium"> • Duración:</span> {materia.duracion}</p>
-          <p><span class="font-medium"> • Carga horaria:</span> {materia.horas}</p>
+      <div class="divide-y-2 divide-slate-300 *:p-3">
+        <h2 class="text-center font-medium">{materia.nombre}</h2>
+        <div class="space-y-1.5">
+          <p>
+            <span> • Duración:</span>
+            {materia.duracion}
+          </p>
+          <p>
+            <span> • Carga horaria:</span>
+            {materia.horas}
+          </p>
         </div>
+        <label for="calificacion-input" class="flex items-center gap-2">
+          <span class="block shrink-0">Calificación (4-10):</span>
+          <input
+            id="calificacion-input"
+            type="number"
+            min="4"
+            max="10"
+            step="1"
+            placeholder="Sin aprobar"
+            value={materia.calificacion ?? ""}
+            onchange={handleCalificacionInput}
+            class="w-full border-2 border-slate-300 bg-white px-2 py-1"
+          />
+        </label>
       </div>
-      <label for="calificacion-input" class="block space-y-2">
-        <span class="font-semibold block">Calificación (4-10):</span>
-        <input
-          id="calificacion-input"
-          type="number"
-          min="4"
-          max="10"
-          step="1"
-          placeholder="Sin aprobar"
-          value={materia.calificacion ?? ""}
-          onchange={handleCalificacionInput}
-          class="border-2 w-full px-2 py-1 border-slate-300 bg-white"
-        />
-      </label>
     {:else}
-      <p>Hacé click en una materia para ver su detalle.</p>
+      <p class="p-3">Hacé click en una materia para ver su detalle.</p>
     {/if}
   </section>
 </Panel>

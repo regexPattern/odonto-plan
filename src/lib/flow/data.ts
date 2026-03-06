@@ -19,6 +19,7 @@ export type MateriaNodeData = {
   width: number;
   height: number;
   status: "aprobada" | "bloqueada" | "desbloqueada";
+  calificacion: number | null;
 };
 
 const MATERIA_WIDTH = 256;
@@ -135,6 +136,7 @@ const materiaNodes: MateriaNodeType[] = PLAN.anios.flatMap((a) =>
       width: m.duracion === "Anual" ? ANUAL_WIDTH : MATERIA_WIDTH,
       height: MATERIA_HEIGHT,
       status: "bloqueada",
+      calificacion: null,
     },
     type: "materia",
   })),
