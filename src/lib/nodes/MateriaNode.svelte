@@ -9,6 +9,7 @@
 
 <div
   class="rounded border border-gray-300 bg-white px-3 py-2 text-sm leading-tight shadow-sm"
+  style:width={`${data.width}px`}
 >
   <div class="font-semibold">{data.nombre}</div>
   <div class="text-xs text-gray-500">{data.codigo}</div>
