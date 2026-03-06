@@ -1,100 +1,114 @@
 <script lang="ts">
-  import {
-    Background,
-    SvelteFlow,
-    type Edge,
-    type NodeTypes,
-  } from "@xyflow/svelte";
+  import { Background, SvelteFlow, type NodeTypes } from "@xyflow/svelte";
   import "@xyflow/svelte/dist/style.css";
-  import AnioNode from "$lib/nodes/AnioNode.svelte";
-  import MateriaNode from "$lib/nodes/MateriaNode.svelte";
-  import { edges as initialEdges, nodes as initialNodes } from "$lib/flow";
+  import { onMount } from "svelte";
+  import { PLAN } from "$lib/data";
+  import { SelectedMateria, AnioNode, MateriaNode } from "$lib/flow/components";
+  import { rawEdges, rawNodes } from "$lib/flow/data";
 
   const nodeTypes: NodeTypes = {
     anio: AnioNode,
     materia: MateriaNode,
   };
 
-  const DEFAULT_EDGE_STYLE = "stroke: #94a3b8; stroke-width: 1.5;";
-  const HIGHLIGHT_EDGE_STYLE = "stroke: #0ea5e9; stroke-width: 3;";
+  const STORAGE_KEY = "odonto-plan:calificaciones";
 
-  let nodes = $state(initialNodes);
-  let edges = $state<Edge[]>(
-    initialEdges.map((edge) => ({ ...edge, style: DEFAULT_EDGE_STYLE })),
+  let nodes = $state.raw(rawNodes);
+  let edges = $state.raw(rawEdges);
+
+  const materiasByCodigo = new Map(
+    PLAN.anios.flatMap((anio) =>
+      anio.materias.map((materia) => [materia.codigo, materia] as const),
+    ),
   );
-  let selectedMateriaId = $state<string | null>(null);
 
-  const clearHighlight = () => {
-    selectedMateriaId = null;
+  let codigoSeleccionada = $state<string | null>(null);
+  let calificaciones = $state<Record<string, number>>({});
 
-    nodes = nodes.map((node) => {
-      if (node.type !== "materia") {
-        return node;
-      }
-
-      return {
-        ...node,
-        data: {
-          ...node.data,
-          highlight: null,
-        },
-      };
-    });
-
-    edges = edges.map((edge) => ({ ...edge, style: DEFAULT_EDGE_STYLE }));
-  };
-
-  const highlightMateria = (materiaId: string) => {
-    if (selectedMateriaId === materiaId) {
-      clearHighlight();
-      return;
+  const materiaSeleccionada = $derived.by(() => {
+    if (!codigoSeleccionada) {
+      return null;
     }
 
-    selectedMateriaId = materiaId;
+    const materia = materiasByCodigo.get(codigoSeleccionada);
+    if (!materia) {
+      return null;
+    }
 
-    const dependientes = new Set(
-      edges
-        .filter((edge) => edge.target === materiaId)
-        .map((edge) => edge.source),
-    );
-    const correlativas = new Set(
-      edges
-        .filter((edge) => edge.source === materiaId)
-        .map((edge) => edge.target),
-    );
+    return {
+      ...materia,
+      calificacion: calificaciones[codigoSeleccionada] ?? null,
+    };
+  });
 
-    nodes = nodes.map((node) => {
+  const tieneCalificacion = (
+    materiaId: string,
+    calificaciones: Record<string, number>,
+  ) => typeof calificaciones[materiaId] === "number";
+
+  const materiaDesbloqueada = (
+    materiaId: string,
+    notas: Record<string, number>,
+  ) => {
+    const correlativas = PLAN.correlatividades[materiaId] ?? [];
+    return correlativas.every((correlativa) =>
+      tieneCalificacion(correlativa, notas),
+    );
+  };
+
+  const getMateriaStatus = (
+    codigoMateria: string,
+    notas: Record<string, number>,
+  ) => {
+    if (tieneCalificacion(codigoMateria, notas)) {
+      return "aprobada";
+    } else if (materiaDesbloqueada(codigoMateria, notas)) {
+      return "desbloqueada";
+    } else {
+      return "bloqueada";
+    }
+  };
+
+  const aplicarStateANodes = (calificaciones: Record<string, number>) => {
+    const nodesConStatus = nodes.map((node) => {
       if (node.type !== "materia") {
         return node;
       }
 
-      let highlight: "selected" | "dependiente" | "correlativa" | null;
-      if (node.id === materiaId) {
-        highlight = "selected";
-      } else if (dependientes.has(node.id)) {
-        highlight = "dependiente";
-      } else if (correlativas.has(node.id)) {
-        highlight = "correlativa";
-      } else {
-        highlight = null;
-      }
+      const status = getMateriaStatus(node.id, calificaciones);
 
       return {
         ...node,
         data: {
           ...node.data,
-          highlight,
+          status,
         },
       };
     });
 
-    edges = edges.map((edge) => ({
-      ...edge,
-      style:
-        edge.source === materiaId || edge.target === materiaId
-          ? HIGHLIGHT_EDGE_STYLE
-          : DEFAULT_EDGE_STYLE,
-    }));
+    nodes = nodesConStatus as typeof nodes;
+  };
+
+  const guardarCalificaciones = (notas: Record<string, number>) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notas));
+  };
+
+  const setCalificacion = (materiaId: string, calificacion: number | null) => {
+    const nuevasCalificaciones = { ...calificaciones };
+
+    if (calificacion === null) {
+      delete nuevasCalificaciones[materiaId];
+    } else {
+      nuevasCalificaciones[materiaId] = calificacion;
+    }
+
+    calificaciones = nuevasCalificaciones;
+    guardarCalificaciones(nuevasCalificaciones);
+    aplicarStateANodes(nuevasCalificaciones);
+  };
+
+  const clearSelection = () => {
+    codigoSeleccionada = null;
   };
 
   const handleNodeClick = ({ node }: { node: (typeof nodes)[number] }) => {
@@ -102,8 +116,33 @@
       return;
     }
 
-    highlightMateria(node.id);
+    codigoSeleccionada = codigoSeleccionada === node.id ? null : node.id;
   };
+
+  onMount(() => {
+    const guardadas = localStorage.getItem(STORAGE_KEY);
+    if (!guardadas) {
+      aplicarStateANodes({});
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(guardadas) as Record<string, unknown>;
+      const loaded: Record<string, number> = {};
+
+      for (const [materiaId, value] of Object.entries(parsed)) {
+        if (typeof value === "number" && value >= 4 && value <= 10) {
+          loaded[materiaId] = value;
+        }
+      }
+
+      calificaciones = loaded;
+      aplicarStateANodes(loaded);
+    } catch {
+      calificaciones = {};
+      aplicarStateANodes({});
+    }
+  });
 </script>
 
 <div style:width="100vw" style:height="100vh">
@@ -114,8 +153,12 @@
     fitView
     edgesFocusable={false}
     onnodeclick={handleNodeClick}
-    onpaneclick={clearHighlight}
+    onpaneclick={clearSelection}
   >
+    <SelectedMateria
+      materia={materiaSeleccionada}
+      onCalificacionChange={setCalificacion}
+    />
     <Background />
   </SvelteFlow>
 </div>

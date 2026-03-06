@@ -16,6 +16,7 @@ export type Materia = {
   cuatriInicial: (1 | 2) | [1, 2] | null;
   duracion: "Bimestral" | "Semestral" | "Anual";
   horas: string;
+  calificacion?: number | null;
 };
 
 // prettier-ignore

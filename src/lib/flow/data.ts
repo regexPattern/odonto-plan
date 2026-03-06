@@ -1,6 +1,8 @@
 import type { Edge, Node, XYPosition } from "@xyflow/svelte";
 import { PLAN, type Materia } from "$lib/data";
 
+export type PlanNodeType = AnioNodeType | MateriaNodeType;
+
 export type AnioNodeType = Node<AnioNodeData, "anio">;
 
 export type AnioNodeData = {
@@ -16,10 +18,8 @@ export type MateriaNodeData = {
   nombre: string;
   width: number;
   height: number;
-  highlight?: "selected" | "dependiente" | "correlativa" | null;
+  status: "aprobada" | "bloqueada" | "desbloqueada";
 };
-
-export type PlanNodeType = AnioNodeType | MateriaNodeType;
 
 const MATERIA_WIDTH = 256;
 const MATERIA_HEIGHT = 72;
@@ -134,15 +134,15 @@ const materiaNodes: MateriaNodeType[] = PLAN.anios.flatMap((a) =>
       nombre: m.nombre,
       width: m.duracion === "Anual" ? ANUAL_WIDTH : MATERIA_WIDTH,
       height: MATERIA_HEIGHT,
-      highlight: null,
+      status: "bloqueada",
     },
     type: "materia",
   })),
 );
 
-export const nodes: PlanNodeType[] = [...anioNodes, ...materiaNodes];
+export const rawNodes: PlanNodeType[] = [...anioNodes, ...materiaNodes];
 
-export const edges: Edge[] = Object.entries(PLAN.correlatividades)
+export const rawEdges: Edge[] = Object.entries(PLAN.correlatividades)
   .filter(([_, correlativas]) => correlativas.length)
   .flatMap(([materia, correlativas]) =>
     correlativas.map((correlativa) => ({
