@@ -8,8 +8,9 @@
 <Handle type="target" position={Position.Left} />
 
 <div
-  class="rounded border border-gray-300 bg-white px-3 py-2 text-sm leading-tight shadow-sm"
+  class="border border-gray-300 bg-white px-3 py-2 text-sm leading-tight"
   style:width={`${data.width}px`}
+  style:height={`${data.height}px`}
 >
   <div class="font-semibold">{data.nombre}</div>
   <div class="text-xs text-gray-500">{data.codigo}</div>

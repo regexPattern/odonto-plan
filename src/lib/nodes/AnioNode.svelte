@@ -6,7 +6,9 @@
 </script>
 
 <div
-  class="flex h-full w-full items-center justify-center bg-gray-300 px-3 py-2 text-center leading-tight font-semibold"
+  class="flex items-center justify-center bg-gray-300 px-3 py-2 text-center leading-tight font-semibold"
+  style:width={`${data.width}px`}
+  style:height={`${data.height}px`}
 >
   {data.desc}
 </div>

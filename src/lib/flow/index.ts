@@ -3,8 +3,10 @@ import { PLAN, type Materia } from "$lib/data";
 
 export type AnioNodeType = Node<AnioNodeData, "anio">;
 
-type AnioNodeData = {
+export type AnioNodeData = {
   desc: string;
+  width: number;
+  height: number;
 };
 
 export type MateriaNodeType = Node<MateriaNodeData, "materia">;
@@ -13,13 +15,19 @@ export type MateriaNodeData = {
   codigo: string;
   nombre: string;
   width: number;
+  height: number;
 };
 
-const MATERIA_WIDTH = 300;
-const COL_GAP_X = 80;
-const ANUAL_WIDTH = MATERIA_WIDTH * 2 + COL_GAP_X;
+export type PlanNodeType = AnioNodeType | MateriaNodeType;
+
+const MATERIA_WIDTH = 256;
+const MATERIA_HEIGHT = 72;
+const ANIO_NODE_HEIGHT = 40;
+const CUATRI_GAP_X = 80;
+const ANUAL_WIDTH = MATERIA_WIDTH * 2 + CUATRI_GAP_X;
 const ANIO_GAP_X = ANUAL_WIDTH + 160;
 const FILA_GAP_Y = 110;
+const MATERIAS_OFFSET_Y = ANIO_NODE_HEIGHT + (FILA_GAP_Y - MATERIA_HEIGHT);
 
 const getPosicionesMaterias = (): Map<string, XYPosition> => {
   const posiciones = new Map<string, XYPosition>();
@@ -27,7 +35,7 @@ const getPosicionesMaterias = (): Map<string, XYPosition> => {
   PLAN.anios.forEach((anioPlan, anio) => {
     const baseX = anio * ANIO_GAP_X;
     const xC1 = baseX;
-    const xC2 = baseX + MATERIA_WIDTH + COL_GAP_X;
+    const xC2 = baseX + MATERIA_WIDTH + CUATRI_GAP_X;
     const xCentro = baseX + (ANUAL_WIDTH - MATERIA_WIDTH) / 2;
 
     const esAnioElectivas = anioPlan.materias.every(
@@ -38,7 +46,7 @@ const getPosicionesMaterias = (): Map<string, XYPosition> => {
       anioPlan.materias.forEach((materia, filaIndex) => {
         posiciones.set(materia.codigo, {
           x: xCentro,
-          y: filaIndex * FILA_GAP_Y,
+          y: MATERIAS_OFFSET_Y + filaIndex * FILA_GAP_Y,
         });
       });
 
@@ -65,11 +73,11 @@ const getPosicionesMaterias = (): Map<string, XYPosition> => {
     anuales.forEach((materia, filaIndex) => {
       posiciones.set(materia.codigo, {
         x: xC1,
-        y: filaIndex * FILA_GAP_Y,
+        y: MATERIAS_OFFSET_Y + filaIndex * FILA_GAP_Y,
       });
     });
 
-    const inicioYCuatris = anuales.length * FILA_GAP_Y;
+    const inicioYCuatris = MATERIAS_OFFSET_Y + anuales.length * FILA_GAP_Y;
 
     c1.forEach((materia, filaIndex) => {
       posiciones.set(materia.codigo, {
@@ -100,9 +108,23 @@ const getPosicionesMaterias = (): Map<string, XYPosition> => {
   return posiciones;
 };
 
+const anioNodes: AnioNodeType[] = PLAN.anios.map((anioPlan, anioIndex) => ({
+  id: `anio-${anioIndex}`,
+  position: {
+    x: anioIndex * ANIO_GAP_X,
+    y: 0,
+  },
+  data: {
+    desc: anioPlan.descripcion,
+    width: ANUAL_WIDTH,
+    height: ANIO_NODE_HEIGHT,
+  },
+  type: "anio",
+}));
+
 const posicionesMaterias = getPosicionesMaterias();
 
-export const nodes: MateriaNodeType[] = PLAN.anios.flatMap((a) =>
+const materiaNodes: MateriaNodeType[] = PLAN.anios.flatMap((a) =>
   a.materias.map((m) => ({
     id: m.codigo,
     position: posicionesMaterias.get(m.codigo)!,
@@ -110,10 +132,13 @@ export const nodes: MateriaNodeType[] = PLAN.anios.flatMap((a) =>
       codigo: m.codigo,
       nombre: m.nombre,
       width: m.duracion === "Anual" ? ANUAL_WIDTH : MATERIA_WIDTH,
+      height: MATERIA_HEIGHT,
     },
     type: "materia",
   })),
 );
+
+export const nodes: PlanNodeType[] = [...anioNodes, ...materiaNodes];
 
 export const edges: Edge[] = Object.entries(PLAN.correlatividades)
   .filter(([_, correlativas]) => correlativas.length)
