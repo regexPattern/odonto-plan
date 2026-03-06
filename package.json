@@ -35,9 +35,18 @@
   "prettier": {
     "singleQuote": false,
     "plugins": [
-      "prettier-plugin-tailwindcss",
+      "prettier-plugin-imports",
       "prettier-plugin-svelte",
-      "prettier-plugin-imports"
+      "prettier-plugin-tailwindcss"
+    ],
+    "tailwindStylesheet": "./src/routes/layout.css",
+    "overrides": [
+      {
+        "files": "*.svelte",
+        "options": {
+          "parser": "svelte"
+        }
+      }
     ]
   }
 }
