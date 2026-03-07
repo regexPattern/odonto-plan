@@ -23,6 +23,8 @@
   <div class="flex gap-4">
     <button
       onclick={resetViewport}
+      title="Reestablecer vista"
+      aria-label="Reestablecer vista"
       class="blurred flex items-center justify-center p-2"
     >
       <Scan class="size-[20px]" />
@@ -30,6 +32,8 @@
 
     <button
       onclick={toggleMode}
+      title="Cambiar tema"
+      aria-label="Cambiar tema"
       class="blurred flex items-center justify-center p-2"
     >
       <Moon class="size-[20px] dark:hidden" />
@@ -38,6 +42,8 @@
 
     <a
       href="https://github.com/regexPattern"
+      title="Ir al repositorio"
+      aria-label="Ir al repositorio"
       class="blurred flex items-center justify-center p-2"
     >
       <Github class="size-[20px]" />
