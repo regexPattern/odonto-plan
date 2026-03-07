@@ -41,7 +41,7 @@
     </button>
 
     <a
-      href="https://github.com/regexPattern"
+      href="https://github.com/regexPattern/odonto-plan"
       title="Ir al repositorio"
       aria-label="Ir al repositorio"
       class="blurred flex items-center justify-center p-2"
