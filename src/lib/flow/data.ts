@@ -1,5 +1,6 @@
 import type { Edge, Node, XYPosition } from "@xyflow/svelte";
-import { PLAN, type Materia } from "$lib/data";
+import type { Materia } from "$lib/data";
+import { PLAN } from "$lib/data";
 
 export type PlanNodeType = AnioNodeType | MateriaNodeType;
 

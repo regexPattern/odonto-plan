@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { Github, Moon, Scan, Sun } from "@lucide/svelte";
   import { Panel, useSvelteFlow } from "@xyflow/svelte";
   import { toggleMode } from "mode-watcher";
-  import { Sun, Moon, Github, Scan } from "@lucide/svelte";
 
   interface Props {
     initialViewport: {

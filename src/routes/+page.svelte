@@ -1,22 +1,19 @@
 <script lang="ts">
-  import {
-    Background,
-    SvelteFlow,
-    type ColorMode,
-    type NodeTypes,
-  } from "@xyflow/svelte";
+  import type { ColorMode, NodeTypes } from "@xyflow/svelte";
+  import { Background, SvelteFlow } from "@xyflow/svelte";
   import "@xyflow/svelte/dist/style.css";
+  import type { MateriaNodeType } from "$lib/flow/data";
+  import { mode } from "mode-watcher";
   import { onMount } from "svelte";
   import { PLAN } from "$lib/data";
   import {
-    SelectedMateria,
     AnioNode,
+    Controls,
     MateriaNode,
     ProgresoCarrera,
-    Controls,
+    SelectedMateria,
   } from "$lib/flow/components";
-  import { rawEdges, rawNodes, type MateriaNodeType } from "$lib/flow/data";
-  import { mode } from "mode-watcher";
+  import { rawEdges, rawNodes } from "$lib/flow/data";
 
   const nodeTypes: NodeTypes = {
     anio: AnioNode,
