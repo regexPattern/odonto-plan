@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { Background, SvelteFlow, type NodeTypes } from "@xyflow/svelte";
+  import {
+    Background,
+    SvelteFlow,
+    type ColorMode,
+    type NodeTypes,
+  } from "@xyflow/svelte";
   import "@xyflow/svelte/dist/style.css";
   import { onMount } from "svelte";
   import { PLAN } from "$lib/data";
@@ -8,8 +13,10 @@
     AnioNode,
     MateriaNode,
     ProgresoCarrera,
+    Controls,
   } from "$lib/flow/components";
   import { rawEdges, rawNodes, type MateriaNodeType } from "$lib/flow/data";
+  import { mode } from "mode-watcher";
 
   const nodeTypes: NodeTypes = {
     anio: AnioNode,
@@ -17,6 +24,11 @@
   };
 
   const STORAGE_KEY = "odonto-plan:calificaciones";
+  const INITIAL_VIEWPORT = { x: 0, y: 140, zoom: 0.75 };
+  const flowColorMode = $derived.by(
+    (): Exclude<ColorMode, "system"> =>
+      mode.current === "dark" ? "dark" : "light",
+  );
 
   let nodes = $state.raw(rawNodes);
   let edges = $state.raw(rawEdges);
@@ -199,8 +211,8 @@
       return {
         ...edge,
         style: estaActivo
-          ? "stroke:#62748e;stroke-width:2;opacity:1"
-          : "stroke:#94a3b8;stroke-width:1;opacity:0.35",
+          ? `stroke:${mode.current === "light" ? "#62748e" : "#D4D4D8"};stroke-width:2;opacity:1`
+          : `stroke:${mode.current === "light" ? "#9F9FA9" : "#52525C"};stroke-width:1;opacity:0.35`,
       };
     }) as typeof edges;
   };
@@ -219,6 +231,11 @@
     codigoSeleccionada = nextSelection;
     aplicarEdgeFocus(nextSelection);
   };
+
+  $effect(() => {
+    mode.current;
+    aplicarEdgeFocus(codigoSeleccionada);
+  });
 
   onMount(() => {
     const guardadas = localStorage.getItem(STORAGE_KEY);
@@ -286,15 +303,17 @@
     edgesFocusable={false}
     onnodeclick={handleNodeClick}
     onpaneclick={clearSelection}
-    initialViewport={{ x: 0, y: 140, zoom: 0.75 }}
+    colorMode={flowColorMode}
+    initialViewport={INITIAL_VIEWPORT}
     minZoom={0.4}
-    maxZoom={1.8}
+    maxZoom={1}
   >
     <ProgresoCarrera
       materiasAprobadas={resumenGeneral.aprobadas}
       materiasPendientes={resumenGeneral.pendientes}
       promedioGeneral={resumenGeneral.promedio}
     />
+    <Controls initialViewport={INITIAL_VIEWPORT} />
     <SelectedMateria
       materia={materiaSeleccionada}
       onCalificacionChange={setCalificacion}

@@ -20,20 +20,21 @@
 </script>
 
 <Panel position="top-left">
-  <section
-    class="space-y-1.5 border-2 border-slate-300 bg-slate-100/50 p-3 text-sm backdrop-blur-lg"
-  >
-    <p>
-      <span> • Materias aprobadas:</span>
-      {materiasAprobadas} de {totalMaterias} ({porcentajeAprobadas.toFixed(0)}%)
-    </p>
-    <p>
-      <span> • Promedio:</span>
-      {#if promedioGeneral === null}
-        Sin calificaciones
-      {:else}
-        {promedioGeneral.toFixed(2)}
-      {/if}
-    </p>
+  <section class="blurred p-3">
+    <ol class="ml-1.5 list-outside list-disc space-y-1.5 pl-2">
+      <li>
+        Materias aprobadas: {materiasAprobadas} de {totalMaterias} ({porcentajeAprobadas.toFixed(
+          0,
+        )}%)
+      </li>
+      <li>
+        <span>Promedio:</span>
+        {#if promedioGeneral === null}
+          Sin calificaciones
+        {:else}
+          {promedioGeneral.toFixed(2)}
+        {/if}
+      </li>
+    </ol>
   </section>
 </Panel>

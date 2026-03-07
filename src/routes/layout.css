@@ -1,1 +1,9 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer components {
+  .blurred {
+    @apply border-2 border-slate-300 bg-slate-100/75 text-sm backdrop-blur-lg;
+    @apply dark:border-zinc-700 dark:bg-zinc-950/75 dark:text-slate-100;
+  }
+}

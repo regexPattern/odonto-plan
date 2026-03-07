@@ -40,21 +40,21 @@
 </script>
 
 <Panel position="top-right">
-  <section
-    class="w-[300px] border-2 border-slate-300 bg-slate-100/50 text-sm backdrop-blur-lg"
-  >
+  <section class="blurred w-[300px]">
     {#if materia}
-      <div class="divide-y-2 divide-slate-300 *:p-3">
+      <div class="divide-y-2 divide-slate-300 *:p-3 dark:divide-slate-700">
         <h2 class="text-center font-medium">{materia.nombre}</h2>
-        <div class="space-y-1.5">
-          <p>
-            <span> • Duración:</span>
-            {materia.duracion}
-          </p>
-          <p>
-            <span> • Carga horaria:</span>
-            {materia.horas}
-          </p>
+        <div>
+          <ol class="ml-1.5 list-outside list-disc space-y-1.5 pl-2">
+            <li>
+              <span>Duración:</span>
+              {materia.duracion}
+            </li>
+            <li>
+              <span>Carga horaria:</span>
+              {materia.horas}
+            </li>
+          </ol>
         </div>
         <label for="calificacion-input" class="flex items-center gap-2">
           <span class="block shrink-0">Calificación (4-10):</span>
@@ -67,7 +67,7 @@
             placeholder="Sin aprobar"
             value={materia.calificacion ?? ""}
             onchange={handleCalificacionInput}
-            class="w-full border-2 border-slate-300 bg-white px-2 py-1"
+            class="w-full border-2 border-slate-300 bg-white px-2 py-1 dark:border-slate-700 dark:bg-gray-800"
           />
         </label>
       </div>
