@@ -1,6 +1,40 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --color-materia-aprobada-bg: #f0abfc;
+  --color-materia-aprobada-fg: #701a75;
+  --color-materia-aprobada-border: #a21caf;
+
+  --color-materia-desbloqueada-bg: #14b8a6;
+  --color-materia-desbloqueada-fg: #042f2e;
+  --color-materia-desbloqueada-border: #115e59;
+
+  --color-materia-bloqueada-bg: #e2e8f0;
+  --color-materia-bloqueada-fg: #62748e;
+  --color-materia-bloqueada-border: #90a1b9;
+
+  --color-materia-calificacion-border: #a21caf;
+}
+
+@layer theme {
+  .dark {
+    --color-materia-aprobada-bg: #d946ef;
+    --color-materia-aprobada-fg: #faf5ff;
+    --color-materia-aprobada-border: #86198f;
+
+    --color-materia-desbloqueada-bg: #0d9488;
+    --color-materia-desbloqueada-fg: #f0fdfa;
+    --color-materia-desbloqueada-border: #115e59;
+
+    --color-materia-bloqueada-bg: #18181b;
+    --color-materia-bloqueada-fg: #71717b;
+    --color-materia-bloqueada-border: #45556c;
+
+    --color-materia-calificacion-border: #c026d3;
+  }
+}
+
 @layer components {
   .blurred {
     @apply border-2 border-slate-300 bg-slate-100/75 text-sm backdrop-blur-lg;
