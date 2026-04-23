@@ -1,9 +1,5 @@
-# Package Managers
-package-lock.json
+static/
 pnpm-lock.yaml
-yarn.lock
-bun.lock
-bun.lockb
-
-# Miscellaneous
-/static/
+pnpm-workspace.yaml
+.agents/
+.opencode/

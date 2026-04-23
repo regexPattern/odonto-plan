@@ -1,4 +1,4 @@
-import type { Node, Edge } from "@xyflow/svelte";
+import type { Edge, Node } from "@xyflow/svelte";
 
 export type Plan = {
 	anios: { descripcion: string; materias: Materia[] }[];
@@ -15,15 +15,21 @@ export type Materia = {
 };
 
 export type MateriaNodeType = Node<
-	Materia & { tiene_correlativas: boolean; es_correlativa: boolean },
+	Materia & {
+		tiene_correlativas: boolean;
+		es_correlativa: boolean;
+	} & {
+		nota: number;
+		aplasos: number;
+	},
 	"materia"
 >;
 export type AnioNodeType = Node<{ descripcion: string }, "anio">;
 
-export const NODO_WIDTH_PX = 250;
-export const NODO_HEIGHT_PX = 80;
+export const NODO_WIDTH_PX = 260;
+export const NODO_HEIGHT_PX = 90;
 
-const PADDING_CUATRI_PX = 60;
+export const PADDING_CUATRI_PX = 60;
 const PADDING_ANIO_PX = 180;
 const ANIO_WIDTH_PX = 2 * NODO_WIDTH_PX + PADDING_CUATRI_PX;
 const VERTICAL_STEP_PX = NODO_HEIGHT_PX + PADDING_CUATRI_PX;
@@ -31,8 +37,8 @@ const VERTICAL_STEP_PX = NODO_HEIGHT_PX + PADDING_CUATRI_PX;
 export const initialGraph = (plan: Plan): [Node[], Edge[]] => {
 	const sonCorrelativas = new Set(Object.values(plan.correlatividades).flatMap((c) => c));
 
-	const materiaNodes = plan.anios.flatMap((a, i) => {
-		const initialNodes = a.materias.map((m) => ({
+	const materiaNodes: MateriaNodeType[] = plan.anios.flatMap((a, i) => {
+		const initialNodes: MateriaNodeType[] = a.materias.map((m) => ({
 			id: m.codigo,
 			position: {
 				x: i * (ANIO_WIDTH_PX + PADDING_ANIO_PX),
@@ -43,7 +49,9 @@ export const initialGraph = (plan: Plan): [Node[], Edge[]] => {
 			data: {
 				...m,
 				tiene_correlativas: plan.correlatividades[m.codigo]?.length > 0 || false,
-				es_correlativa: sonCorrelativas.has(m.codigo)
+				es_correlativa: sonCorrelativas.has(m.codigo),
+				nota: 0,
+				aplasos: 0
 			},
 			type: "materia"
 		}));
@@ -84,7 +92,7 @@ export const initialGraph = (plan: Plan): [Node[], Edge[]] => {
 		return [...anuales, ...primerCuatri, ...segundoCuatri, ...cualquierCuatri];
 	});
 
-	const electivasNodes = plan.electivas.map((e, i) => ({
+	const electivasNodes: MateriaNodeType[] = plan.electivas.map((e, i) => ({
 		id: e.codigo,
 		position: {
 			x: plan.anios.length * (ANIO_WIDTH_PX + PADDING_ANIO_PX),
@@ -95,7 +103,9 @@ export const initialGraph = (plan: Plan): [Node[], Edge[]] => {
 		data: {
 			...e,
 			tiene_correlativas: plan.correlatividades[e.codigo]?.length > 0 || false,
-			es_correlativa: sonCorrelativas.has(e.codigo)
+			es_correlativa: sonCorrelativas.has(e.codigo),
+			nota: 0,
+			aplasos: 0
 		},
 		type: "materia"
 	}));

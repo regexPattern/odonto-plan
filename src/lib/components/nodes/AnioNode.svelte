@@ -5,6 +5,6 @@
 	let { data }: NodeProps<AnioNodeType> = $props();
 </script>
 
-<div class="text-2xl h-full justify-center flex items-center">
+<div class="flex h-full items-center justify-center text-2xl">
 	{data.descripcion}
 </div>
