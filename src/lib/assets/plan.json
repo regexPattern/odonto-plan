@@ -406,70 +406,60 @@
 		{
 			"codigo": "N601",
 			"nombre": "Riesgo Sistémico de la Patología Buco-Dental",
-			"cuatri_inicial": null,
 			"duracion": "Semestral",
 			"horas": "4"
 		},
 		{
 			"codigo": "N602",
 			"nombre": "Atención Odontológica en Pacientes con Discapacidad",
-			"cuatri_inicial": null,
 			"duracion": "Semestral",
 			"horas": "4"
 		},
 		{
 			"codigo": "N603",
 			"nombre": "Ortodoncia II",
-			"cuatri_inicial": null,
 			"duracion": "Semestral",
 			"horas": "4"
 		},
 		{
 			"codigo": "N604",
 			"nombre": "Programa Rural de Atención Odontológica",
-			"cuatri_inicial": null,
 			"duracion": "Bimestral",
 			"horas": "8"
 		},
 		{
 			"codigo": "N605",
 			"nombre": "Traumatismos Dentarios",
-			"cuatri_inicial": null,
 			"duracion": "Semestral",
 			"horas": "4"
 		},
 		{
 			"codigo": "N606",
 			"nombre": "Tomografía Computada en la Práctica Clínica Odontológica",
-			"cuatri_inicial": null,
 			"duracion": "Semestral",
 			"horas": "4"
 		},
 		{
 			"codigo": "N607",
 			"nombre": "Atención Integral de Pacientes con Sequedad Bucal",
-			"cuatri_inicial": null,
 			"duracion": "Semestral",
 			"horas": "4"
 		},
 		{
 			"codigo": "N608",
 			"nombre": "Módulo Asistencial Integrado de Baja Complejidad",
-			"cuatri_inicial": null,
 			"duracion": "Semestral",
 			"horas": "4"
 		},
 		{
 			"codigo": "N609",
 			"nombre": "Nuevas Tecnologías en Odontología Rehabilitadora",
-			"cuatri_inicial": null,
 			"duracion": "Semestral",
 			"horas": "4"
 		},
 		{
 			"codigo": "N610",
 			"nombre": "Módulo Asistencial de Urgencias Odontológicas",
-			"cuatri_inicial": null,
 			"duracion": "Semestral",
 			"horas": "4"
 		}

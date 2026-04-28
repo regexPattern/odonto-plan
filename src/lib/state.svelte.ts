@@ -1,19 +1,19 @@
 import type { Node, NodeEventWithPointer } from "@xyflow/svelte";
 
-type State = {
-	currNodeId: string | null;
+type StateType = {
+	selectedMateriaNodeId: string | null;
 };
 
-export let flowState = $state<State>({ currNodeId: null });
+export let State = $state<StateType>({
+	selectedMateriaNodeId: null
+});
 
 export const handleNodeClick: NodeEventWithPointer<MouseEvent | TouchEvent, Node> = (e) => {
 	if (e.node.type === "materia") {
-		flowState.currNodeId = e.node.id;
+		State.selectedMateriaNodeId = e.node.id;
 	}
 };
 
 export const handlePaneClick = () => {
-	flowState.currNodeId = null;
+	State.selectedMateriaNodeId = null;
 };
-
-export const syncMateriasDesbloqueadas = () => {};

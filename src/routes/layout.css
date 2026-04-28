@@ -74,6 +74,14 @@
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 	--sidebar-border: oklch(1 0 0 / 10%);
 	--sidebar-ring: oklch(0.556 0 0);
+
+	--materia-aprobada-fg: oklch(0.984 0.014 180.72);
+	--materia-aprobada-bg: oklch(0.6 0.118 184.704);
+	--materia-aprobada-border: oklch(0.437 0.078 188.216);
+
+	--materia-bloqueada-fg: oklch(55.2 0.0153 286);
+	--materia-bloqueada-bg: oklch(21 0.00586 286);
+	--materia-bloqueada-border: oklch(44.5 0.043 257);
 }
 
 @theme inline {
