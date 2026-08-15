@@ -12,4 +12,8 @@
 
 <ModeWatcher />
 
+<div class="h-16 border-b border-zinc-800 bg-[#141414] flex items-center">
+  <div class="p-4">Odonto Plan</div>
+</div>
+
 {@render children()}

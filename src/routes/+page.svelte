@@ -8,7 +8,7 @@
   const INITIAL_VIEWPORT = { x: 0, y: 140, zoom: 0.75 };
 </script>
 
-<div style:width="100vw" style:height="100vh">
+<div class="h-[calc(100dvh-4rem)] w-full">
   <SvelteFlow
     bind:nodes={graph.nodes}
     bind:edges={graph.edges}
