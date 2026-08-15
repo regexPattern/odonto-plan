@@ -15,12 +15,10 @@ let edges = $state.raw(rawEdges);
 let materiaSeleccionada: MateriaNodeData | null = $state(null);
 
 const marcarEdgesActivos = (codigo: string | null) => {
-  edges = edges.map((edge) => ({
-    ...edge,
+  edges = edges.map((e) => ({
+    ...e,
     class:
-      codigo !== null && (edge.source === codigo || edge.target === codigo)
-        ? "edge-activo"
-        : undefined,
+      codigo !== null && (e.source === codigo || e.target === codigo) ? "edge-activo" : undefined,
   }));
 };
 
@@ -53,7 +51,9 @@ export default {
       nodes
         .filter((node) => node.type === "materia")
         .filter((node) =>
-          node.data.codigo === codigoMateria ? calificacion !== null : node.data.calificacion !== null,
+          node.data.codigo === codigoMateria
+            ? calificacion !== null
+            : node.data.calificacion !== null,
         )
         .map((node) => node.data.codigo),
     );
