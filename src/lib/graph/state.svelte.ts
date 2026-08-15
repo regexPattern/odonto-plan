@@ -1,54 +1,25 @@
-import type { NodeTypes } from "@xyflow/svelte";
-import { AnioNode, MateriaNode } from "./components/index.js";
 import { rawEdges, rawNodes } from "./layout.js";
 import { PLAN } from "#lib/plan/index.js";
 import type { MateriaNodeData } from ".";
 
-export const nodeTypes: NodeTypes = {
-  anio: AnioNode,
-  materia: MateriaNode,
-};
+class State {
+  nodes = $state.raw(rawNodes);
+  edges = $state.raw(rawEdges);
+  materiaSeleccionada = $state<MateriaNodeData | null>(null);
 
-let nodes = $state.raw(rawNodes);
-let edges = $state.raw(rawEdges);
+  seleccionarMateria = (materia: MateriaNodeData) => {
+    this.materiaSeleccionada = materia;
+    this.marcarEdgesActivos(materia.codigo);
+  };
 
-let materiaSeleccionada: MateriaNodeData | null = $state(null);
+  deseleccionarMateria = () => {
+    this.materiaSeleccionada = null;
+    this.marcarEdgesActivos(null);
+  };
 
-const marcarEdgesActivos = (codigo: string | null) => {
-  edges = edges.map((e) => ({
-    ...e,
-    class:
-      codigo !== null && (e.source === codigo || e.target === codigo) ? "edge-activo" : undefined,
-  }));
-};
-
-export default {
-  get nodes() {
-    return nodes;
-  },
-  set nodes(value) {
-    nodes = value;
-  },
-  get edges() {
-    return edges;
-  },
-  set edges(value) {
-    edges = value;
-  },
-  get materiaSeleccionada() {
-    return materiaSeleccionada;
-  },
-  seleccionarMateria(materia: MateriaNodeData) {
-    materiaSeleccionada = materia;
-    marcarEdgesActivos(materia.codigo);
-  },
-  deseleccionarMateria() {
-    materiaSeleccionada = null;
-    marcarEdgesActivos(null);
-  },
-  actualizarCalificacion(codigoMateria: string, calificacion: number | null) {
+  actualizarCalificacion = (codigoMateria: string, calificacion: number | null) => {
     const aprobadas = new Set(
-      nodes
+      this.nodes
         .filter((node) => node.type === "materia")
         .filter((node) =>
           node.data.codigo === codigoMateria
@@ -58,7 +29,7 @@ export default {
         .map((node) => node.data.codigo),
     );
 
-    nodes = nodes.map((node) => {
+    this.nodes = this.nodes.map((node) => {
       if (node.type !== "materia") return node;
 
       const nota = node.data.codigo === codigoMateria ? calificacion : node.data.calificacion;
@@ -73,9 +44,19 @@ export default {
       return { ...node, data: { ...node.data, calificacion: nota, estado } };
     });
 
-    const node = nodes.find(
-      (n) => n.type === "materia" && n.data.codigo === materiaSeleccionada?.codigo,
+    const node = this.nodes.find(
+      (n) => n.type === "materia" && n.data.codigo === this.materiaSeleccionada?.codigo,
     );
-    materiaSeleccionada = node?.type === "materia" ? node.data : null;
-  },
-};
+    this.materiaSeleccionada = node?.type === "materia" ? node.data : null;
+  };
+
+  private marcarEdgesActivos(codigo: string | null) {
+    this.edges = this.edges.map((e) => ({
+      ...e,
+      class:
+        codigo !== null && (e.source === codigo || e.target === codigo) ? "edge-activo" : undefined,
+    }));
+  }
+}
+
+export default new State();

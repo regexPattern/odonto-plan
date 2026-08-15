@@ -1,9 +1,10 @@
 <script lang="ts">
   import { Background, Panel, SvelteFlow } from "@xyflow/svelte";
   import "@xyflow/svelte/dist/style.css";
-  import graph, { nodeTypes } from "#lib/graph/state.svelte.js";
+  import graph from "#lib/graph/state.svelte.js";
   import MateriaSeleccionada from "./MateriaSeleccionada.svelte";
   import ProgresoCarrera from "./ProgresoCarrera.svelte";
+  import { nodeTypes } from "#lib/graph/index.js";
 
   const INITIAL_VIEWPORT = { x: 0, y: 140, zoom: 0.75 };
 </script>

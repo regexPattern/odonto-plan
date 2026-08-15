@@ -106,6 +106,8 @@ const materiaNodes: MateriaNodeType[] = PLAN.anios.flatMap((a) =>
     data: {
       codigo: m.codigo,
       nombre: m.nombre,
+      duracion: m.duracion,
+      horas: m.horas,
       estado: PLAN.correlatividades[m.codigo]?.length ? "bloqueada" : "desbloqueada",
       calificacion: null,
       width: m.duracion === "Anual" ? ANUAL_WIDTH : MATERIA_WIDTH,
