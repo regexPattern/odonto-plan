@@ -2,18 +2,18 @@
   import type { ColorMode, NodeTypes } from "@xyflow/svelte";
   import { Background, SvelteFlow } from "@xyflow/svelte";
   import "@xyflow/svelte/dist/style.css";
-  import type { MateriaNodeType } from "$lib/flow/data";
-  import { mode } from "mode-watcher";
-  import { onMount } from "svelte";
-  import { PLAN } from "$lib/data";
+  import type { MateriaNodeType } from "#lib/flow/data.js";
+  import { PLAN } from "#lib/data/index.js";
   import {
     AnioNode,
     Controls,
     MateriaNode,
     ProgresoCarrera,
     SelectedMateria,
-  } from "$lib/flow/components";
-  import { rawEdges, rawNodes } from "$lib/flow/data";
+  } from "#lib/flow/components/index.js";
+  import { rawEdges, rawNodes } from "#lib/flow/data.js";
+  import { mode } from "mode-watcher";
+  import { onMount } from "svelte";
 
   const nodeTypes: NodeTypes = {
     anio: AnioNode,
@@ -22,9 +22,8 @@
 
   const STORAGE_KEY = "odonto-plan:calificaciones";
   const INITIAL_VIEWPORT = { x: 0, y: 140, zoom: 0.75 };
-  const flowColorMode = $derived.by(
-    (): Exclude<ColorMode, "system"> =>
-      mode.current === "dark" ? "dark" : "light",
+  const flowColorMode = $derived.by((): Exclude<ColorMode, "system"> =>
+    mode.current === "dark" ? "dark" : "light",
   );
 
   let nodes = $state.raw(rawNodes);

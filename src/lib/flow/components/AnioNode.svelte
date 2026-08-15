@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { NodeProps } from "@xyflow/svelte";
-  import type { AnioNodeType } from "$lib/flow/data";
+  import type { AnioNodeType } from "#lib/flow/data.js";
 
   let { data }: NodeProps<AnioNodeType> = $props();
 </script>

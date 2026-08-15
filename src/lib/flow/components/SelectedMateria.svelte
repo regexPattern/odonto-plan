@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Materia } from "$lib/data";
+  import type { Materia } from "#lib/data/index.js";
   import { Panel } from "@xyflow/svelte";
 
   type MateriaSeleccionada = Materia & {

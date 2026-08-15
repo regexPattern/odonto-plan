@@ -18,12 +18,12 @@ export type Materia = {
   horas: string;
 };
 
-// prettier-ignore
+// oxfmt-ignore
 export const PLAN: Plan = {
-  "anios": [
+  anios: [
     {
-      "descripcion": "CBC",
-      "materias": [
+      descripcion: "CBC",
+      materias: [
         { codigo: "CBC-QUIMICA",                   nombre: "Química",                                                 cuatriInicial: [1, 2], duracion: "Semestral", horas: "6" },
         { codigo: "CBC-MATEMATICA",                nombre: "Matemática",                                              cuatriInicial: [1, 2], duracion: "Semestral", horas: "6" },
         { codigo: "CBC-FISICA_BIOFISICA",          nombre: "Física e Introducción a la Biofísica",                    cuatriInicial: [1, 2], duracion: "Semestral", horas: "6" },
@@ -33,8 +33,8 @@ export const PLAN: Plan = {
       ]
     },
     {
-      "descripcion": "2do año",
-      "materias": [
+      descripcion: "2do año",
+      materias: [
         { codigo: "N100", nombre: "Inglés Técnico",                                     cuatriInicial: [1,  2], duracion: "Bimestral", horas: "4" },
         { codigo: "N101", nombre: "Anatomía General y Estomatológica",                  cuatriInicial: 1,       duracion: "Anual",     horas: "8 horas 1er. semestre / 4 horas 2do. semestre" },
         { codigo: "N102", nombre: "Bioquímica General",                                 cuatriInicial: 1,       duracion: "Semestral", horas: "4" },
@@ -47,8 +47,8 @@ export const PLAN: Plan = {
       ]
     },
     {
-      "descripcion": "3er año",
-      "materias": [
+      descripcion: "3er año",
+      materias: [
         { codigo: "N201", nombre: "Fisiología",                                       cuatriInicial: 1, duracion: "Anual",     horas: "8 horas 1er. semestre / 4 horas 2do. semestre" },
         { codigo: "N202", nombre: "Patología General",                                cuatriInicial: 1, duracion: "Semestral", horas: "4" },
         { codigo: "N203", nombre: "Materiales Dentales I",                            cuatriInicial: 1, duracion: "Bimestral", horas: "4" },
@@ -66,8 +66,8 @@ export const PLAN: Plan = {
       ]
     },
     {
-      "descripcion": "4to año",
-      "materias": [
+      descripcion: "4to año",
+      materias: [
         { codigo: "N302", nombre: "Preclínica de Rehabilitación Protética",           cuatriInicial: 1,      duracion: "Anual",     horas: "8" },
         { codigo: "N303", nombre: "Farmacología",                                     cuatriInicial: 1,      duracion: "Anual",     horas: "4" },
         { codigo: "N304", nombre: "Medicina Interna en la Práctica Odontológica",     cuatriInicial: 1,      duracion: "Anual",     horas: "29 semanas de 4 horas + 5 semanas de 8 horas" },
@@ -80,8 +80,8 @@ export const PLAN: Plan = {
       ]
     },
     {
-      "descripcion": "5to año",
-      "materias": [
+      descripcion: "5to año",
+      materias: [
         { codigo: "N401", nombre: "Odontología Rehabilitadora Integral",         cuatriInicial: 1, duracion: "Anual",     horas: "10" },
         { codigo: "N402", nombre: "Cirugía y Traumatología Bucomáxilofacial II", cuatriInicial: 1, duracion: "Anual",     horas: "4" },
         { codigo: "N403", nombre: "Odontología Integral Niños y Adolescentes",   cuatriInicial: 1, duracion: "Anual",     horas: "8" },
@@ -92,8 +92,8 @@ export const PLAN: Plan = {
       ]
     },
     {
-      "descripcion": "6to año",
-      "materias": [
+      descripcion: "6to año",
+      materias: [
         { codigo: "N501", nombre: "Odontología Integral Adultos (PPS)",                                       cuatriInicial: 1, duracion: "Anual",     horas: "8" },
         { codigo: "N503", nombre: "Articulación Docencia-Servicio-Investigación (Práctica Social Educativa)", cuatriInicial: 1, duracion: "Anual",     horas: "31 semanas de 4 horas + 3 semanas de 8 horas" },
         { codigo: "N506", nombre: "Ortodoncia I",                                                             cuatriInicial: 1, duracion: "Semestral", horas: "4" },
@@ -105,8 +105,8 @@ export const PLAN: Plan = {
       ]
     },
     {
-      "descripcion": "Electivas",
-      "materias": [
+      descripcion: "Electivas",
+      materias: [
         { codigo: "N601", nombre: "Riesgo Sistémico de la Patología Buco-Dental",             cuatriInicial: null, duracion: "Semestral", horas: "4" },
         { codigo: "N602", nombre: "Atención Odontológica en Pacientes con Discapacidad",      cuatriInicial: null, duracion: "Semestral", horas: "4" },
         { codigo: "N603", nombre: "Ortodoncia II",                                            cuatriInicial: null, duracion: "Semestral", horas: "4" },
@@ -120,7 +120,7 @@ export const PLAN: Plan = {
       ]
     }
   ],
-  "correlatividades": {
+  correlatividades: {
     "CBC-QUIMICA": [],
     "CBC-MATEMATICA": [],
     "CBC-FISICA_BIOFISICA": [],
