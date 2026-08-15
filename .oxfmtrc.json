@@ -1,3 +1,7 @@
 {
+  "sortTailwindcss": {
+    "stylesheet": "./src/routes/layout.css",
+    "functions": ["cn"]
+  },
   "svelte": {}
 }

@@ -1,9 +1,53 @@
 @import "tailwindcss";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
-@layer components {
-  .blurred {
-    @apply border-2 border-slate-300 bg-slate-100/75 text-sm backdrop-blur-lg;
-    @apply dark:border-zinc-700 dark:bg-zinc-950/75 dark:text-slate-100;
-  }
+@custom-variant aprobada (&:where(.aprobada));
+@custom-variant desbloqueada (&:where(.desbloqueada));
+@custom-variant bloqueada (&:where(.bloqueada));
+
+@theme {
+  --color-bg-aprobada: var(--color-fuchsia-300);
+  --color-border-aprobada: var(--color-fuchsia-700);
+  --color-fg-aprobada: var(--color-fuchsia-900);
+
+  --color-bg-desbloqueada: var(--color-teal-500);
+  --color-border-desbloqueada: var(--color-teal-800);
+  --color-fg-desbloqueada: var(--color-teal-950);
+
+  --color-bg-bloqueada: #e2e8f0;
+  --color-border-bloqueada: #90a1b9;
+  --color-fg-bloqueada: #62748e;
+
+  --color-edge: #9f9fa9;
+  --color-edge-activo: #62748e;
+}
+
+.dark {
+  --color-bg-aprobada: var(--color-fuchsia-500);
+  --color-border-aprobada: var(--color-fuchsia-800);
+  --color-fg-aprobada: var(--color-fuchsia-50);
+
+  --color-bg-desbloqueada: var(--color-teal-600);
+  --color-border-desbloqueada: var(--color-teal-800);
+  --color-fg-desbloqueada: var(--color-teal-50);
+
+  --color-bg-bloqueada: #18181b;
+  --color-border-bloqueada: #45556c;
+  --color-fg-bloqueada: #71717b;
+
+  --color-edge: #52525c;
+  --color-edge-activo: #d4d4d8;
+}
+
+.svelte-flow .svelte-flow__edge-path {
+  stroke: var(--color-edge);
+  stroke-width: 1;
+  opacity: 0.35;
+}
+
+.svelte-flow .edge-activo .svelte-flow__edge-path {
+  stroke: var(--color-edge-activo);
+  stroke-width: 2;
+  opacity: 1;
 }
