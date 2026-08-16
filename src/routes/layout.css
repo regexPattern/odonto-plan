@@ -1,3 +1,6 @@
+@import "@fontsource-variable/noto-serif/wght.css";
+@import "@fontsource-variable/inter/wght.css";
+
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -7,6 +10,9 @@
 @custom-variant bloqueada (&:where(.bloqueada));
 
 @theme {
+  --font-sans: "Inter Variable", sans-serif;
+  --font-serif: "Noto Serif Variable", serif;
+
   --color-bg-aprobada: var(--color-fuchsia-300);
   --color-border-aprobada: var(--color-fuchsia-700);
   --color-fg-aprobada: var(--color-fuchsia-900);

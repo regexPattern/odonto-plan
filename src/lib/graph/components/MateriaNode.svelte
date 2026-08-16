@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { NodeProps } from "@xyflow/svelte";
+  import { Handle, Position } from "@xyflow/svelte";
   import type { MateriaNodeType } from "#lib/graph/index.js";
   import { PLAN } from "#lib/plan/index.js";
-  import { Handle, Position } from "@xyflow/svelte";
 
   let { data }: NodeProps<MateriaNodeType> = $props();
 

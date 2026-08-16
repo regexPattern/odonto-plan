@@ -1,62 +1,86 @@
-import { rawEdges, rawNodes } from "./layout.js";
 import { PLAN } from "#lib/plan/index.js";
-import type { MateriaNodeData } from ".";
+import { esCalificacionAprobada, type MateriaAprobada, type MateriaNodeData } from ".";
+import { rawEdges, rawNodes } from "./layout.js";
 
-class State {
-  nodes = $state.raw(rawNodes);
-  edges = $state.raw(rawEdges);
-  materiaSeleccionada = $state<MateriaNodeData | null>(null);
+class GraphState {
+  public nodes = $state.raw(rawNodes);
+  public edges = $state.raw(rawEdges);
+  private codigoMateriaSeleccionada = $state<string | null>(null);
 
-  seleccionarMateria = (materia: MateriaNodeData) => {
-    this.materiaSeleccionada = materia;
-    this.marcarEdgesActivos(materia.codigo);
-  };
-
-  deseleccionarMateria = () => {
-    this.materiaSeleccionada = null;
-    this.marcarEdgesActivos(null);
-  };
-
-  actualizarCalificacion = (codigoMateria: string, calificacion: number | null) => {
-    const aprobadas = new Set(
-      this.nodes
-        .filter((node) => node.type === "materia")
-        .filter((node) =>
-          node.data.codigo === codigoMateria
-            ? calificacion !== null
-            : node.data.calificacion !== null,
-        )
-        .map((node) => node.data.codigo),
+  public materiaSeleccionada = $derived.by(() => {
+    const node = this.nodes.find(
+      (node) => node.type === "materia" && node.data.codigo === this.codigoMateriaSeleccionada,
     );
+    return node?.type === "materia" ? node.data : null;
+  });
+
+  public seleccionarMateria(materia: MateriaNodeData) {
+    this.codigoMateriaSeleccionada = materia.codigo;
+    this.activarEdgesMateria(materia.codigo);
+  }
+
+  public deseleccionarMateria() {
+    this.codigoMateriaSeleccionada = null;
+    this.activarEdgesMateria(null);
+  }
+
+  public cambiarCalificacionMateria(codigoMateria: string, calificacion: number | null) {
+    if (calificacion !== null && !esCalificacionAprobada(calificacion)) return;
+
+    const materiasAprobadas = this.materiasAprobadas.filter(
+      ({ codigo }) => codigo !== codigoMateria,
+    );
+    if (calificacion !== null) materiasAprobadas.push({ codigo: codigoMateria, calificacion });
+    this.materiasAprobadas = materiasAprobadas;
+  }
+
+  public get materiasAprobadas(): MateriaAprobada[] {
+    return this.nodes.flatMap(({ type, data }) =>
+      type === "materia" && data.estado === "aprobada" && esCalificacionAprobada(data.calificacion)
+        ? [{ codigo: data.codigo, calificacion: data.calificacion }]
+        : [],
+    );
+  }
+
+  public set materiasAprobadas(materiasAprobadas: readonly MateriaAprobada[]) {
+    const codigosMaterias = new Set(
+      this.nodes.flatMap((node) => (node.type === "materia" ? [node.data.codigo] : [])),
+    );
+    const calificaciones = new Map(
+      materiasAprobadas
+        .filter(
+          ({ codigo, calificacion }) =>
+            codigosMaterias.has(codigo) && esCalificacionAprobada(calificacion),
+        )
+        .map(({ codigo, calificacion }) => [codigo, calificacion]),
+    );
+    const codigosAprobadas = new Set(calificaciones.keys());
 
     this.nodes = this.nodes.map((node) => {
       if (node.type !== "materia") return node;
 
-      const nota = node.data.codigo === codigoMateria ? calificacion : node.data.calificacion;
+      const calificacion = calificaciones.get(node.data.codigo) ?? null;
       const correlativas = PLAN.correlatividades[node.data.codigo] ?? [];
       const estado =
-        nota !== null
+        calificacion !== null
           ? "aprobada"
-          : correlativas.every((correlativa) => aprobadas.has(correlativa))
+          : correlativas.every((codigo) => codigosAprobadas.has(codigo))
             ? "desbloqueada"
             : "bloqueada";
 
-      return { ...node, data: { ...node.data, calificacion: nota, estado } };
+      return { ...node, data: { ...node.data, calificacion, estado } };
     });
+  }
 
-    const node = this.nodes.find(
-      (n) => n.type === "materia" && n.data.codigo === this.materiaSeleccionada?.codigo,
-    );
-    this.materiaSeleccionada = node?.type === "materia" ? node.data : null;
-  };
-
-  private marcarEdgesActivos(codigo: string | null) {
-    this.edges = this.edges.map((e) => ({
-      ...e,
+  private activarEdgesMateria(codigoMateria: string | null) {
+    this.edges = this.edges.map((edge) => ({
+      ...edge,
       class:
-        codigo !== null && (e.source === codigo || e.target === codigo) ? "edge-activo" : undefined,
+        codigoMateria !== null && (edge.source === codigoMateria || edge.target === codigoMateria)
+          ? "edge-activo"
+          : undefined,
     }));
   }
 }
 
-export default new State();
+export default new GraphState();

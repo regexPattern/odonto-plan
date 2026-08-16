@@ -9,10 +9,10 @@ export type Plan = {
 
 export type AnioPlan = {
   descripcion: string;
-  materias: Materia[];
+  materias: MateriaPlan[];
 };
 
-export type Materia = {
+export type MateriaPlan = {
   codigo: string;
   nombre: string;
   cuatriInicial: (1 | 2) | [1, 2] | null;

@@ -1,5 +1,5 @@
 import type { Edge, XYPosition } from "@xyflow/svelte";
-import type { Materia } from "#lib/plan/index.js";
+import type { MateriaPlan } from "#lib/plan/index.js";
 import { PLAN } from "#lib/plan/index.js";
 import type { AnioNodeType, MateriaNodeType, PlanNodeType } from ".";
 
@@ -33,10 +33,10 @@ for (const [anio, anioPlan] of PLAN.anios.entries()) {
     continue;
   }
 
-  const anuales: Materia[] = [];
-  const c1: Materia[] = [];
-  const c2: Materia[] = [];
-  const c12: Materia[] = [];
+  const anuales: MateriaPlan[] = [];
+  const c1: MateriaPlan[] = [];
+  const c2: MateriaPlan[] = [];
+  const c12: MateriaPlan[] = [];
 
   for (const materia of anioPlan.materias) {
     if (materia.duracion === "Anual") {
@@ -122,9 +122,9 @@ export const rawNodes: PlanNodeType[] = [...anioNodes, ...materiaNodes];
 export const rawEdges: Edge[] = Object.entries(PLAN.correlatividades)
   .filter(([_, correlativas]) => correlativas.length)
   .flatMap(([materia, correlativas]) =>
-    correlativas.map((correlativa) => ({
-      id: `${correlativa}->${materia}`,
-      source: correlativa,
+    correlativas.map((c) => ({
+      id: `${c}->${materia}`,
+      source: c,
       target: materia,
     })),
   );

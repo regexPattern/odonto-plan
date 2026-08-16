@@ -1,4 +1,7 @@
 {
+  "sortImports": {
+    "newlinesBetween": false
+  },
   "sortTailwindcss": {
     "stylesheet": "./src/routes/layout.css",
     "functions": ["cn"]

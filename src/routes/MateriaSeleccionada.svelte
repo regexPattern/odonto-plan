@@ -1,25 +1,19 @@
 <script lang="ts">
   import graph from "#lib/graph/state.svelte.js";
+  import { cambiarCalificacionMateria } from "#lib/graph/storage.js";
 
   let materia = $derived(graph.materiaSeleccionada);
 
   const actualizarCalificacion = (event: Event) => {
-    if (!materia) {
-      return;
-    }
-
+    if (!materia) return;
     const input = event.currentTarget as HTMLInputElement;
-    const calificacion = input.value === "" ? null : input.valueAsNumber;
-
-    if (calificacion === null || (calificacion >= 4 && calificacion <= 10)) {
-      graph.actualizarCalificacion(materia.codigo, calificacion);
-    }
+    cambiarCalificacionMateria(materia.codigo, input.valueAsNumber);
   };
 </script>
 
-<div class="w-72 border p-3">
+<div class="w-72 border border-zinc-800 bg-[#141414]/50 p-3 backdrop-blur-xl">
   {#if materia}
-    <h1>{materia.nombre}</h1>
+    <h1 class="font-serif font-medium">{materia.nombre}</h1>
     <div class="py-3">
       <div><span class="font-medium">Duración:</span> {materia.duracion}</div>
       <div><span class="font-medium">Carga horaria:</span> {materia.horas}</div>

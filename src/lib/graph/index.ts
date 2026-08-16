@@ -11,6 +11,17 @@ export type AnioNodeData = {
 };
 
 export type MateriaNodeType = Node<MateriaNodeData, "materia">;
+export type MateriaAprobada = {
+  codigo: string;
+  calificacion: number;
+};
+
+export const esCalificacionAprobada = (calificacion: unknown): calificacion is number =>
+  typeof calificacion === "number" &&
+  Number.isInteger(calificacion) &&
+  calificacion >= 4 &&
+  calificacion <= 10;
+
 export type MateriaNodeData = {
   codigo: string;
   nombre: string;

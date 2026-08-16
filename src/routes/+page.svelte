@@ -1,10 +1,10 @@
 <script lang="ts">
   import { Background, Panel, SvelteFlow } from "@xyflow/svelte";
   import "@xyflow/svelte/dist/style.css";
+  import { nodeTypes } from "#lib/graph/index.js";
   import graph from "#lib/graph/state.svelte.js";
   import MateriaSeleccionada from "./MateriaSeleccionada.svelte";
   import ProgresoCarrera from "./ProgresoCarrera.svelte";
-  import { nodeTypes } from "#lib/graph/index.js";
 
   const INITIAL_VIEWPORT = { x: 0, y: 140, zoom: 0.75 };
 </script>
@@ -17,6 +17,9 @@
     nodesFocusable={false}
     nodesDraggable={false}
     edgesFocusable={false}
+    defaultEdgeOptions={{
+      selectable: false,
+    }}
     onnodeclick={(e) => {
       if (e.node.type === "materia") {
         graph.seleccionarMateria(e.node.data);
@@ -24,12 +27,14 @@
         graph.deseleccionarMateria();
       }
     }}
-    onpaneclick={graph.deseleccionarMateria}
+    onpaneclick={() => graph.deseleccionarMateria()}
     colorMode="dark"
     initialViewport={INITIAL_VIEWPORT}
     minZoom={0.4}
     maxZoom={1}
   >
+    <Panel position="top-center">Odonto Plan</Panel>
+
     <Panel position="top-right"><MateriaSeleccionada /></Panel>
     <Panel position="top-left"><ProgresoCarrera /></Panel>
 

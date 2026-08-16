@@ -9,3 +9,5 @@ node_modules
 
 .direnv
 .wrangler/
+.env
+.env.local
