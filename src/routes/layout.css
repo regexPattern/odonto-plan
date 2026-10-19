@@ -10,26 +10,6 @@
 @custom-variant bloqueada (&:where(.bloqueada));
 
 @theme {
-  --font-sans: "Inter Variable", sans-serif;
-  --font-serif: "Noto Serif Variable", serif;
-
-  --color-bg-aprobada: var(--color-fuchsia-300);
-  --color-border-aprobada: var(--color-fuchsia-700);
-  --color-fg-aprobada: var(--color-fuchsia-900);
-
-  --color-bg-desbloqueada: var(--color-teal-500);
-  --color-border-desbloqueada: var(--color-teal-800);
-  --color-fg-desbloqueada: var(--color-teal-950);
-
-  --color-bg-bloqueada: #e2e8f0;
-  --color-border-bloqueada: #90a1b9;
-  --color-fg-bloqueada: #62748e;
-
-  --color-edge: #9f9fa9;
-  --color-edge-activo: #62748e;
-}
-
-.dark {
   --color-bg-aprobada: var(--color-fuchsia-500);
   --color-border-aprobada: var(--color-fuchsia-800);
   --color-fg-aprobada: var(--color-fuchsia-50);

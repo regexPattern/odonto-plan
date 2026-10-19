@@ -1,15 +1,26 @@
 <script lang="ts">
   import { Background, Panel, SvelteFlow } from "@xyflow/svelte";
   import "@xyflow/svelte/dist/style.css";
+  import { onMount } from "svelte";
   import { nodeTypes } from "#lib/graph/index.js";
   import graph from "#lib/graph/state.svelte.js";
+  import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
   import MateriaSeleccionada from "./MateriaSeleccionada.svelte";
   import ProgresoCarrera from "./ProgresoCarrera.svelte";
 
   const INITIAL_VIEWPORT = { x: 0, y: 140, zoom: 0.75 };
+
+  onMount(() => {
+    const materiasAprobadas = cargarMateriasAprobadas();
+    if (materiasAprobadas !== null) graph.materiasAprobadas = materiasAprobadas;
+  });
 </script>
 
-<div class="h-[calc(100dvh-4rem)] w-full">
+<svelte:head>
+  <title>Odonto Plan</title>
+</svelte:head>
+
+<div class="h-screen w-full">
   <SvelteFlow
     bind:nodes={graph.nodes}
     bind:edges={graph.edges}
@@ -36,7 +47,7 @@
     <Panel position="top-center">Odonto Plan</Panel>
 
     <Panel position="top-right"><MateriaSeleccionada /></Panel>
-    <Panel position="top-left"><ProgresoCarrera /></Panel>
+    <Panel position="bottom-center"><ProgresoCarrera /></Panel>
 
     <Background />
   </SvelteFlow>

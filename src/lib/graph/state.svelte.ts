@@ -24,16 +24,6 @@ class GraphState {
     this.activarEdgesMateria(null);
   }
 
-  public cambiarCalificacionMateria(codigoMateria: string, calificacion: number | null) {
-    if (calificacion !== null && !esCalificacionAprobada(calificacion)) return;
-
-    const materiasAprobadas = this.materiasAprobadas.filter(
-      ({ codigo }) => codigo !== codigoMateria,
-    );
-    if (calificacion !== null) materiasAprobadas.push({ codigo: codigoMateria, calificacion });
-    this.materiasAprobadas = materiasAprobadas;
-  }
-
   public get materiasAprobadas(): MateriaAprobada[] {
     return this.nodes.flatMap(({ type, data }) =>
       type === "materia" && data.estado === "aprobada" && esCalificacionAprobada(data.calificacion)
