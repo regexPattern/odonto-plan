@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script>
       try {
-        const paleta = localStorage.getItem("odonto-plan:paleta");
+        // Mantener sincronizado con STORAGE_VERSION en src/lib/storage.ts.
+        const version = 1;
+        const clave = "odonto-plan:paleta";
+        const paleta =
+          localStorage.getItem(`${clave}:v${version}`) ??
+          (version === 1 ? localStorage.getItem(clave) : null);
         if (paleta) document.documentElement.dataset.palette = paleta;
       } catch {}
     </script>

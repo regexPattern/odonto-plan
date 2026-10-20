@@ -11,6 +11,7 @@
   import { track } from "#lib/analytics.js";
   import { animar } from "#lib/animar.js";
   import graph from "#lib/graph/state.svelte.js";
+  import { guardarPersistido, leerPersistido } from "#lib/storage.js";
 
   // Primera visita (o siempre en dev): el popup se abre solo.
   let abierto = $state(false);
@@ -82,8 +83,8 @@
       return;
     }
     try {
-      if (localStorage.getItem(AYUDA_VISTA_STORAGE_KEY) === null) {
-        localStorage.setItem(AYUDA_VISTA_STORAGE_KEY, "1");
+      if (leerPersistido(AYUDA_VISTA_STORAGE_KEY) === null) {
+        guardarPersistido(AYUDA_VISTA_STORAGE_KEY, "1");
         abierto = true;
       }
     } catch {
