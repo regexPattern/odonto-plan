@@ -71,7 +71,7 @@
           aria-disabled="true"
           title="Paleta de colores (próximamente)"
         >
-          <Palette size={28} class="wm wm-hover wm-p-tada" data-wm="palette" />
+          <Palette size={24} class="wm wm-hover wm-p-tada" data-wm="palette" />
         </button>
       </div>
     </Panel>

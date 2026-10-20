@@ -1,12 +1,11 @@
 <script lang="ts">
-  import Maximize from "@withicons/svelte/kawaii/icons/maximize";
   import RotateCcw from "@withicons/svelte/kawaii/icons/rotate-ccw";
   import ZoomIn from "@withicons/svelte/kawaii/icons/zoom-in";
   import ZoomOut from "@withicons/svelte/kawaii/icons/zoom-out";
   import { useSvelteFlow, type Viewport } from "@xyflow/svelte";
 
   let { initialViewport }: { initialViewport: Viewport } = $props();
-  const { setViewport, zoomIn, zoomOut, fitView } = useSvelteFlow();
+  const { setViewport, zoomIn, zoomOut } = useSvelteFlow();
   const options = { duration: 200 };
 </script>
 
@@ -18,7 +17,7 @@
     title="Acercar"
     onclick={() => zoomIn(options)}
   >
-    <ZoomIn size={28} />
+    <ZoomIn size={24} />
   </button>
   <button
     type="button"
@@ -27,16 +26,7 @@
     title="Alejar"
     onclick={() => zoomOut(options)}
   >
-    <ZoomOut size={28} />
-  </button>
-  <button
-    type="button"
-    class="boton-herramienta"
-    aria-label="Encuadrar todo"
-    title="Encuadrar todo"
-    onclick={() => fitView({ ...options, padding: 0.2 })}
-  >
-    <Maximize size={28} />
+    <ZoomOut size={24} />
   </button>
   <button
     type="button"
@@ -45,7 +35,7 @@
     title="Restablecer vista"
     onclick={() => setViewport(initialViewport, options)}
   >
-    <RotateCcw size={28} />
+    <RotateCcw size={24} />
   </button>
 </div>
 

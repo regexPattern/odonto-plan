@@ -111,7 +111,7 @@
   title="Sincronizar progreso"
   onclick={abrir}
 >
-  <CloudUpload size={28} class="wm wm-hover wm-p-rise" data-wm="cloud-upload" />
+  <CloudUpload size={24} class="wm wm-hover wm-p-rise" data-wm="cloud-upload" />
 </button>
 
 <dialog
