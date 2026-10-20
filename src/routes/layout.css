@@ -5,6 +5,7 @@
 @import "@withicons/motion/motion.css";
 @import "@withicons/motion/icons/calendar.css";
 @import "@withicons/motion/icons/palette.css";
+@import "@withicons/motion/icons/id-card.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -31,6 +32,41 @@
 
 .boton-herramienta {
   @apply flex size-11 items-center justify-center border border-zinc-700/70 bg-[#141414]/50 text-zinc-100 backdrop-blur-xl transition-colors hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-400;
+}
+
+@keyframes entrada-panel {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes entrada-fondo {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .entrada-popover[data-state="open"],
+  .entrada-dialog[open] {
+    animation: entrada-panel 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .entrada-popover {
+    transform-origin: var(--bits-popover-content-transform-origin, top right);
+  }
+
+  .entrada-dialog[open]::backdrop {
+    animation: entrada-fondo 180ms ease-out both;
+  }
 }
 
 .svelte-flow .svelte-flow__edge-path {

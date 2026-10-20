@@ -124,7 +124,7 @@
     previa = null;
     error = aviso = "";
   }}
-  class="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-1.5rem)] max-w-md overflow-y-auto border border-zinc-700 bg-zinc-950 p-4 text-sm text-zinc-100 backdrop:bg-black/70"
+  class="entrada-dialog fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-1.5rem)] max-w-md overflow-y-auto border border-zinc-700 bg-zinc-950 p-4 text-sm text-zinc-100 backdrop:bg-black/70"
 >
   {#if abierto}
     <div class="flex items-center justify-between">

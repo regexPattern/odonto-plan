@@ -7,6 +7,7 @@
   import graph from "#lib/graph/state.svelte.js";
   import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
   import ControlesPane from "./ControlesPane.svelte";
+  import EnlacesSociales from "./EnlacesSociales.svelte";
   import MateriaSeleccionada from "./MateriaSeleccionada.svelte";
   import ProgresoCarrera from "./ProgresoCarrera.svelte";
   import SincronizarProgreso from "./SincronizarProgreso.svelte";
@@ -50,9 +51,7 @@
     maxZoom={1}
   >
     <Panel position="top-left">
-      <div
-        class="flex items-center gap-3 border border-zinc-700/70 bg-[#141414]/50 p-2 backdrop-blur-xl"
-      >
+      <div class="border border-zinc-700/70 bg-[#141414]/50 p-2 backdrop-blur-xl">
         <span class="font-serif text-xl font-medium">Odonto Plan</span>
       </div>
     </Panel>
@@ -73,6 +72,8 @@
         >
           <Palette size={24} class="wm wm-hover" data-wm="palette" />
         </button>
+        <div class="mx-1 h-8 w-px bg-zinc-700/70" aria-hidden="true"></div>
+        <EnlacesSociales />
       </div>
     </Panel>
 
