@@ -31,7 +31,7 @@
 </script>
 
 <svelte:head>
-  <title>Odonto Plan</title>
+  <title>OdontoPlan</title>
   <meta name="description" content={DESCRIPTION} />
   <meta name="author" content="Odonto Plan" />
   <meta name="application-name" content="Odonto Plan" />
