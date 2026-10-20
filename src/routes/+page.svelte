@@ -70,7 +70,7 @@
       }
     }}
     onpaneclick={() => graph.deseleccionarMateria()}
-    colorMode={mode.current ?? "dark"}
+    colorMode={mode.current ?? "light"}
     initialViewport={INITIAL_VIEWPORT}
     minZoom={MIN_ZOOM}
     maxZoom={MAX_ZOOM}
