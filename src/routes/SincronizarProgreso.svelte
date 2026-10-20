@@ -2,14 +2,13 @@
   import { replaceState } from "$app/navigation";
   import { page } from "$app/state";
   import AlertTriangle from "@withicons/svelte/kawaii/icons/alert-triangle";
-  import ChevronDown from "@withicons/svelte/kawaii/icons/chevron-down";
   import Clipboard from "@withicons/svelte/kawaii/icons/clipboard";
   import ClipboardCheck from "@withicons/svelte/kawaii/icons/clipboard-check";
   import CloudUpload from "@withicons/svelte/kawaii/icons/cloud-upload";
   import FileDown from "@withicons/svelte/kawaii/icons/file-down";
   import FileUp from "@withicons/svelte/kawaii/icons/file-up";
   import DienteSolido from "@withicons/svelte/solid/icons/tooth";
-  import { Accordion } from "bits-ui";
+  import { Popover, Tabs } from "bits-ui";
   import { onMount } from "svelte";
   import type { MateriaAprobada } from "#lib/graph/index.js";
   import graph from "#lib/graph/state.svelte.js";
@@ -24,23 +23,23 @@
 
   const DIENTES_POR_LADO = 8;
   const dientes = Array.from({ length: DIENTES_POR_LADO ** 2 }, (_, i) => ({
-    // Onda diagonal: el retraso crece con fila + columna. Se resta el periodo (1.4s) para que
+    // Onda diagonal: el retraso crece con fila + columna. Se resta el período (1.4s) para que
     // la onda arranque ya en marcha y no haya un primer pulso aislado en la esquina.
     retraso: ((i % DIENTES_POR_LADO) + Math.floor(i / DIENTES_POR_LADO)) * 0.1,
   }));
 
   const nombres = new Map(MATERIAS.map(({ codigo, nombre }) => [codigo, nombre]));
-  const boton = "border border-zinc-600 px-3 py-2 text-sm hover:bg-zinc-800 disabled:opacity-50";
-  const campo = "w-full border border-zinc-600 bg-zinc-900 px-3 py-2.5 font-mono";
+  const boton = "border border-borde-fuerte px-3 py-2 text-base hover:bg-hover disabled:opacity-50";
+  const campo = "w-full border border-borde-fuerte bg-campo px-3 py-2.5 font-mono text-base";
 
-  let dialog: HTMLDialogElement;
   let abierto = $state(false);
   let entrada = $state("");
   let previa = $state<MateriaAprobada[] | null>(null);
   let anterior = $state<MateriaAprobada[] | null>(null);
   let error = $state("");
   let aviso = $state("");
-  let seccion = $state("");
+  let seccion = $state("exportar");
+  let alto = $state<number>();
   let copiado = $state("");
   let temporizador: ReturnType<typeof setTimeout>;
 
@@ -56,7 +55,13 @@
 
   function abrir() {
     abierto = true;
-    if (!dialog.open) dialog.showModal();
+  }
+
+  function alCambiarAbierto(valor: boolean) {
+    if (valor) return;
+    previa = null;
+    copiado = "";
+    error = aviso = "";
   }
 
   function previsualizar() {
@@ -127,23 +132,13 @@
   });
 </script>
 
-<button
-  type="button"
-  class="boton-herramienta wm-trigger"
-  aria-label="Sincronizar progreso"
-  title="Sincronizar progreso"
-  onclick={abrir}
->
-  <CloudUpload size={24} class="wm wm-hover wm-p-rise" data-wm="cloud-upload" />
-</button>
-
 {#snippet campoCopiable(id: string, etiqueta: string, texto: string)}
-  <span class="mb-1.5 block text-zinc-300" id="sync-{id}-etiqueta">{etiqueta}</span>
+  <span class="mb-1.5 block text-texto-suave" id="sync-{id}-etiqueta">{etiqueta}</span>
   <button
     type="button"
     aria-labelledby="sync-{id}-etiqueta"
     onclick={() => copiar(id, texto)}
-    class="{campo} flex cursor-pointer items-center gap-2 text-left hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-teal-400"
+    class="{campo} flex cursor-pointer items-center gap-2 text-left hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
   >
     <span class="grid min-w-0 flex-1" aria-hidden="true">
       <span
@@ -153,14 +148,14 @@
           : ''}">{texto}</span
       >
       <span
-        class="col-start-1 row-start-1 font-sans text-teal-300 transition-opacity duration-150 motion-reduce:transition-none {copiado ===
+        class="col-start-1 row-start-1 font-sans text-link-fuerte transition-opacity duration-150 motion-reduce:transition-none {copiado ===
         id
           ? ''
           : 'opacity-0'}">¡Copiado!</span
       >
     </span>
     {#if copiado === id}
-      <ClipboardCheck size={16} aria-hidden="true" class="shrink-0 text-teal-300" />
+      <ClipboardCheck size={16} aria-hidden="true" class="shrink-0 text-link-fuerte" />
     {:else}
       <Clipboard size={16} aria-hidden="true" class="shrink-0" />
     {/if}
@@ -170,33 +165,33 @@
   </button>
 {/snippet}
 
-<dialog
-  bind:this={dialog}
-  aria-labelledby="sync-titulo"
-  onclose={() => {
-    // El evento es asíncrono: no pisar un enlace que ya reabrió el diálogo.
-    if (dialog.open) return;
-    abierto = false;
-    previa = null;
-    copiado = "";
-    error = aviso = "";
-  }}
-  class="entrada-dialog fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-1.5rem)] max-w-md overflow-y-auto border border-zinc-700 bg-zinc-950 p-4 text-sm text-zinc-100 backdrop:bg-black/70"
->
-  {#if abierto}
-    <div class="flex items-center justify-between">
+<Popover.Root bind:open={abierto} onOpenChange={alCambiarAbierto}>
+  <Popover.Trigger
+    class="boton-herramienta wm-trigger"
+    aria-label="Sincronizar progreso"
+    title="Sincronizar progreso"
+  >
+    <CloudUpload size={24} class="wm wm-hover wm-p-rise" data-wm="cloud-upload" />
+  </Popover.Trigger>
+  <Popover.Portal>
+    <Popover.Content
+      side="bottom"
+      align="center"
+      sideOffset={8}
+      collisionPadding={8}
+      aria-labelledby="sync-titulo"
+      class="z-50 max-h-(--bits-popover-content-available-height) w-[calc(100vw-1rem)] max-w-md origin-(--bits-popover-content-transform-origin) overflow-y-auto overscroll-contain border border-borde bg-panel-fuerte p-4 text-base text-texto shadow-lg backdrop-blur-xl motion-safe:data-[state=open]:animate-entrada-panel"
+    >
       <h2 id="sync-titulo" class="flex items-center gap-2 font-serif text-xl font-medium">
-        <CloudUpload size={24} aria-hidden="true" class="shrink-0 text-teal-300" />
+        <CloudUpload size={24} aria-hidden="true" class="shrink-0 text-link-fuerte" />
         Sincronizar progreso
       </h2>
-      <button type="button" class={boton} onclick={() => dialog.close()}>Cerrar</button>
-    </div>
 
     <div
-      class="mt-3 flex gap-2 border border-amber-500/40 bg-amber-500/10 p-3 text-amber-200"
+      class="mt-3 flex gap-2 border border-amber-500/40 bg-amber-500/10 p-3 text-amber-900 dark:text-amber-200"
       role="note"
     >
-      <AlertTriangle size={18} aria-hidden="true" class="mt-0.5 shrink-0 text-amber-400" />
+      <AlertTriangle size={18} aria-hidden="true" class="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400" />
       <p>
         <strong class="font-medium">La sincronización es manual.</strong> Copiás una instantánea de tus
         notas. Los cambios posteriores no se actualizan solos, sino que tenés que irlos cargando a medida
@@ -204,24 +199,30 @@
       </p>
     </div>
 
-    <Accordion.Root type="single" bind:value={seccion} class="mt-4 space-y-1.5">
-      <Accordion.Item value="exportar" class="border border-zinc-700">
-        <Accordion.Header>
-          <Accordion.Trigger
-            class="group flex w-full items-center gap-2 px-3 py-3 text-left hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-teal-400"
+      <Tabs.Root bind:value={seccion} class="mt-4">
+        <Tabs.List class="grid grid-cols-2 border border-borde">
+          <Tabs.Trigger
+            value="exportar"
+            class="flex items-center justify-center gap-1.5 px-2 py-2 text-sm font-medium hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline data-[state=active]:bg-seleccion"
           >
-            <FileUp size={20} aria-hidden="true" class="shrink-0 text-teal-300" />
-            <span class="flex-1 text-base font-medium">Enviar a otro dispositivo</span>
-            <ChevronDown
-              size={16}
-              aria-hidden="true"
-              class="shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180 motion-reduce:transition-none"
-            />
-          </Accordion.Trigger>
-        </Accordion.Header>
-        <Accordion.Content class="acordeon-contenido overflow-hidden">
-          <div class="px-4 pt-1 pb-4">
-            <ol class="list-decimal space-y-1 pl-5 text-zinc-300">
+            <FileUp size={16} aria-hidden="true" class="shrink-0 text-link-fuerte" />
+            Enviar
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            value="importar"
+            class="flex items-center justify-center gap-1.5 px-2 py-2 text-sm font-medium hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline data-[state=active]:bg-seleccion"
+          >
+            <FileDown size={16} aria-hidden="true" class="shrink-0 text-link-fuerte" />
+            Recibir
+          </Tabs.Trigger>
+        </Tabs.List>
+        <div
+          class="overflow-hidden transition-[height] duration-200 ease-out motion-reduce:transition-none"
+          style:height={alto === undefined ? undefined : `${alto}px`}
+        >
+          <div bind:clientHeight={alto}>
+          <Tabs.Content value="exportar" class="pt-4">
+            <ol class="list-decimal space-y-1 pl-5 text-texto-suave">
               <li>
                 En el otro dispositivo, escaneá el QR con la cámara o abrí el enlace en el
                 navegador.
@@ -234,42 +235,33 @@
             </ol>
             <div class="mx-auto my-4 size-48">
               {#await generarQR(enlace)}
-                <div class="qr-skeleton" role="status" aria-label="Generando código QR">
+                <div
+                  class="grid size-full grid-cols-8 place-items-center overflow-hidden border border-borde bg-campo p-1"
+                  role="status"
+                  aria-label="Generando código QR"
+                >
                   {#each dientes as { retraso }}
                     <DienteSolido
                       size={16}
                       aria-hidden="true"
-                      class="diente"
+                      class="text-pista motion-safe:animate-qr-onda"
                       style="animation-delay: {retraso - 1.4}s"
                     />
                   {/each}
                 </div>
               {:then src}
-                <img {src} alt="QR para importar tu progreso" class="qr-listo size-full bg-white" />
+                <img
+                  {src}
+                  alt="QR para importar tu progreso"
+                  class="size-full bg-white motion-safe:animate-qr-aparecer"
+                />
               {/await}
             </div>
             {@render campoCopiable("enlace", "Enlace", enlace)}
             <div class="mt-4">{@render campoCopiable("codigo", "Código", codigo)}</div>
-          </div>
-        </Accordion.Content>
-      </Accordion.Item>
-      <Accordion.Item value="importar" class="border border-zinc-700">
-        <Accordion.Header>
-          <Accordion.Trigger
-            class="group flex w-full items-center gap-2 px-3 py-3 text-left hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-teal-400"
-          >
-            <FileDown size={20} aria-hidden="true" class="shrink-0 text-teal-300" />
-            <span class="flex-1 text-base font-medium">Recibir en este dispositivo</span>
-            <ChevronDown
-              size={16}
-              aria-hidden="true"
-              class="shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180 motion-reduce:transition-none"
-            />
-          </Accordion.Trigger>
-        </Accordion.Header>
-        <Accordion.Content class="acordeon-contenido overflow-hidden">
-          <div class="px-4 pt-1 pb-4">
-            <ol class="list-decimal space-y-1 pl-5 text-zinc-300">
+          </Tabs.Content>
+          <Tabs.Content value="importar" class="pt-4">
+            <ol class="list-decimal space-y-1 pl-5 text-texto-suave">
               <li>En el otro dispositivo abrí "Enviar a otro dispositivo".</li>
               <li>Copiá el enlace o el código (o escaneá el QR).</li>
               <li>Pegalo acá abajo para previsualizar los cambios.</li>
@@ -298,7 +290,7 @@
             </form>
 
             {#if previa}
-              <section class="mt-4 border border-teal-700 p-4">
+              <section class="mt-4 border border-link-border p-4">
                 <p>
                   Recibís <strong>{previa.length} de {MATERIAS.length}</strong> materias aprobadas.
                   Al confirmar se <strong>reemplaza</strong> tu progreso actual (no se combina).
@@ -313,8 +305,8 @@
                     </ul>
                   </details>
                 {/if}
-                <div class="mt-3 flex gap-2">
-                  <button type="button" class="{boton} bg-teal-800" onclick={reemplazar}>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  <button type="button" class="{boton} bg-link-bg" onclick={reemplazar}>
                     Reemplazar mi progreso
                   </button>
                   <button type="button" class={boton} onclick={() => (previa = null)}
@@ -325,8 +317,8 @@
             {/if}
 
             {#if anterior}
-              <div class="mt-4 border-t border-zinc-700 pt-3">
-                <p class="text-zinc-300">
+              <div class="mt-4 border-t border-borde pt-3">
+                <p class="text-texto-suave">
                   Podés volver al progreso previo a la importación (se pierden los cambios hechos
                   después). Solo disponible hasta recargar la página.
                 </p>
@@ -335,87 +327,13 @@
                 </button>
               </div>
             {/if}
+          </Tabs.Content>
           </div>
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion.Root>
+        </div>
+      </Tabs.Root>
 
-    {#if error}<p role="alert" class="mt-3 text-red-300">{error}</p>{/if}
-    {#if aviso}<p role="status" class="mt-3 text-teal-200">{aviso}</p>{/if}
-  {/if}
-</dialog>
-
-<style>
-  .qr-skeleton {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    place-items: center;
-    width: 100%;
-    height: 100%;
-    padding: 4px;
-    overflow: hidden;
-    border: 1px solid var(--color-zinc-700);
-    background-color: var(--color-zinc-900);
-  }
-  .qr-skeleton :global(.diente) {
-    color: var(--color-zinc-700);
-    animation: qr-onda 1.4s ease-in-out infinite;
-  }
-  /* Al cambiar de acordeón conviven un instante el que cierra y el que abre: sin esto asoma la scrollbar. */
-  dialog:has(:global(.acordeon-contenido[data-state="closed"])) {
-    overflow-y: hidden;
-  }
-  :global(.acordeon-contenido[data-state="open"]) {
-    animation: acordeon-abrir 0.2s ease-out;
-  }
-  :global(.acordeon-contenido[data-state="closed"]) {
-    animation: acordeon-cerrar 0.2s ease-out;
-  }
-  @keyframes acordeon-abrir {
-    from {
-      height: 0;
-      opacity: 0;
-    }
-    to {
-      height: var(--bits-accordion-content-height);
-      opacity: 1;
-    }
-  }
-  @keyframes acordeon-cerrar {
-    from {
-      height: var(--bits-accordion-content-height);
-      opacity: 1;
-    }
-    to {
-      height: 0;
-      opacity: 0;
-    }
-  }
-  .qr-listo {
-    animation: qr-aparecer 0.25s ease-out;
-  }
-  @keyframes qr-onda {
-    0%,
-    100% {
-      opacity: 0.25;
-    }
-    40% {
-      opacity: 1;
-    }
-  }
-  @keyframes qr-aparecer {
-    from {
-      opacity: 0;
-      transform: scale(0.97);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .qr-skeleton :global(.diente),
-    .qr-listo {
-      animation: none;
-    }
-    :global(.acordeon-contenido) {
-      animation: none !important;
-    }
-  }
-</style>
+      {#if error}<p role="alert" class="mt-3 text-red-300">{error}</p>{/if}
+      {#if aviso}<p role="status" class="mt-3 text-link-fuerte">{aviso}</p>{/if}
+    </Popover.Content>
+  </Popover.Portal>
+</Popover.Root>

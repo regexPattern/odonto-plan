@@ -73,13 +73,17 @@
 </script>
 
 <div
-  class="w-72 divide-y divide-zinc-700/70 border border-zinc-700/70 bg-[#141414]/50 backdrop-blur-xl *:p-3"
+  class={[
+    "divide-y divide-borde border border-borde bg-panel backdrop-blur-xl *:p-3 max-lg:max-h-[50dvh] max-lg:overflow-y-auto max-lg:overscroll-contain lg:w-72",
+    // En mobile el panel solo aparece cuando hay una materia seleccionada.
+    !materiaSeleccionada && "max-lg:hidden",
+  ]}
 >
   {#if materiaSeleccionada}
-    <h1 class="font-serif text-xl leading-snug font-medium">
+    <h1 class="font-serif text-lg leading-snug font-medium sm:text-xl">
       {materiaSeleccionada.nombre}
     </h1>
-    <div class="space-y-2">
+    <div class="grid grid-cols-2 gap-2 lg:grid-cols-1">
       <div class="wm-trigger flex items-start gap-2">
         <Calendar size={24} class="wm wm-hover shrink-0" data-wm="calendar" aria-hidden="true" />
         <div><span class="font-medium">Duración:</span> {materiaSeleccionada.duracion}</div>
@@ -103,11 +107,19 @@
       </div>
       {#key materiaSeleccionada.codigo}
         <div
-          class="calificacion-slider"
-          class:bloqueada={materiaSeleccionada.estado === "bloqueada"}
+          class="relative h-8"
           style={`--progreso: ${calificacion * 10}%; --slider-bg: var(--color-bg-${materiaSeleccionada.estado}); --slider-fg: var(--color-fg-${materiaSeleccionada.estado})`}
         >
-          <div class="calificacion-carril" aria-hidden="true"></div>
+          <div
+            class="absolute inset-x-3 inset-y-[7px] rounded-full bg-pista ring-1 ring-pista-anillo"
+            aria-hidden="true"
+          >
+            {#if materiaSeleccionada.estado !== "bloqueada"}
+              <div
+                class="absolute inset-0 rounded-full bg-(--slider-bg) [clip-path:inset(0_calc(100%-var(--progreso))_0_0_round_999px)] motion-safe:transition-colors motion-safe:duration-200"
+              ></div>
+            {/if}
+          </div>
           <input
             id="calificacion"
             type="range"
@@ -123,10 +135,14 @@
             onpointerdown={bloquearInteraccion}
             onkeydown={bloquearInteraccion}
             oninput={handleInput}
-            class="calificacion-input"
+            class="calificacion-input peer relative m-0 block h-8 w-full cursor-pointer bg-transparent p-0 outline-none aria-disabled:cursor-not-allowed"
           />
           <span
-            class="calificacion-thumb"
+            class="pointer-events-none absolute inset-x-1.5 inset-y-px rounded-[15px] border-2 border-(--slider-bg) opacity-0 peer-focus-visible:opacity-100 motion-safe:transition-colors motion-safe:duration-200"
+            aria-hidden="true"
+          ></span>
+          <span
+            class="pointer-events-none absolute top-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 text-(--slider-fg) drop-shadow-[0_1px_2px_rgb(0_0_0/0.4)] motion-safe:transition-colors motion-safe:duration-200 [&>svg>path:first-child]:fill-(--slider-bg) [&>svg>path:first-child]:[fill-opacity:1] motion-safe:[&>svg>path:first-child]:transition-[fill] motion-safe:[&>svg>path:first-child]:duration-200"
             style:left={`calc(${calificacion * 10}% + ${12 - calificacion * 2.4}px)`}
             aria-hidden="true"
           >
@@ -134,15 +150,18 @@
           </span>
         </div>
       {/key}
-      <div class="calificacion-marcas text-xs text-zinc-400" aria-hidden="true">
+      <div class="relative h-4 text-xs text-texto-tenue" aria-hidden="true">
         {#each Array.from({ length: 11 }, (_, numero) => numero) as numero}
-          <span style:left={`calc(${numero * 10}% + ${12 - numero * 2.4}px)`}>
+          <span
+            class="absolute -translate-x-1/2"
+            style:left={`calc(${numero * 10}% + ${12 - numero * 2.4}px)`}
+          >
             {numero}
           </span>
         {/each}
       </div>
       {#if error?.codigo === materiaSeleccionada.codigo}
-        <p id="calificacion-error" role="alert" class="mt-2 text-sm text-amber-400">
+        <p id="calificacion-error" role="alert" class="mt-2 text-sm text-amber-600 dark:text-amber-400">
           {error.mensaje}
         </p>
       {/if}
@@ -150,52 +169,15 @@
   {:else}
     <div class="flex items-start gap-2">
       <MousePointerClick size={24} class="shrink-0" aria-hidden="true" />
-      <div>Hacé click en una materia para ver sus detalles o afuera para volver.</div>
+      <div>Hacé clic en una materia para ver sus detalles o afuera para volver.</div>
     </div>
   {/if}
 </div>
 
 <style>
-  .calificacion-slider {
-    position: relative;
-    height: 32px;
-  }
-
-  .calificacion-carril {
-    position: absolute;
-    inset: 7px 12px;
-    border-radius: 999px;
-    background: var(--color-zinc-700);
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 15%);
-  }
-
-  .calificacion-slider.bloqueada .calificacion-carril::before {
-    display: none;
-  }
-
-  .calificacion-carril::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background-color: var(--slider-bg);
-    clip-path: inset(0 calc(100% - var(--progreso)) 0 0 round 999px);
-  }
-
+  /* Los pseudo-elementos del input nativo no se pueden estilar con utilidades. */
   .calificacion-input {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 32px;
-    margin: 0;
-    padding: 0;
     appearance: none;
-    background: transparent;
-    cursor: pointer;
-  }
-
-  .calificacion-input[aria-disabled="true"] {
-    cursor: not-allowed;
   }
 
   .calificacion-input::-webkit-slider-runnable-track {
@@ -222,63 +204,5 @@
     height: 24px;
     border: 0;
     background: transparent;
-  }
-
-  .calificacion-input:focus-visible {
-    outline: none;
-  }
-
-  .calificacion-slider:has(.calificacion-input:focus-visible) .calificacion-carril::after {
-    content: "";
-    position: absolute;
-    inset: -6px;
-    border: 2px solid var(--slider-bg);
-    border-radius: 15px;
-    pointer-events: none;
-  }
-
-  .calificacion-marcas {
-    position: relative;
-    height: 16px;
-  }
-
-  .calificacion-marcas span {
-    position: absolute;
-    transform: translateX(-50%);
-  }
-
-  .calificacion-thumb {
-    position: absolute;
-    top: 50%;
-    display: flex;
-    width: 24px;
-    height: 24px;
-    transform: translate(-50%, -50%);
-    color: var(--slider-fg);
-    pointer-events: none;
-    filter: drop-shadow(0 1px 2px rgb(0 0 0 / 40%));
-  }
-
-  .calificacion-thumb :global(svg > path:first-child) {
-    fill: var(--slider-bg);
-    fill-opacity: 1;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .calificacion-carril::before {
-      transition: background-color 200ms ease;
-    }
-
-    .calificacion-carril::after {
-      transition: border-color 200ms ease;
-    }
-
-    .calificacion-thumb {
-      transition: color 200ms ease;
-    }
-
-    .calificacion-thumb :global(svg > path:first-child) {
-      transition: fill 200ms ease;
-    }
   }
 </style>

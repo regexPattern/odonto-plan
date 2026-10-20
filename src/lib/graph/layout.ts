@@ -9,6 +9,21 @@ const ANIO_NODE_HEIGHT = 40;
 const CUATRI_GAP_X = 80;
 export const ANUAL_WIDTH = MATERIA_WIDTH * 2 + CUATRI_GAP_X;
 export const ANIO_GAP_X = ANUAL_WIDTH + 160;
+export const MIN_ZOOM = 0.4;
+export const MAX_ZOOM = 1;
+
+/**
+ * Vista que centra la columna de un año. En pantallas angostas baja el zoom para que
+ * el año entre completo en el ancho, sin tener que achicar los nodos.
+ */
+export const vistaParaAnio = (anio: number, ancho: number) => {
+  const zoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, (ancho - 16) / ANUAL_WIDTH));
+  return {
+    x: ancho / 2 - (anio * ANIO_GAP_X + ANUAL_WIDTH / 2) * zoom,
+    y: ancho < 640 ? 72 : 140,
+    zoom,
+  };
+};
 const FILA_GAP_Y = 110;
 const MATERIAS_OFFSET_Y = ANIO_NODE_HEIGHT + (FILA_GAP_Y - MATERIA_HEIGHT);
 

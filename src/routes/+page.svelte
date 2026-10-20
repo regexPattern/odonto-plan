@@ -1,15 +1,17 @@
 <script lang="ts">
-  import Palette from "@withicons/svelte/kawaii/icons/palette";
   import "@xyflow/svelte/dist/style.css";
   import { Background, Panel, SvelteFlow } from "@xyflow/svelte";
+  import { mode } from "mode-watcher";
   import { onMount } from "svelte";
   import { nodeTypes } from "#lib/graph/index.js";
+  import { MAX_ZOOM, MIN_ZOOM } from "#lib/graph/layout.js";
   import graph from "#lib/graph/state.svelte.js";
   import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
   import ControlesPane from "./ControlesPane.svelte";
   import EnlacesSociales from "./EnlacesSociales.svelte";
   import MateriaSeleccionada from "./MateriaSeleccionada.svelte";
   import ProgresoCarrera from "./ProgresoCarrera.svelte";
+  import SelectorPaleta from "./SelectorPaleta.svelte";
   import SincronizarProgreso from "./SincronizarProgreso.svelte";
 
   const INITIAL_VIEWPORT = { x: 0, y: 140, zoom: 1 };
@@ -28,7 +30,7 @@
   <title>Odonto Plan</title>
 </svelte:head>
 
-<div class="h-screen w-full">
+<div class="h-dvh w-full">
   <SvelteFlow
     bind:nodes={graph.nodes}
     bind:edges={graph.edges}
@@ -45,45 +47,46 @@
       }
     }}
     onpaneclick={() => graph.deseleccionarMateria()}
-    colorMode="dark"
+    colorMode={mode.current ?? "dark"}
     initialViewport={INITIAL_VIEWPORT}
-    minZoom={0.4}
-    maxZoom={1}
+    minZoom={MIN_ZOOM}
+    maxZoom={MAX_ZOOM}
   >
-    <Panel position="top-left">
-      <div class="border border-zinc-700/70 bg-[#141414]/50 p-2 backdrop-blur-xl">
-        <span class="font-serif text-xl font-medium">Odonto Plan</span>
+    <!-- Una sola capa para maquetar todo con Tailwind: en mobile la ficha de la materia
+         va como panel inferior sobre el progreso; desde lg vuelve a las esquinas. -->
+    <Panel position="top-left" class="pointer-events-none! inset-0! m-0!">
+      <div
+        class="pointer-events-auto absolute top-2 left-2 border border-borde bg-panel p-1.5 backdrop-blur-xl sm:p-2 lg:top-4 lg:left-4"
+      >
+        <span class="font-serif text-lg font-medium sm:text-xl">Odonto Plan</span>
       </div>
-    </Panel>
 
-    <Panel position="top-center" class="!top-16 sm:!top-0">
-      <div class="flex items-center gap-2" role="group" aria-label="Herramientas">
-        <ControlesPane initialViewport={INITIAL_VIEWPORT} />
-        <div class="mx-1 h-8 w-px bg-zinc-700/70" aria-hidden="true"></div>
+      <div
+        class="pointer-events-auto absolute top-2 right-2 flex items-center gap-1.5 sm:gap-2 lg:top-4 lg:right-auto lg:left-1/2 lg:-translate-x-1/2"
+        role="group"
+        aria-label="Herramientas"
+      >
+        <ControlesPane listo={cargado} />
+        <div class="mx-1 hidden h-8 w-px bg-borde sm:block" aria-hidden="true"></div>
         {#if cargado}
           <SincronizarProgreso />
         {/if}
-        <button
-          type="button"
-          class="boton-herramienta wm-trigger"
-          aria-label="Paleta de colores (próximamente)"
-          aria-disabled="true"
-          title="Paleta de colores (próximamente)"
-        >
-          <Palette size={24} class="wm wm-hover" data-wm="palette" />
-        </button>
-        <div class="mx-1 h-8 w-px bg-zinc-700/70" aria-hidden="true"></div>
+        <SelectorPaleta />
+        <div class="mx-1 hidden h-8 w-px bg-borde sm:block" aria-hidden="true"></div>
         <EnlacesSociales />
       </div>
-    </Panel>
 
-    <Panel position="top-right" class="!top-32 sm:!top-0">
-      <MateriaSeleccionada />
-    </Panel>
-    <Panel position="bottom-center">
-      {#if cargado}
-        <ProgresoCarrera />
-      {/if}
+      <div
+        class="pointer-events-auto absolute inset-x-2 bottom-24 lg:inset-x-auto lg:top-4 lg:right-4 lg:bottom-auto"
+      >
+        <MateriaSeleccionada />
+      </div>
+
+      <div class="pointer-events-auto absolute bottom-2 left-1/2 -translate-x-1/2 lg:bottom-4">
+        {#if cargado}
+          <ProgresoCarrera />
+        {/if}
+      </div>
     </Panel>
 
     <Background />

@@ -1,14 +1,14 @@
 <script lang="ts">
-  import ArrowUpRight from "@withicons/svelte/kawaii/icons/arrow-up-right";
-  import IdCard from "@withicons/svelte/kawaii/icons/id-card";
-  import Mail from "@withicons/svelte/kawaii/icons/mail";
-  import MailCheck from "@withicons/svelte/kawaii/icons/mail-check";
-  import { Popover } from "bits-ui";
   import {
     CORREO_SOPORTE as CORREO,
     PERFIL_GITHUB_URL,
     PERFIL_LINKEDIN_URL,
   } from "$app/env/public";
+  import ArrowUpRight from "@withicons/svelte/kawaii/icons/arrow-up-right";
+  import IdCard from "@withicons/svelte/kawaii/icons/id-card";
+  import Mail from "@withicons/svelte/kawaii/icons/mail";
+  import MailCheck from "@withicons/svelte/kawaii/icons/mail-check";
+  import { Popover } from "bits-ui";
 
   let copiado = $state(false);
   let temporizador: ReturnType<typeof setTimeout>;
@@ -38,7 +38,8 @@
       side="bottom"
       align="center"
       sideOffset={8}
-      class="entrada-popover z-50 min-w-40 border border-zinc-700/70 bg-[#141414]/95 p-1 text-sm text-zinc-100 shadow-lg backdrop-blur-xl"
+      collisionPadding={8}
+      class="z-50 min-w-40 origin-(--bits-popover-content-transform-origin) border border-borde bg-panel-fuerte p-1 text-sm text-texto shadow-lg backdrop-blur-xl motion-safe:data-[state=open]:animate-entrada-panel"
     >
       <nav aria-label="Redes sociales">
         <ul>
@@ -47,7 +48,7 @@
               href={PERFIL_LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center gap-2 px-3 py-2 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-teal-400"
+              class="flex items-center gap-2 px-3 py-2 hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
             >
               <svg
                 aria-hidden="true"
@@ -69,7 +70,7 @@
               href={PERFIL_GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center gap-2 px-3 py-2 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-teal-400"
+              class="flex items-center gap-2 px-3 py-2 hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
             >
               <svg
                 aria-hidden="true"
@@ -90,10 +91,10 @@
             <button
               type="button"
               onclick={copiarCorreo}
-              class="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-teal-400"
+              class="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
             >
               {#if copiado}
-                <MailCheck size={16} aria-hidden="true" class="shrink-0 text-teal-300" />
+                <MailCheck size={16} aria-hidden="true" class="shrink-0 text-link-fuerte" />
               {:else}
                 <Mail size={16} aria-hidden="true" class="shrink-0" />
               {/if}

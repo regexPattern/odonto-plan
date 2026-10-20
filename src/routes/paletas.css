@@ -1,0 +1,160 @@
+/* Paletas: cada una define sus colores en claro (base) y oscuro. `[data-palette]` también
+   funciona en elementos anidados, así las muestras del selector usan sus propios colores. */
+
+:root,
+[data-palette="default"] {
+  --color-bg-aprobada: var(--color-fuchsia-400);
+  --color-border-aprobada: var(--color-fuchsia-700);
+  --color-fg-aprobada: var(--color-fuchsia-950);
+  --color-bg-desbloqueada: var(--color-teal-500);
+  --color-border-desbloqueada: var(--color-teal-700);
+  --color-fg-desbloqueada: var(--color-teal-950);
+  --color-bg-bloqueada: var(--color-zinc-200);
+  --color-border-bloqueada: var(--color-slate-400);
+  --color-fg-bloqueada: var(--color-zinc-500);
+  --color-edge: var(--color-zinc-400);
+  --color-edge-activo: var(--color-zinc-700);
+  --color-link: var(--color-teal-300);
+  --color-link-suave: var(--color-teal-200);
+  --color-link-outline: var(--color-teal-400);
+  --color-link-border: var(--color-teal-700);
+  --color-link-bg: var(--color-teal-800);
+}
+
+.dark:root:not([data-palette]),
+:where(.dark) [data-palette="default"],
+.dark[data-palette="default"] {
+  --color-bg-aprobada: var(--color-fuchsia-500);
+  --color-border-aprobada: var(--color-fuchsia-800);
+  --color-fg-aprobada: var(--color-fuchsia-50);
+  --color-bg-desbloqueada: var(--color-teal-600);
+  --color-border-desbloqueada: var(--color-teal-800);
+  --color-fg-desbloqueada: var(--color-teal-50);
+  --color-bg-bloqueada: #18181b;
+  --color-border-bloqueada: #45556c;
+  --color-fg-bloqueada: #71717b;
+  --color-edge: #52525c;
+  --color-edge-activo: #d4d4d8;
+  --color-link: var(--color-teal-300);
+  --color-link-suave: var(--color-teal-200);
+  --color-link-outline: var(--color-teal-400);
+  --color-link-border: var(--color-teal-700);
+  --color-link-bg: var(--color-teal-800);
+}
+
+[data-palette="oceano"] {
+  --color-bg-aprobada: var(--color-blue-400);
+  --color-border-aprobada: var(--color-blue-700);
+  --color-fg-aprobada: var(--color-blue-950);
+  --color-bg-desbloqueada: var(--color-amber-400);
+  --color-border-desbloqueada: var(--color-amber-700);
+  --color-fg-desbloqueada: var(--color-amber-950);
+  --color-bg-bloqueada: var(--color-slate-200);
+  --color-border-bloqueada: var(--color-slate-400);
+  --color-fg-bloqueada: var(--color-slate-500);
+  --color-edge: var(--color-slate-400);
+  --color-edge-activo: var(--color-slate-700);
+  --color-link: var(--color-amber-300);
+  --color-link-suave: var(--color-amber-200);
+  --color-link-outline: var(--color-amber-400);
+  --color-link-border: var(--color-amber-700);
+  --color-link-bg: var(--color-amber-800);
+}
+
+:where(.dark) [data-palette="oceano"],
+.dark[data-palette="oceano"] {
+  --color-bg-aprobada: var(--color-blue-500);
+  --color-border-aprobada: var(--color-blue-800);
+  --color-fg-aprobada: var(--color-blue-50);
+  --color-bg-desbloqueada: var(--color-amber-600);
+  --color-border-desbloqueada: var(--color-amber-800);
+  --color-fg-desbloqueada: var(--color-amber-50);
+  --color-bg-bloqueada: #0f172b;
+  --color-border-bloqueada: #314158;
+  --color-fg-bloqueada: #62748e;
+  --color-edge: #45556c;
+  --color-edge-activo: #cad5e2;
+  --color-link: var(--color-amber-300);
+  --color-link-suave: var(--color-amber-200);
+  --color-link-outline: var(--color-amber-400);
+  --color-link-border: var(--color-amber-700);
+  --color-link-bg: var(--color-amber-800);
+}
+
+[data-palette="bosque"] {
+  --color-bg-aprobada: var(--color-emerald-400);
+  --color-border-aprobada: var(--color-emerald-700);
+  --color-fg-aprobada: var(--color-emerald-950);
+  --color-bg-desbloqueada: var(--color-lime-400);
+  --color-border-desbloqueada: var(--color-lime-700);
+  --color-fg-desbloqueada: var(--color-lime-950);
+  --color-bg-bloqueada: var(--color-stone-200);
+  --color-border-bloqueada: var(--color-stone-400);
+  --color-fg-bloqueada: var(--color-stone-500);
+  --color-edge: var(--color-stone-400);
+  --color-edge-activo: var(--color-stone-700);
+  --color-link: var(--color-lime-300);
+  --color-link-suave: var(--color-lime-200);
+  --color-link-outline: var(--color-lime-400);
+  --color-link-border: var(--color-lime-700);
+  --color-link-bg: var(--color-lime-800);
+}
+
+:where(.dark) [data-palette="bosque"],
+.dark[data-palette="bosque"] {
+  --color-bg-aprobada: var(--color-emerald-500);
+  --color-border-aprobada: var(--color-emerald-800);
+  --color-fg-aprobada: var(--color-emerald-50);
+  --color-bg-desbloqueada: var(--color-lime-600);
+  --color-border-desbloqueada: var(--color-lime-800);
+  --color-fg-desbloqueada: var(--color-lime-50);
+  --color-bg-bloqueada: #1c1917;
+  --color-border-bloqueada: #57534d;
+  --color-fg-bloqueada: #79716b;
+  --color-edge: #57534d;
+  --color-edge-activo: #d6d3d1;
+  --color-link: var(--color-lime-300);
+  --color-link-suave: var(--color-lime-200);
+  --color-link-outline: var(--color-lime-400);
+  --color-link-border: var(--color-lime-700);
+  --color-link-bg: var(--color-lime-800);
+}
+
+[data-palette="atardecer"] {
+  --color-bg-aprobada: var(--color-orange-400);
+  --color-border-aprobada: var(--color-orange-700);
+  --color-fg-aprobada: var(--color-orange-950);
+  --color-bg-desbloqueada: var(--color-violet-400);
+  --color-border-desbloqueada: var(--color-violet-700);
+  --color-fg-desbloqueada: var(--color-violet-950);
+  --color-bg-bloqueada: var(--color-neutral-200);
+  --color-border-bloqueada: var(--color-neutral-400);
+  --color-fg-bloqueada: var(--color-neutral-500);
+  --color-edge: var(--color-neutral-400);
+  --color-edge-activo: var(--color-neutral-700);
+  --color-link: var(--color-violet-300);
+  --color-link-suave: var(--color-violet-200);
+  --color-link-outline: var(--color-violet-400);
+  --color-link-border: var(--color-violet-700);
+  --color-link-bg: var(--color-violet-800);
+}
+
+:where(.dark) [data-palette="atardecer"],
+.dark[data-palette="atardecer"] {
+  --color-bg-aprobada: var(--color-orange-500);
+  --color-border-aprobada: var(--color-orange-800);
+  --color-fg-aprobada: var(--color-orange-50);
+  --color-bg-desbloqueada: var(--color-violet-500);
+  --color-border-desbloqueada: var(--color-violet-800);
+  --color-fg-desbloqueada: var(--color-violet-50);
+  --color-bg-bloqueada: #171717;
+  --color-border-bloqueada: #525252;
+  --color-fg-bloqueada: #737373;
+  --color-edge: #525252;
+  --color-edge-activo: #d4d4d4;
+  --color-link: var(--color-violet-300);
+  --color-link-suave: var(--color-violet-200);
+  --color-link-outline: var(--color-violet-400);
+  --color-link-border: var(--color-violet-700);
+  --color-link-bg: var(--color-violet-800);
+}

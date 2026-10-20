@@ -16,11 +16,16 @@
   );
 
   const totalMaterias = totalObligatorias + ELECTIVAS_REQUERIDAS;
-  const aprobadas = $derived.by(() => {
-    const todas = graph.materiasAprobadas;
-    const electivas = todas.filter(({ codigo }) => codigosElectivas.has(codigo)).length;
-    return todas.length - electivas + Math.min(electivas, ELECTIVAS_REQUERIDAS);
-  });
+  const electivasAprobadas = $derived(
+    Math.min(
+      graph.materiasAprobadas.filter(({ codigo }) => codigosElectivas.has(codigo)).length,
+      ELECTIVAS_REQUERIDAS,
+    ),
+  );
+  const obligatoriasAprobadas = $derived(
+    graph.materiasAprobadas.filter(({ codigo }) => !codigosElectivas.has(codigo)).length,
+  );
+  const aprobadas = $derived(obligatoriasAprobadas + electivasAprobadas);
   const progreso = $derived(totalMaterias > 0 ? (aprobadas / totalMaterias) * 100 : 0);
   const porcentaje = $derived(Math.round(progreso));
 
@@ -82,9 +87,20 @@
   }
 </script>
 
-<div
-  class="w-[min(23rem,calc(100vw-1rem))] border border-zinc-700/70 bg-[#141414]/50 px-3 py-2 backdrop-blur-xl sm:px-5"
->
+<div tabindex="-1" class="group relative w-[min(23rem,calc(100vw-1rem))] outline-none">
+  <div
+    id="detalle-progreso"
+    role="tooltip"
+    class="pointer-events-none absolute inset-x-0 bottom-full mb-2 origin-bottom transform-gpu will-change-[transform,opacity] translate-y-2 scale-98 border border-borde bg-panel px-3 py-2 text-center text-sm opacity-0 backdrop-blur-xl motion-safe:transition-[opacity,transform] motion-safe:duration-200 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100"
+  >
+    <p>
+      <span class="tabular-nums">{obligatoriasAprobadas} de {totalObligatorias}</span> obligatorias aprobadas
+    </p>
+    <p>
+      <span class="tabular-nums">{electivasAprobadas} de {ELECTIVAS_REQUERIDAS}</span> electivas aprobadas
+    </p>
+  </div>
+  <div class="border border-borde bg-panel px-3 py-2 backdrop-blur-xl sm:px-5">
   <div
     class="relative h-10"
     role="progressbar"
@@ -96,7 +112,7 @@
     style={`--progreso: ${progreso}%`}
   >
     <div
-      class="absolute inset-[7px] rounded-full bg-zinc-700 ring-1 ring-white/15"
+      class="absolute inset-[7px] rounded-full bg-pista ring-1 ring-pista-anillo"
       aria-hidden="true"
     >
       <div
@@ -108,12 +124,15 @@
       style:left={`calc(${progreso}% + ${7 - progreso * 0.14}px)`}
       aria-hidden="true"><Tooth size={32} /></span
     >
-    <span
-      class="pointer-events-none absolute inset-0 flex items-center justify-center text-sm font-medium text-zinc-50 tabular-nums"
-      aria-hidden="true">{porcentaje}% completado</span
-    >
   </div>
-  <p class="mt-1 text-center text-sm">
-    <span class="tabular-nums">{aprobadas} de {totalMaterias}</span> materias aprobadas
-  </p>
+  <div class="mt-1 flex justify-center">
+    <button
+      type="button"
+      class="cursor-help text-sm font-medium tabular-nums"
+      aria-describedby="detalle-progreso"
+    >
+      {porcentaje}% completado
+    </button>
+  </div>
+  </div>
 </div>
