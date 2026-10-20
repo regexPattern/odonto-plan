@@ -35,7 +35,7 @@
       sideOffset={8}
       collisionPadding={8}
       aria-labelledby="apariencia-titulo"
-      class="relative z-50 w-72 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-3 text-sm text-texto motion-safe:data-[state=open]:animate-entrada-panel"
+      class="relative z-50 w-72 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-3 text-sm text-texto motion-safe:data-[state=open]:animate-entrada-panel motion-safe:data-[state=closed]:animate-salida-panel"
     >
       <Popover.Close
         aria-label="Cerrar"

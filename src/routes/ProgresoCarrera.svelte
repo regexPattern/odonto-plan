@@ -29,6 +29,37 @@
   const progreso = $derived(totalMaterias > 0 ? (aprobadas / totalMaterias) * 100 : 0);
   const porcentaje = $derived(Math.round(progreso));
 
+  // Desde la ayuda: abre el detalle solo y lo cierra a los 5 segundos.
+  let detalleAyuda = $state(false);
+  let temporizadorDetalle: ReturnType<typeof setTimeout>;
+
+  function mostrarDetalleAyuda() {
+    detalleAyuda = true;
+    clearTimeout(temporizadorDetalle);
+    temporizadorDetalle = setTimeout(() => (detalleAyuda = false), 5000);
+  }
+
+  $effect(() => {
+    window.addEventListener("ayuda-progreso", mostrarDetalleAyuda);
+    return () => {
+      window.removeEventListener("ayuda-progreso", mostrarDetalleAyuda);
+      clearTimeout(temporizadorDetalle);
+    };
+  });
+
+  // Un clic en el canvas cierra el detalle abierto desde la ayuda.
+  $effect(() => {
+    if (!detalleAyuda) return;
+    const alPresionar = (e: PointerEvent) => {
+      const el = e.target as Element | null;
+      if (el?.closest(".svelte-flow") && !el.closest(".svelte-flow__panel")) {
+        detalleAyuda = false;
+      }
+    };
+    window.addEventListener("pointerdown", alPresionar, true);
+    return () => window.removeEventListener("pointerdown", alPresionar, true);
+  });
+
   let completa: boolean | null = null;
 
   $effect(() => {
@@ -95,8 +126,9 @@
 >
   <div
     id="detalle-progreso"
+    data-visible={detalleAyuda}
     role="tooltip"
-    class="pointer-events-none absolute inset-x-0 bottom-full mb-2 flex origin-bottom translate-y-2 scale-98 transform-gpu justify-evenly gap-3 superficie px-3 py-3 text-center text-sm opacity-0 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 motion-safe:transition-[opacity,translate,scale] motion-safe:duration-180 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
+    class="pointer-events-none absolute inset-x-0 bottom-full mb-2 flex origin-bottom translate-y-2 scale-98 transform-gpu justify-evenly gap-3 superficie px-3 py-3 text-center text-sm opacity-0 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 data-[visible=true]:translate-y-0 data-[visible=true]:scale-100 data-[visible=true]:opacity-100 motion-safe:transition-[opacity,translate,scale] motion-safe:duration-400 group-hover:duration-180 group-focus-within:duration-180 data-[visible=true]:duration-180 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
   >
     <div>
       <p class="text-xl font-medium tabular-nums">
@@ -111,7 +143,10 @@
       <p>electivas<br />aprobadas</p>
     </div>
   </div>
-  <div class="flex items-center gap-2 rounded-full superficie py-1 pr-4 pl-[11px]">
+  <div
+    data-ayuda="progreso"
+    class="flex items-center gap-2 rounded-full superficie py-1 pr-4 pl-[11px]"
+  >
     <div
       class="relative h-8 flex-1"
       role="progressbar"

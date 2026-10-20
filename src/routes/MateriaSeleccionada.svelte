@@ -1,7 +1,6 @@
 <script lang="ts">
   import { animar } from "#lib/animar.js";
   import { Calendar, Clock, Star, Tooth } from "@withicons/svelte/kawaii";
-  import MousePointerClick from "@withicons/svelte/kawaii/icons/mouse-pointer-click";
   import { esCalificacionAprobada } from "#lib/graph/index.js";
   import graph from "#lib/graph/state.svelte.js";
   import { guardarMateriasAprobadas } from "#lib/graph/storage.js";
@@ -76,8 +75,8 @@
 <div
   class={[
     "divide-y divide-borde superficie *:p-3 max-lg:max-h-[50dvh] max-lg:overflow-y-auto max-lg:overscroll-contain lg:w-72",
-    // En mobile el panel solo aparece cuando hay una materia seleccionada.
-    !materiaSeleccionada && "max-lg:hidden",
+    // El panel solo aparece cuando hay una materia seleccionada.
+    !materiaSeleccionada && "hidden",
   ]}
 >
   {#if materiaSeleccionada}
@@ -171,11 +170,6 @@
           {error.mensaje}
         </p>
       {/if}
-    </div>
-  {:else}
-    <div class="flex items-start gap-2">
-      <MousePointerClick size={24} class="shrink-0" aria-hidden="true" />
-      <div class="text-sm">Hacé clic en una materia para ver sus detalles o afuera para volver.</div>
     </div>
   {/if}
 </div>

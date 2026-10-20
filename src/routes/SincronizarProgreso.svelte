@@ -141,7 +141,12 @@
     };
     leerFragmento();
     window.addEventListener("hashchange", leerFragmento);
-    return () => window.removeEventListener("hashchange", leerFragmento);
+    // Desde la ayuda: abre este menú.
+    window.addEventListener("ayuda-sincronizar", abrir);
+    return () => {
+      window.removeEventListener("hashchange", leerFragmento);
+      window.removeEventListener("ayuda-sincronizar", abrir);
+    };
   });
 </script>
 
@@ -193,7 +198,7 @@
       sideOffset={8}
       collisionPadding={8}
       aria-labelledby="sync-titulo"
-      class="relative z-50 max-h-(--bits-popover-content-available-height) w-[calc(100vw-1rem)] max-w-md origin-(--bits-popover-content-transform-origin) overflow-y-auto overscroll-contain superficie-fuerte p-4 text-base text-texto motion-safe:data-[state=open]:animate-entrada-panel"
+      class="relative z-50 max-h-(--bits-popover-content-available-height) w-[calc(100vw-1rem)] max-w-md origin-(--bits-popover-content-transform-origin) overflow-y-auto overscroll-contain superficie-fuerte p-4 text-base text-texto motion-safe:data-[state=open]:animate-entrada-panel motion-safe:data-[state=closed]:animate-salida-panel"
     >
       <Popover.Close
         aria-label="Cerrar"

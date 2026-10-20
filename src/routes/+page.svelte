@@ -7,6 +7,7 @@
   import { MAX_ZOOM, MIN_ZOOM } from "#lib/graph/layout.js";
   import graph from "#lib/graph/state.svelte.js";
   import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
+  import AyudaPopover from "./AyudaPopover.svelte";
   import ControlesPane from "./ControlesPane.svelte";
   import EnlacesSociales from "./EnlacesSociales.svelte";
   import MateriaSeleccionada from "./MateriaSeleccionada.svelte";
@@ -61,8 +62,12 @@
         <span class="font-serif text-lg font-medium sm:text-xl">Odonto Plan</span>
       </div>
 
+      <div class="pointer-events-auto absolute top-2 right-2 lg:top-4 lg:right-4">
+        <AyudaPopover />
+      </div>
+
       <div
-        class="pointer-events-auto absolute top-2 right-2 flex items-center gap-1.5 sm:gap-2 lg:top-4 lg:right-auto lg:left-1/2 lg:-translate-x-1/2"
+        class="pointer-events-auto absolute top-2 right-14 flex items-center gap-1.5 sm:right-16 sm:gap-2 lg:top-4 lg:right-auto lg:left-1/2 lg:-translate-x-1/2"
         role="group"
         aria-label="Herramientas"
       >
@@ -82,7 +87,7 @@
       >
         <div
           data-panel-materia
-          class="pointer-events-auto w-full lg:absolute lg:inset-x-auto lg:top-4 lg:right-4 lg:w-auto"
+          class="pointer-events-auto w-full lg:absolute lg:inset-x-auto lg:top-20 lg:right-4 lg:w-auto"
         >
           <MateriaSeleccionada />
         </div>

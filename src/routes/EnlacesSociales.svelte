@@ -40,7 +40,7 @@
       align="center"
       sideOffset={8}
       collisionPadding={8}
-      class="z-50 min-w-40 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-1 text-sm text-texto motion-safe:data-[state=open]:animate-entrada-panel"
+      class="z-50 min-w-40 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-1 text-sm text-texto motion-safe:data-[state=open]:animate-entrada-panel motion-safe:data-[state=closed]:animate-salida-panel"
     >
       <nav aria-label="Redes sociales">
         <ul>
