@@ -175,7 +175,7 @@
     inset: 0;
     border-radius: inherit;
     background-color: var(--slider-bg);
-    clip-path: inset(0 calc(100% - var(--progreso)) 0 0);
+    clip-path: inset(0 calc(100% - var(--progreso)) 0 0 round 999px);
   }
 
   .calificacion-input {

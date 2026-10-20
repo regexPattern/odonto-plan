@@ -4,6 +4,7 @@
 @import "tailwindcss";
 @import "@withicons/motion/motion.css";
 @import "@withicons/motion/icons/calendar.css";
+@import "@withicons/motion/icons/palette.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

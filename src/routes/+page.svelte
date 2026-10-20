@@ -13,7 +13,7 @@
 
   const INITIAL_VIEWPORT = { x: 0, y: 140, zoom: 1 };
 
-  // SincronizarProgreso se monta recién cuando el progreso local ya está cargado.
+  // Montar la sincronización y la barra recién cuando el progreso local ya está cargado.
   let cargado = $state(false);
 
   onMount(() => {
@@ -71,7 +71,7 @@
           aria-disabled="true"
           title="Paleta de colores (próximamente)"
         >
-          <Palette size={24} class="wm wm-hover wm-p-tada" data-wm="palette" />
+          <Palette size={24} class="wm wm-hover" data-wm="palette" />
         </button>
       </div>
     </Panel>
@@ -80,7 +80,9 @@
       <MateriaSeleccionada />
     </Panel>
     <Panel position="bottom-center">
-      <ProgresoCarrera />
+      {#if cargado}
+        <ProgresoCarrera />
+      {/if}
     </Panel>
 
     <Background />
