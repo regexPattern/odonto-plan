@@ -1,9 +1,26 @@
 <script lang="ts">
   import { Tooth } from "@withicons/svelte/kawaii";
   import graph from "#lib/graph/state.svelte.js";
+  import { PLAN } from "#lib/plan/index.js";
 
-  const totalMaterias = $derived(graph.nodes.filter((n) => n.type === "materia").length);
-  const aprobadas = $derived(graph.materiasAprobadas.length);
+  // Solo hace falta aprobar 2 electivas.
+  const ELECTIVAS_REQUERIDAS = 2;
+  const codigosElectivas = new Set(
+    PLAN.anios.flatMap(({ materias }) =>
+      materias.filter((m) => m.cuatriInicial === null).map((m) => m.codigo),
+    ),
+  );
+  const totalObligatorias = PLAN.anios.reduce(
+    (n, { materias }) => n + materias.filter((m) => m.cuatriInicial !== null).length,
+    0,
+  );
+
+  const totalMaterias = totalObligatorias + ELECTIVAS_REQUERIDAS;
+  const aprobadas = $derived.by(() => {
+    const todas = graph.materiasAprobadas;
+    const electivas = todas.filter(({ codigo }) => codigosElectivas.has(codigo)).length;
+    return todas.length - electivas + Math.min(electivas, ELECTIVAS_REQUERIDAS);
+  });
   const progreso = $derived(totalMaterias > 0 ? (aprobadas / totalMaterias) * 100 : 0);
   const porcentaje = $derived(Math.round(progreso));
 
@@ -66,10 +83,10 @@
 </script>
 
 <div
-  class="progreso-panel w-[min(23rem,calc(100vw-2rem))] border border-zinc-700/70 bg-[#141414]/50 px-5 py-2 backdrop-blur-xl"
+  class="w-[min(23rem,calc(100vw-1rem))] border border-zinc-700/70 bg-[#141414]/50 px-3 py-2 backdrop-blur-xl sm:px-5"
 >
   <div
-    class="progreso-barra"
+    class="relative h-10"
     role="progressbar"
     aria-label="Progreso de la carrera"
     aria-valuemin="0"
@@ -78,82 +95,25 @@
     aria-valuetext={`${aprobadas} de ${totalMaterias} materias aprobadas (${porcentaje}%)`}
     style={`--progreso: ${progreso}%`}
   >
-    <div class="progreso-carril" aria-hidden="true"></div>
+    <div
+      class="absolute inset-[7px] rounded-full bg-zinc-700 ring-1 ring-white/15"
+      aria-hidden="true"
+    >
+      <div
+        class="absolute inset-0 rounded-full bg-bg-aprobada [clip-path:inset(0_calc(100%-var(--progreso))_0_0_round_999px)] motion-safe:transition-[clip-path] motion-safe:duration-300"
+      ></div>
+    </div>
     <span
-      class="progreso-thumb"
+      class="pointer-events-none absolute top-1/2 flex size-8 -translate-x-1/2 -translate-y-1/2 text-fg-aprobada drop-shadow-[0_1px_2px_rgb(0_0_0/0.4)] motion-safe:transition-[left] motion-safe:duration-300 [&>svg>path:first-child]:fill-bg-aprobada [&>svg>path:first-child]:[fill-opacity:1]"
       style:left={`calc(${progreso}% + ${7 - progreso * 0.14}px)`}
       aria-hidden="true"><Tooth size={32} /></span
     >
-    <span class="progreso-porcentaje text-sm" aria-hidden="true">{porcentaje}% completado</span>
+    <span
+      class="pointer-events-none absolute inset-0 flex items-center justify-center text-sm font-medium text-zinc-50 tabular-nums"
+      aria-hidden="true">{porcentaje}% completado</span
+    >
   </div>
-  <div class="mt-1 flex flex-col items-center gap-1 text-center text-sm">
-    <span><span class="tabular-nums">{aprobadas} de {totalMaterias}</span> materias aprobadas</span>
-  </div>
+  <p class="mt-1 text-center text-sm">
+    <span class="tabular-nums">{aprobadas} de {totalMaterias}</span> materias aprobadas
+  </p>
 </div>
-
-<style>
-  .progreso-panel {
-    border-radius: 0;
-  }
-
-  .progreso-barra {
-    position: relative;
-    height: 40px;
-  }
-
-  .progreso-carril {
-    position: absolute;
-    inset: 7px;
-    border-radius: 999px;
-    background: var(--color-zinc-700);
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 15%);
-  }
-
-  .progreso-carril::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: var(--color-bg-aprobada);
-    clip-path: inset(0 calc(100% - var(--progreso)) 0 0 round 999px);
-  }
-
-  .progreso-thumb {
-    position: absolute;
-    top: 50%;
-    display: flex;
-    width: 32px;
-    height: 32px;
-    transform: translate(-50%, -50%);
-    color: var(--color-fg-aprobada);
-    pointer-events: none;
-    filter: drop-shadow(0 1px 2px rgb(0 0 0 / 40%));
-  }
-
-  .progreso-porcentaje {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 500;
-    font-variant-numeric: tabular-nums;
-    color: var(--color-zinc-50);
-    pointer-events: none;
-  }
-
-  .progreso-thumb :global(svg > path:first-child) {
-    fill: var(--color-bg-aprobada);
-    fill-opacity: 1;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .progreso-carril::before {
-      transition: clip-path 300ms ease;
-    }
-
-    .progreso-thumb {
-      transition: left 300ms ease;
-    }
-  }
-</style>
