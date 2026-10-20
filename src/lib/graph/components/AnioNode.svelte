@@ -6,7 +6,7 @@
 </script>
 
 <div
-  class="flex items-center justify-center text-center text-2xl leading-tight font-semibold"
+  class="flex items-center justify-center text-center font-serif text-2xl leading-tight font-medium"
   style:width={`${data.width}px`}
   style:height={`${data.height}px`}
 >

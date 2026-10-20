@@ -15,7 +15,7 @@
 
   const nombres = new Map(MATERIAS.map(({ codigo, nombre }) => [codigo, nombre]));
   const boton = "border border-zinc-600 px-3 py-2 text-sm hover:bg-zinc-800 disabled:opacity-50";
-  const campo = "w-full border border-zinc-600 bg-zinc-900 p-2 font-mono text-sm";
+  const campo = "w-full border border-zinc-600 bg-zinc-900 p-2 font-mono";
 
   let dialog: HTMLDialogElement;
   let abierto = $state(false);
@@ -115,37 +115,37 @@
     previa = null;
     error = aviso = "";
   }}
-  class="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-1.5rem)] max-w-md overflow-y-auto border border-zinc-700 bg-zinc-950 p-4 text-zinc-100 backdrop:bg-black/70"
+  class="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-1.5rem)] max-w-md overflow-y-auto border border-zinc-700 bg-zinc-950 p-4 text-sm text-zinc-100 backdrop:bg-black/70"
 >
   {#if abierto}
     <div class="flex items-center justify-between">
       <h2 id="sync-titulo" class="text-xl font-semibold">Sincronizar progreso</h2>
       <button type="button" class={boton} onclick={() => dialog.close()}>Cerrar</button>
     </div>
-    <p class="mt-2 text-sm text-zinc-300">
+    <p class="mt-2 text-zinc-300">
       Copiás una instantánea de tus notas: los cambios posteriores no se sincronizan solos. El
       código, el enlace y el QR no están cifrados; quien los tenga puede leer tus notas.
     </p>
 
-    <h3 class="mt-4 font-medium">Enviar a otro dispositivo</h3>
+    <h3 class="mt-4 text-base font-medium">Enviar a otro dispositivo</h3>
     {#await generarQR(enlace) then src}
       <img {src} alt="QR para importar tu progreso" class="mx-auto my-2 size-48 bg-white" />
     {/await}
-    <label class="block text-sm" for="sync-enlace">Enlace</label>
+    <label class="block" for="sync-enlace">Enlace</label>
     <input id="sync-enlace" readonly value={enlace} class={campo} />
     <button type="button" class="{boton} mt-1" onclick={() => copiar(enlace)}>Copiar enlace</button>
-    <label class="mt-2 block text-sm" for="sync-codigo">Código</label>
+    <label class="mt-2 block" for="sync-codigo">Código</label>
     <input id="sync-codigo" readonly value={codigo} class={campo} />
     <button type="button" class="{boton} mt-1" onclick={() => copiar(codigo)}>Copiar código</button>
 
-    <h3 class="mt-4 font-medium">Recibir en este dispositivo</h3>
+    <h3 class="mt-4 text-base font-medium">Recibir en este dispositivo</h3>
     <form
       onsubmit={(e) => {
         e.preventDefault();
         previsualizar();
       }}
     >
-      <label class="block text-sm" for="sync-entrada">Pegá un código o enlace</label>
+      <label class="block" for="sync-entrada">Pegá un código o enlace</label>
       <input
         id="sync-entrada"
         bind:value={entrada}
@@ -159,12 +159,12 @@
 
     {#if previa}
       <section class="mt-3 border border-teal-700 p-3">
-        <p class="text-sm">
+        <p>
           Recibís <strong>{previa.length} de {MATERIAS.length}</strong> materias aprobadas. Al
           confirmar se <strong>reemplaza</strong> tu progreso actual (no se combina).
         </p>
         {#if previa.length}
-          <details class="mt-2 text-sm">
+          <details class="mt-2">
             <summary class="cursor-pointer">Ver notas recibidas</summary>
             <ul>
               {#each previa as { codigo, calificacion } (codigo)}
@@ -182,12 +182,12 @@
       </section>
     {/if}
 
-    {#if error}<p role="alert" class="mt-3 text-sm text-red-300">{error}</p>{/if}
-    {#if aviso}<p role="status" class="mt-3 text-sm text-teal-200">{aviso}</p>{/if}
+    {#if error}<p role="alert" class="mt-3 text-red-300">{error}</p>{/if}
+    {#if aviso}<p role="status" class="mt-3 text-teal-200">{aviso}</p>{/if}
 
     {#if anterior}
       <div class="mt-4 border-t border-zinc-700 pt-3">
-        <p class="text-sm text-zinc-300">
+        <p class="text-zinc-300">
           Podés volver al progreso previo a la importación (se pierden los cambios hechos después).
           Solo disponible hasta recargar la página.
         </p>
