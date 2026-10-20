@@ -6,4 +6,6 @@ export const variables = defineEnvVars({
   PERFIL_LINKEDIN_URL: { public: true },
   PERFIL_GITHUB_URL: { public: true },
   CORREO_SOPORTE: { public: true },
+  POSTHOG_KEY: { public: true },
+  POSTHOG_HOST: { public: true },
 });

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { animar } from "#lib/animar.js";
   import {
     CORREO_SOPORTE as CORREO,
     PERFIL_GITHUB_URL,
@@ -10,6 +9,8 @@
   import Mail from "@withicons/svelte/kawaii/icons/mail";
   import MailCheck from "@withicons/svelte/kawaii/icons/mail-check";
   import { Popover } from "bits-ui";
+  import { track } from "#lib/analytics.js";
+  import { animar } from "#lib/animar.js";
 
   let copiado = $state(false);
   let temporizador: ReturnType<typeof setTimeout>;
@@ -40,13 +41,14 @@
       align="center"
       sideOffset={8}
       collisionPadding={8}
-      class="z-50 min-w-40 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-1 text-sm text-texto motion-safe:data-[state=open]:animate-entrada-panel motion-safe:data-[state=closed]:animate-salida-panel"
+      class="z-50 min-w-40 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-1 text-sm text-texto motion-safe:data-[state=closed]:animate-salida-panel motion-safe:data-[state=open]:animate-entrada-panel"
     >
       <nav aria-label="Redes sociales">
         <ul>
           <li>
             <a
               href={PERFIL_LINKEDIN_URL}
+              onclick={() => track({ nombre: "enlace_social_clic", red: "linkedin" })}
               target="_blank"
               rel="noopener noreferrer"
               class="flex items-center gap-2 px-3 py-2 hover:bg-hover focus-visible:-outline-offset-2"
@@ -69,6 +71,7 @@
           <li>
             <a
               href={PERFIL_GITHUB_URL}
+              onclick={() => track({ nombre: "enlace_social_clic", red: "github" })}
               target="_blank"
               rel="noopener noreferrer"
               class="flex items-center gap-2 px-3 py-2 hover:bg-hover focus-visible:-outline-offset-2"

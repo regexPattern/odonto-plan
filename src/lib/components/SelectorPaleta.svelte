@@ -1,12 +1,13 @@
 <script lang="ts">
-  import { animar } from "#lib/animar.js";
+  import X from "@withicons/svelte/kawaii/icons/close";
   import Monitor from "@withicons/svelte/kawaii/icons/monitor";
   import Moon from "@withicons/svelte/kawaii/icons/moon";
   import Palette from "@withicons/svelte/kawaii/icons/palette";
   import Sun from "@withicons/svelte/kawaii/icons/sun";
-  import X from "@withicons/svelte/kawaii/icons/close";
   import { Popover } from "bits-ui";
   import { setMode, userPrefersMode } from "mode-watcher";
+  import { registrarPreferencias, track } from "#lib/analytics.js";
+  import { animar } from "#lib/animar.js";
   import { PALETAS } from "#lib/palette/index.js";
   import paleta from "#lib/palette/state.svelte.js";
 
@@ -15,6 +16,12 @@
     { id: "light", nombre: "Claro", Icono: Sun, ajuste: "" },
     { id: "dark", nombre: "Oscuro", Icono: Moon, ajuste: "ml-[3px] -mr-[3px]" },
   ] as const;
+
+  const elegirModo = (id: (typeof MODOS)[number]["id"]) => {
+    setMode(id);
+    registrarPreferencias({ modo: id });
+    track({ nombre: "modo_elegido", modo: id });
+  };
 
   const opcion =
     "border border-borde bg-transparent px-3 py-2 text-texto hover:bg-hover aria-pressed:bg-seleccion";
@@ -35,7 +42,7 @@
       sideOffset={8}
       collisionPadding={8}
       aria-labelledby="apariencia-titulo"
-      class="relative z-50 w-72 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-3 text-sm text-texto motion-safe:data-[state=open]:animate-entrada-panel motion-safe:data-[state=closed]:animate-salida-panel"
+      class="relative z-50 w-72 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-3 text-sm text-texto motion-safe:data-[state=closed]:animate-salida-panel motion-safe:data-[state=open]:animate-entrada-panel"
     >
       <Popover.Close
         aria-label="Cerrar"
@@ -55,7 +62,7 @@
               type="button"
               class="flex items-center justify-center gap-1.5 px-2.5 py-2 text-sm font-medium text-texto hover:bg-hover aria-pressed:bg-seleccion"
               aria-pressed={userPrefersMode.current === id}
-              onclick={() => setMode(id)}
+              onclick={() => elegirModo(id)}
             >
               <Icono size={16} aria-hidden="true" class="shrink-0 text-link-fuerte {ajuste}" />
               {nombre}

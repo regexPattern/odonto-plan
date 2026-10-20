@@ -1,15 +1,16 @@
 <script lang="ts">
-  import { animar } from "#lib/animar.js";
-  import X from "@withicons/svelte/kawaii/icons/close";
-  import HelpCircle from "@withicons/svelte/kawaii/icons/help-circle";
-  import MousePointerClick from "@withicons/svelte/kawaii/icons/mouse-pointer-click";
-  import CloudUpload from "@withicons/svelte/kawaii/icons/cloud-upload";
-  import Percent from "@withicons/svelte/kawaii/icons/percent";
-  import { Popover } from "bits-ui";
-  import graph from "#lib/graph/state.svelte.js";
-  import { onMount } from "svelte";
   import { browser } from "$app/env";
   import { AYUDA_VISTA_STORAGE_KEY } from "$app/env/public";
+  import X from "@withicons/svelte/kawaii/icons/close";
+  import CloudUpload from "@withicons/svelte/kawaii/icons/cloud-upload";
+  import HelpCircle from "@withicons/svelte/kawaii/icons/help-circle";
+  import MousePointerClick from "@withicons/svelte/kawaii/icons/mouse-pointer-click";
+  import Percent from "@withicons/svelte/kawaii/icons/percent";
+  import { Popover } from "bits-ui";
+  import { onMount } from "svelte";
+  import { track } from "#lib/analytics.js";
+  import { animar } from "#lib/animar.js";
+  import graph from "#lib/graph/state.svelte.js";
 
   // Primera visita (o siempre en dev): el popup se abre solo.
   let abierto = $state(false);
@@ -25,16 +26,20 @@
 
   const opciones = [
     {
+      id: "materia",
       icono: MousePointerClick,
       selector: ".svelte-flow__node-materia",
       texto: "Hacé clic en una materia para ver sus detalles o afuera para volver.",
     },
     {
+      id: "progreso",
       icono: Percent,
       evento: "ayuda-progreso",
-      texto: "Poné el mouse o el dedo sobre la barra de progreso para ver cuántas materias aprobaste.",
+      texto:
+        "Poné el mouse o el dedo sobre la barra de progreso para ver cuántas materias aprobaste.",
     },
     {
+      id: "sincronizar",
       icono: CloudUpload,
       evento: "ayuda-sincronizar",
       texto: "El botón de sincronización te permite pasar tu progreso a otro dispositivo.",
@@ -88,11 +93,7 @@
 </script>
 
 <Popover.Root bind:open={abierto} onOpenChange={alCambiar}>
-  <Popover.Trigger
-    class="boton-herramienta wm-trigger"
-    aria-label="Ayuda"
-    title="Ayuda"
-  >
+  <Popover.Trigger class="boton-herramienta wm-trigger" aria-label="Ayuda" title="Ayuda">
     <span class="flex shrink-0" use:animar={{ nombre: "help-circle" }}>
       <HelpCircle size={24} />
     </span>
@@ -104,7 +105,7 @@
       sideOffset={8}
       collisionPadding={8}
       aria-labelledby="ayuda-titulo"
-      class="relative z-50 w-72 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-3 text-sm text-texto motion-safe:data-[state=open]:animate-entrada-panel motion-safe:data-[state=closed]:animate-salida-panel"
+      class="relative z-50 w-72 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-3 text-sm text-texto motion-safe:data-[state=closed]:animate-salida-panel motion-safe:data-[state=open]:animate-entrada-panel"
     >
       <Popover.Close
         aria-label="Cerrar"
@@ -117,12 +118,15 @@
         Ayuda
       </h2>
       <ul class="mt-3 flex flex-col gap-1">
-        {#each opciones as { icono: Icono, texto, ...destino }}
+        {#each opciones as { id, icono: Icono, texto, ...destino }}
           <li>
             <button
               type="button"
-              onclick={() => resaltar(destino)}
-              class="flex w-full cursor-pointer items-start gap-2 p-1.5 text-sm text-left hover:bg-hover focus-visible:-outline-offset-2"
+              onclick={() => {
+                track({ nombre: "ayuda_opcion_clic", opcion: id });
+                resaltar(destino);
+              }}
+              class="flex w-full cursor-pointer items-start gap-2 p-1.5 text-left text-sm hover:bg-hover focus-visible:-outline-offset-2"
             >
               <Icono size={24} class="shrink-0" aria-hidden="true" />
               <span>{texto}</span>

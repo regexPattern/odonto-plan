@@ -1,4 +1,5 @@
 import { browser } from "$app/env";
+import { registrarPreferencias, track } from "#lib/analytics.js";
 import { esPaletaId, PALETA_POR_DEFECTO, PALETA_STORAGE_KEY, type PaletaId } from "./index.js";
 
 const inicial = (): PaletaId => {
@@ -14,6 +15,8 @@ class PaletaState {
     this.actual = id;
     document.documentElement.dataset.palette = id;
     localStorage.setItem(PALETA_STORAGE_KEY, id);
+    registrarPreferencias({ paleta: id });
+    track({ nombre: "paleta_elegida", paleta: id });
   }
 }
 

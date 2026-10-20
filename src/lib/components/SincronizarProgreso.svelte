@@ -13,6 +13,7 @@
   import DienteSolido from "@withicons/svelte/solid/icons/tooth";
   import { Popover, Tabs } from "bits-ui";
   import { onMount } from "svelte";
+  import { track } from "#lib/analytics.js";
   import { animar } from "#lib/animar.js";
   import type { MateriaAprobada } from "#lib/graph/index.js";
   import graph from "#lib/graph/state.svelte.js";
@@ -77,13 +78,15 @@
     error = confirmacion = "";
   }
 
-  function previsualizar() {
+  function previsualizar(origen: "pegado" | "enlace" = "pegado") {
     error = confirmacion = "";
     previa = null;
     try {
       previa = decodificar(entrada);
+      track({ nombre: "sync_previsualizado", origen, materias: previa.length });
     } catch (e) {
       error = (e as Error).message;
+      track({ nombre: "sync_error", etapa: "previsualizar", mensaje: error });
     }
   }
 
@@ -93,6 +96,7 @@
       guardarMateriasAprobadas(materias);
     } catch {
       error = "No se pudo guardar en este dispositivo. No se aplicaron cambios.";
+      track({ nombre: "sync_error", etapa: "guardar", mensaje: error });
       return false;
     }
     graph.materiasAprobadas = materias;
@@ -111,6 +115,7 @@
     const actual = graph.materiasAprobadas;
     if (previa && aplicar(previa)) {
       anterior = actual;
+      track({ nombre: "sync_aplicado", materias: previa.length });
       confirmar("cargado");
       previa = null;
       entrada = "";
@@ -120,6 +125,7 @@
   function deshacer() {
     if (anterior && aplicar(anterior)) {
       anterior = null;
+      track({ nombre: "sync_revertido" });
       confirmar("revertido");
     }
   }
@@ -129,10 +135,12 @@
       await navigator.clipboard.writeText(texto);
       error = "";
       copiado = id;
+      track({ nombre: "sync_copiado", tipo: id as "enlace" | "codigo" });
       clearTimeout(temporizador);
       temporizador = setTimeout(() => (copiado = ""), 2000);
     } catch {
       error = "No se pudo copiar automáticamente. Seleccioná el texto y copialo manualmente.";
+      track({ nombre: "sync_error", etapa: "copiar", mensaje: error });
     }
   }
 
@@ -145,7 +153,7 @@
       entrada = hash;
       seccion = "importar";
       abrir();
-      previsualizar();
+      previsualizar("enlace");
     };
     leerFragmento();
     window.addEventListener("hashchange", leerFragmento);
@@ -326,7 +334,8 @@
                   oninput={(e) => {
                     previa = null;
                     // Al pegar, previsualiza solo; al tipear espera a Enter.
-                    if ((e as InputEvent).inputType === "insertFromPaste") previsualizar();
+                    if (e instanceof InputEvent && e.inputType === "insertFromPaste")
+                      previsualizar();
                   }}
                   spellcheck="false"
                   autocomplete="off"
