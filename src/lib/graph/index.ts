@@ -5,6 +5,7 @@ export type PlanNodeType = AnioNodeType | MateriaNodeType;
 
 export type AnioNodeType = Node<AnioNodeData, "anio">;
 export type AnioNodeData = {
+  indice: number;
   descripcion: string;
   width: number;
   height: number;

@@ -102,11 +102,13 @@ for (const [anio, anioPlan] of PLAN.anios.entries()) {
 
 const anioNodes: AnioNodeType[] = PLAN.anios.map((anioPlan, anioIndex) => ({
   id: `anio-${anioIndex}`,
+  style: "pointer-events: none;",
   position: {
     x: anioIndex * ANIO_GAP_X,
     y: 0,
   },
   data: {
+    indice: anioIndex,
     descripcion: anioPlan.descripcion,
     width: ANUAL_WIDTH,
     height: ANIO_NODE_HEIGHT,
