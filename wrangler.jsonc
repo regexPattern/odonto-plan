@@ -1,0 +1,7 @@
+{
+  "name": "odonto-plan",
+  "compatibility_date": "2026-10-20",
+  "assets": {
+    "directory": "./build",
+  },
+}
