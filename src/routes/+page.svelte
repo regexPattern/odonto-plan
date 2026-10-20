@@ -76,16 +76,21 @@
         <EnlacesSociales />
       </div>
 
+      <!-- En mobile ficha y progreso se apilan; desde lg cada uno se ancla a su esquina. -->
       <div
-        class="pointer-events-auto absolute inset-x-2 bottom-24 lg:inset-x-auto lg:top-4 lg:right-4 lg:bottom-auto"
+        class="pointer-events-none absolute inset-x-2 bottom-2 flex flex-col items-start gap-2 lg:contents"
       >
-        <MateriaSeleccionada />
-      </div>
+        <div
+          class="pointer-events-auto w-full lg:absolute lg:inset-x-auto lg:top-4 lg:right-4 lg:w-auto"
+        >
+          <MateriaSeleccionada />
+        </div>
 
-      <div class="pointer-events-auto absolute bottom-2 left-2 lg:bottom-4 lg:left-4">
-        {#if cargado}
-          <ProgresoCarrera />
-        {/if}
+        <div class="pointer-events-auto lg:absolute lg:bottom-4 lg:left-4">
+          {#if cargado}
+            <ProgresoCarrera />
+          {/if}
+        </div>
       </div>
     </Panel>
 

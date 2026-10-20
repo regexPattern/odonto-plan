@@ -3,6 +3,7 @@
   import { page } from "$app/state";
   import AlertTriangle from "@withicons/svelte/kawaii/icons/alert-triangle";
   import Clipboard from "@withicons/svelte/kawaii/icons/clipboard";
+  import Check from "@withicons/svelte/kawaii/icons/check";
   import ClipboardCheck from "@withicons/svelte/kawaii/icons/clipboard-check";
   import CloudUpload from "@withicons/svelte/kawaii/icons/cloud-upload";
   import FileDown from "@withicons/svelte/kawaii/icons/file-down";
@@ -28,7 +29,6 @@
     retraso: ((i % DIENTES_POR_LADO) + Math.floor(i / DIENTES_POR_LADO)) * 0.1,
   }));
 
-  const nombres = new Map(MATERIAS.map(({ codigo, nombre }) => [codigo, nombre]));
   const boton = "border border-borde-fuerte px-3 py-2 text-base hover:bg-hover disabled:opacity-50";
   const campo = "w-full border border-borde-fuerte bg-campo px-3 py-2.5 font-mono text-base";
 
@@ -294,23 +294,26 @@
               </form>
 
               {#if previa}
-                <section class="mt-4 border border-link-border p-4">
-                  <p>
-                    Recibís <strong>{previa.length} de {MATERIAS.length}</strong> materias
-                    aprobadas. Al confirmar se <strong>reemplaza</strong> tu progreso actual (no se combina).
+                <section class="mt-4 border border-borde bg-campo p-4">
+                  <p class="flex items-center gap-3">
+                    <span
+                      class="border border-border-aprobada bg-bg-aprobada px-2.5 py-1 font-serif text-xl leading-none font-medium whitespace-nowrap text-fg-aprobada tabular-nums"
+                    >
+                      {previa.length} / {MATERIAS.length}
+                    </span>
+                    <span class="text-texto-suave">materias aprobadas recibidas</span>
                   </p>
-                  {#if previa.length}
-                    <details class="mt-2">
-                      <summary class="cursor-pointer">Ver notas recibidas</summary>
-                      <ul>
-                        {#each previa as { codigo, calificacion } (codigo)}
-                          <li>{nombres.get(codigo)}: <strong>{calificacion}</strong></li>
-                        {/each}
-                      </ul>
-                    </details>
-                  {/if}
-                  <div class="mt-3 flex flex-wrap gap-2">
-                    <button type="button" class="{boton} bg-link-bg" onclick={reemplazar}>
+                  <p class="mt-3 text-sm text-texto-suave">
+                    Al confirmar se <strong class="font-medium text-texto">reemplaza</strong> tu progreso
+                    actual (no se combina).
+                  </p>
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      class="flex cursor-pointer items-center gap-1.5 border border-link-border bg-link-bg px-3 py-2 text-base font-medium text-link hover:brightness-125 focus-visible:outline-2 focus-visible:outline-link-outline"
+                      onclick={reemplazar}
+                    >
+                      <Check size={18} aria-hidden="true" class="shrink-0" />
                       Reemplazar mi progreso
                     </button>
                     <button type="button" class={boton} onclick={() => (previa = null)}

@@ -142,7 +142,7 @@
             aria-hidden="true"
           ></span>
           <span
-            class="pointer-events-none absolute top-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 text-(--slider-fg) drop-shadow-[0_1px_2px_rgb(0_0_0/0.4)] motion-safe:transition-colors motion-safe:duration-200 [&>svg>path:first-child]:fill-(--slider-bg) [&>svg>path:first-child]:[fill-opacity:1] motion-safe:[&>svg>path:first-child]:transition-[fill] motion-safe:[&>svg>path:first-child]:duration-200"
+            class="pointer-events-none absolute top-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 text-(--slider-fg) [&>svg]:drop-shadow-[0_1px_2px_rgb(0_0_0/0.4)] motion-safe:transition-colors motion-safe:duration-200 [&>svg>path:first-child]:fill-(--slider-bg) [&>svg>path:first-child]:[fill-opacity:1] motion-safe:[&>svg>path:first-child]:transition-[fill] motion-safe:[&>svg>path:first-child]:duration-200"
             style:left={`calc(${calificacion * 10}% + ${12 - calificacion * 2.4}px)`}
             aria-hidden="true"
           >
@@ -182,6 +182,8 @@
   /* Los pseudo-elementos del input nativo no se pueden estilar con utilidades. */
   .calificacion-input {
     appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y;
   }
 
   .calificacion-input::-webkit-slider-runnable-track {
@@ -201,6 +203,7 @@
     appearance: none;
     border: 0;
     background: transparent;
+    box-shadow: none;
   }
 
   .calificacion-input::-moz-range-thumb {
@@ -208,5 +211,6 @@
     height: 24px;
     border: 0;
     background: transparent;
+    box-shadow: none;
   }
 </style>
