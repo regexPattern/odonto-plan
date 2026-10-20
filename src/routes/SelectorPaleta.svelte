@@ -15,7 +15,7 @@
   ] as const;
 
   const opcion =
-    "border border-borde bg-transparent px-3 py-2 text-texto hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline aria-pressed:border-borde-activo aria-pressed:bg-seleccion";
+    "border border-borde bg-transparent px-3 py-2 text-texto hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline aria-pressed:bg-seleccion";
 </script>
 
 <Popover.Root>
