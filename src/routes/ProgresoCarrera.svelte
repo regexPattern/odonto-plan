@@ -6,10 +6,67 @@
   const aprobadas = $derived(graph.materiasAprobadas.length);
   const progreso = $derived(totalMaterias > 0 ? (aprobadas / totalMaterias) * 100 : 0);
   const porcentaje = $derived(Math.round(progreso));
+
+  let completa: boolean | null = null;
+
+  $effect(() => {
+    const ahora = totalMaterias > 0 && aprobadas >= totalMaterias;
+    // Solo al pasar a 100% (no al cargar una carrera ya completa).
+    if (ahora && completa === false) void lanzarConfetti();
+    completa = ahora;
+  });
+
+  async function lanzarConfetti() {
+    const { default: confetti } = await import("canvas-confetti");
+    // Lluvia suave que cae desde todo el ancho de la pantalla.
+    const fin = Date.now() + 3000;
+    const frame = () => {
+      confetti({
+        particleCount: 4,
+        angle: 90,
+        spread: 100,
+        startVelocity: 25,
+        gravity: 1.1,
+        drift: (Math.random() - 0.5) * 0.8,
+        ticks: 250,
+        scalar: 0.9,
+        origin: { x: Math.random(), y: -0.05 },
+      });
+      // Costados: pocas partículas y velocidad moderada, para que no sea un chorro.
+      if (Math.random() < 0.5) {
+        const izquierda = Math.random() < 0.5;
+        confetti({
+          particleCount: 2,
+          angle: izquierda ? 60 : 120,
+          spread: 60,
+          startVelocity: 30,
+          gravity: 1.1,
+          ticks: 250,
+          scalar: 0.9,
+          origin: { x: izquierda ? 0 : 1, y: 0.4 + Math.random() * 0.3 },
+        });
+      }
+      // Abajo: sube suave desde el borde inferior y vuelve a caer.
+      if (Math.random() < 0.6) {
+        confetti({
+          particleCount: 2,
+          angle: 90,
+          spread: 120,
+          startVelocity: 28,
+          gravity: 1.1,
+          ticks: 250,
+          scalar: 0.9,
+          origin: { x: Math.random(), y: 1.05 },
+        });
+      }
+      if (Date.now() < fin) requestAnimationFrame(frame);
+    };
+    frame();
+  }
 </script>
 
 <div
-  class="progreso-panel w-[min(23rem,calc(100vw-2rem))] border border-zinc-700/70 bg-[#141414]/50 p-2 backdrop-blur-xl"
+  class="progreso-panel w-[min(23rem,calc(100vw-2rem))] border border-zinc-700/70 bg-[#141414]/50 px-5 py-2 backdrop-blur-xl"
 >
   <div
     class="progreso-barra"
@@ -30,19 +87,13 @@
     <span class="progreso-porcentaje text-sm" aria-hidden="true">{porcentaje}% completado</span>
   </div>
   <div class="mt-1 flex flex-col items-center gap-1 text-center text-sm">
-    <span
-      ><span class="tabular-nums">{aprobadas} de {totalMaterias}</span> materias aprobadas</span
-    >
-    {#if totalMaterias > 0 && aprobadas === totalMaterias}
-      <span class="text-fuchsia-300">¡Lo lograste!</span>
-    {/if}
+    <span><span class="tabular-nums">{aprobadas} de {totalMaterias}</span> materias aprobadas</span>
   </div>
 </div>
 
 <style>
   .progreso-panel {
-    /* Radio del carril + separación superior + padding + borde, en las cuatro esquinas. */
-    border-radius: calc(13px + 7px + 0.5rem + 1px);
+    border-radius: 0;
   }
 
   .progreso-barra {

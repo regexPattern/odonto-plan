@@ -22,6 +22,7 @@
   "dependencies": {
     "@withicons/motion": "^0.5.0",
     "@withicons/svelte": "^0.5.0",
+    "canvas-confetti": "^1.9.4",
     "qrcode": "^1.5.4"
   },
   "devDependencies": {
@@ -32,6 +33,7 @@
     "@sveltejs/kit": "next",
     "@sveltejs/vite-plugin-svelte": "^7.3.1",
     "@tailwindcss/vite": "^4.3.3",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/qrcode": "^1.5.6",
     "@xyflow/svelte": "^1.7.0",
     "bits-ui": "^2.19.5",
