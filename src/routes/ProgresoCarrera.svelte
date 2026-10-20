@@ -91,48 +91,57 @@
   <div
     id="detalle-progreso"
     role="tooltip"
-    class="pointer-events-none absolute inset-x-0 bottom-full mb-2 origin-bottom transform-gpu will-change-[transform,opacity] translate-y-2 scale-98 border border-borde bg-panel px-3 py-2 text-center text-sm opacity-0 backdrop-blur-xl motion-safe:transition-[opacity,transform] motion-safe:duration-200 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100"
+    class="pointer-events-none absolute inset-x-0 bottom-full mb-2 origin-bottom transform-gpu translate-y-2 scale-98 border border-borde bg-panel flex justify-evenly px-3 py-3 gap-3 text-center text-sm opacity-0 backdrop-blur-xl motion-safe:transition-[opacity,translate,scale] motion-safe:duration-180 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)] group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100"
   >
-    <p>
-      <span class="tabular-nums">{obligatoriasAprobadas} de {totalObligatorias}</span> obligatorias aprobadas
-    </p>
-    <p>
-      <span class="tabular-nums">{electivasAprobadas} de {ELECTIVAS_REQUERIDAS}</span> electivas aprobadas
-    </p>
+    <div>
+      <p class="text-xl font-medium tabular-nums">
+        <span class="text-bg-aprobada">{obligatoriasAprobadas}</span> de {totalObligatorias}
+      </p>
+      <p>obligatorias<br />aprobadas</p>
+    </div>
+    <div>
+      <p class="text-xl font-medium tabular-nums">
+        <span class="text-bg-aprobada">{electivasAprobadas}</span> de {ELECTIVAS_REQUERIDAS}
+      </p>
+      <p>electivas<br />aprobadas</p>
+    </div>
   </div>
-  <div class="border border-borde bg-panel px-3 py-2 backdrop-blur-xl sm:px-5">
   <div
-    class="relative h-10"
-    role="progressbar"
-    aria-label="Progreso de la carrera"
-    aria-valuemin="0"
-    aria-valuemax={totalMaterias}
-    aria-valuenow={aprobadas}
-    aria-valuetext={`${aprobadas} de ${totalMaterias} materias aprobadas (${porcentaje}%)`}
-    style={`--progreso: ${progreso}%`}
+    class="flex items-center gap-2 rounded-full border border-borde bg-panel py-1 pr-4 pl-[11px] backdrop-blur-xl"
   >
     <div
-      class="absolute inset-[7px] rounded-full bg-pista ring-1 ring-pista-anillo"
-      aria-hidden="true"
+      class="relative h-8 flex-1"
+      role="progressbar"
+      aria-label="Progreso de la carrera"
+      aria-valuemin="0"
+      aria-valuemax={totalMaterias}
+      aria-valuenow={aprobadas}
+      aria-valuetext={`${aprobadas} de ${totalMaterias} materias aprobadas (${porcentaje}%)`}
+      style={`--p: ${progreso / 100}`}
     >
       <div
-        class="absolute inset-0 rounded-full bg-bg-aprobada [clip-path:inset(0_calc(100%-var(--progreso))_0_0_round_999px)] motion-safe:transition-[clip-path] motion-safe:duration-300"
-      ></div>
+        class="absolute inset-x-0 inset-y-[7px] overflow-hidden rounded-full bg-pista ring-1 ring-pista-anillo"
+        aria-hidden="true"
+      >
+        <div
+          class="absolute inset-0 bg-bg-aprobada [clip-path:inset(0_calc(100%-(100%-24px)*var(--p)-6px)_0_0)]"
+        ></div>
+      </div>
+      <span
+        class="pointer-events-none absolute top-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 text-fg-aprobada drop-shadow-[0_1px_2px_rgb(0_0_0/0.4)] [&_svg>path:first-child]:fill-bg-aprobada [&_svg>path:first-child]:[fill-opacity:1]"
+        style:left="calc(12px + (100% - 24px) * var(--p))"
+        aria-hidden="true"
+      >
+        <Tooth size={24} />
+      </span>
     </div>
-    <span
-      class="pointer-events-none absolute top-1/2 flex size-8 -translate-x-1/2 -translate-y-1/2 text-fg-aprobada drop-shadow-[0_1px_2px_rgb(0_0_0/0.4)] motion-safe:transition-[left] motion-safe:duration-300 [&>svg>path:first-child]:fill-bg-aprobada [&>svg>path:first-child]:[fill-opacity:1]"
-      style:left={`calc(${progreso}% + ${7 - progreso * 0.14}px)`}
-      aria-hidden="true"><Tooth size={32} /></span
-    >
-  </div>
-  <div class="mt-1 flex justify-center">
     <button
       type="button"
-      class="cursor-help text-sm font-medium tabular-nums"
+      class="cursor-help whitespace-nowrap text-sm font-medium"
       aria-describedby="detalle-progreso"
     >
-      {porcentaje}% completado
+      <span class="font-semibold tabular-nums text-bg-aprobada">{porcentaje}%</span> completado
     </button>
   </div>
-  </div>
 </div>
+

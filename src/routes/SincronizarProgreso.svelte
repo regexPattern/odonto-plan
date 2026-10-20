@@ -188,7 +188,7 @@
       </h2>
 
     <div
-      class="mt-3 flex gap-2 border border-amber-500/40 bg-amber-500/10 p-3 text-amber-900 dark:text-amber-200"
+      class="mt-3 flex gap-2 border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-900 dark:text-amber-200"
       role="note"
     >
       <AlertTriangle size={18} aria-hidden="true" class="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400" />

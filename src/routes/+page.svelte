@@ -82,7 +82,7 @@
         <MateriaSeleccionada />
       </div>
 
-      <div class="pointer-events-auto absolute bottom-2 left-1/2 -translate-x-1/2 lg:bottom-4">
+      <div class="pointer-events-auto absolute bottom-2 left-2 lg:bottom-4 lg:left-4">
         {#if cargado}
           <ProgresoCarrera />
         {/if}
