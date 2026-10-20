@@ -80,7 +80,7 @@
   ]}
 >
   {#if materiaSeleccionada}
-    <h1 class="text-lg leading-snug font-semibold sm:text-xl">
+    <h1 class="text-lg leading-snug font-medium sm:text-xl">
       {materiaSeleccionada.nombre}
     </h1>
     <div class="grid grid-cols-2 gap-2 lg:grid-cols-1">

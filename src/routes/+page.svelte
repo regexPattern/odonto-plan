@@ -7,14 +7,16 @@
   import { MAX_ZOOM, MIN_ZOOM } from "#lib/graph/layout.js";
   import graph from "#lib/graph/state.svelte.js";
   import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
-  import AyudaPopover from "./AyudaPopover.svelte";
-  import ControlesPane from "./ControlesPane.svelte";
-  import EnlacesSociales from "./EnlacesSociales.svelte";
-  import MateriaSeleccionada from "./MateriaSeleccionada.svelte";
-  import ProgresoCarrera from "./ProgresoCarrera.svelte";
-  import SelectorPaleta from "./SelectorPaleta.svelte";
-  import SincronizarProgreso from "./SincronizarProgreso.svelte";
+  import AyudaPopover from "#lib/components/AyudaPopover.svelte";
+  import ControlesPane from "#lib/components/ControlesPane.svelte";
+  import EnlacesSociales from "#lib/components/EnlacesSociales.svelte";
+  import MateriaSeleccionada from "#lib/components/MateriaSeleccionada.svelte";
+  import ProgresoCarrera from "#lib/components/ProgresoCarrera.svelte";
+  import SelectorPaleta from "#lib/components/SelectorPaleta.svelte";
+  import SincronizarProgreso from "#lib/components/SincronizarProgreso.svelte";
 
+  const DESCRIPTION =
+    "Seguí tu progreso en la carrera y mirá qué tan cerca estás de ser odontólogo y odontóloga.";
   const INITIAL_VIEWPORT = { x: 0, y: 100, zoom: 1 };
 
   // Montar la sincronización y la barra recién cuando el progreso local ya está cargado.
@@ -29,6 +31,26 @@
 
 <svelte:head>
   <title>Odonto Plan</title>
+  <meta name="description" content={DESCRIPTION} />
+  <meta name="author" content="Odonto Plan" />
+  <meta name="application-name" content="Odonto Plan" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="es_AR" />
+  <meta property="og:site_name" content="Odonto Plan" />
+  <meta property="og:title" content="Odonto Plan" />
+  <meta property="og:description" content={DESCRIPTION} />
+  <!-- Reemplazar static/opengraph.png por la imagen final (1200 × 630 px). -->
+  <meta property="og:image" content="/opengraph.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Odonto Plan" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Odonto Plan" />
+  <meta name="twitter:description" content={DESCRIPTION} />
+  <meta name="twitter:image" content="/opengraph.png" />
+  <meta name="twitter:image:alt" content="Odonto Plan" />
 </svelte:head>
 
 <div class="h-dvh w-full">

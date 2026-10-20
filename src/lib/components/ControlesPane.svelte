@@ -28,9 +28,9 @@
     setViewport(vistaParaAnio(anio, window.innerWidth), opciones);
   }
 
-  // En pantallas angostas arranca en el año actual y con el zoom ajustado.
+  // La vista inicial es la misma que la de "Restablecer vista": el año actual.
   $effect(() => {
-    if (listo && window.innerWidth < 1024) untrack(() => restablecerVista({ duration: 0 }));
+    if (listo) untrack(() => restablecerVista({ duration: 0 }));
   });
 </script>
 
