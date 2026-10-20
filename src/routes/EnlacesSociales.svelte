@@ -4,8 +4,11 @@
   import Mail from "@withicons/svelte/kawaii/icons/mail";
   import MailCheck from "@withicons/svelte/kawaii/icons/mail-check";
   import { Popover } from "bits-ui";
-
-  const CORREO = "soporte@regexpattern.dev";
+  import {
+    CORREO_SOPORTE as CORREO,
+    PERFIL_GITHUB_URL,
+    PERFIL_LINKEDIN_URL,
+  } from "$app/env/public";
 
   let copiado = $state(false);
   let temporizador: ReturnType<typeof setTimeout>;
@@ -41,7 +44,7 @@
         <ul>
           <li>
             <a
-              href="https://linkedin.com/in/regexpattern"
+              href={PERFIL_LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
               class="flex items-center gap-2 px-3 py-2 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-teal-400"
@@ -63,7 +66,7 @@
           </li>
           <li>
             <a
-              href="https://github.com/regexPattern"
+              href={PERFIL_GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
               class="flex items-center gap-2 px-3 py-2 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-teal-400"
