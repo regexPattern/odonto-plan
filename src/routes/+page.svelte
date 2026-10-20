@@ -56,7 +56,7 @@
          va como panel inferior sobre el progreso; desde lg vuelve a las esquinas. -->
     <Panel position="top-left" class="pointer-events-none! inset-0! m-0!">
       <div
-        class="pointer-events-auto absolute top-2 left-2 superficie p-1.5 sm:p-2 lg:top-4 lg:left-4"
+        class="pointer-events-auto absolute top-2 left-2 flex h-10 items-center border border-transparent sm:h-11 lg:top-4 lg:left-4"
       >
         <span class="font-serif text-lg font-medium sm:text-xl">Odonto Plan</span>
       </div>
