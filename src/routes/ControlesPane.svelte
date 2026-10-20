@@ -1,0 +1,56 @@
+<script lang="ts">
+  import Maximize from "@withicons/svelte/kawaii/icons/maximize";
+  import RotateCcw from "@withicons/svelte/kawaii/icons/rotate-ccw";
+  import ZoomIn from "@withicons/svelte/kawaii/icons/zoom-in";
+  import ZoomOut from "@withicons/svelte/kawaii/icons/zoom-out";
+  import { useSvelteFlow, type Viewport } from "@xyflow/svelte";
+
+  let { initialViewport }: { initialViewport: Viewport } = $props();
+  const { setViewport, zoomIn, zoomOut, fitView } = useSvelteFlow();
+  const options = { duration: 200 };
+</script>
+
+<div class="controles-pane flex items-center gap-2" role="group" aria-label="Controles de vista">
+  <button
+    type="button"
+    class="boton-herramienta"
+    aria-label="Acercar"
+    title="Acercar"
+    onclick={() => zoomIn(options)}
+  >
+    <ZoomIn size={28} />
+  </button>
+  <button
+    type="button"
+    class="boton-herramienta"
+    aria-label="Alejar"
+    title="Alejar"
+    onclick={() => zoomOut(options)}
+  >
+    <ZoomOut size={28} />
+  </button>
+  <button
+    type="button"
+    class="boton-herramienta"
+    aria-label="Encuadrar todo"
+    title="Encuadrar todo"
+    onclick={() => fitView({ ...options, padding: 0.2 })}
+  >
+    <Maximize size={28} />
+  </button>
+  <button
+    type="button"
+    class="boton-herramienta"
+    aria-label="Restablecer vista"
+    title="Restablecer vista"
+    onclick={() => setViewport(initialViewport, options)}
+  >
+    <RotateCcw size={28} />
+  </button>
+</div>
+
+<style>
+  .controles-pane :global(.wm-deco) {
+    display: none;
+  }
+</style>

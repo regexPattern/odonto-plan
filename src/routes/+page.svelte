@@ -6,6 +6,7 @@
   import { nodeTypes } from "#lib/graph/index.js";
   import graph from "#lib/graph/state.svelte.js";
   import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
+  import ControlesPane from "./ControlesPane.svelte";
   import MateriaSeleccionada from "./MateriaSeleccionada.svelte";
   import ProgresoCarrera from "./ProgresoCarrera.svelte";
   import SincronizarProgreso from "./SincronizarProgreso.svelte";
@@ -58,6 +59,8 @@
 
     <Panel position="top-center" class="!top-16 sm:!top-0">
       <div class="flex items-center gap-2" role="group" aria-label="Herramientas">
+        <ControlesPane initialViewport={INITIAL_VIEWPORT} />
+        <div class="mx-1 h-8 w-px bg-zinc-700/70" aria-hidden="true"></div>
         {#if cargado}
           <SincronizarProgreso />
         {/if}
