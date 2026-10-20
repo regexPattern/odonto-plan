@@ -91,7 +91,7 @@
     <div>
       <div class="mb-2 flex items-start gap-2">
         <Star size={24} class="shrink-0" aria-hidden="true" />
-        <label for="calificacion" class="font-medium">Calificación:</label>
+        <label for="calificacion" class="font-medium">Calificación</label>
       </div>
       {#key materiaSeleccionada.codigo}
         <div
