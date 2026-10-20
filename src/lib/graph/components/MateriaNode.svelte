@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tick } from "svelte";
   import type { NodeProps } from "@xyflow/svelte";
   import { Handle, Position, useSvelteFlow } from "@xyflow/svelte";
   import type { MateriaNodeType } from "#lib/graph/index.js";
@@ -8,12 +9,19 @@
   let { id, data }: NodeProps<MateriaNodeType> = $props();
   const { setViewport, getNode } = useSvelteFlow();
 
-  function centrarAnio() {
+  async function centrarAnio() {
     const anio = PLAN.anios.findIndex(({ materias }) =>
       materias.some(({ codigo }) => codigo === data.codigo),
     );
     if (anio === -1) return;
     const vista = vistaParaAnio(anio, window.innerWidth);
+    // En mobile la ficha de la materia seleccionada tapa buena parte del viewport:
+    // se espera a que se renderice para medir su borde superior.
+    const esMobile = !window.matchMedia("(min-width: 1024px)").matches;
+    if (esMobile) {
+      await tick();
+      await new Promise((resolver) => requestAnimationFrame(resolver));
+    }
     // Parte de la vista original del año (encabezado visible) y solo sube el contenido
     // si la materia no entra, dejándola con margen contra el borde inferior.
     let y = vista.y;
@@ -21,7 +29,15 @@
     if (nodo) {
       const margenInferior = 100;
       const abajo = (nodo.position.y + data.height) * vista.zoom;
-      y = Math.min(y, window.innerHeight - margenInferior - abajo);
+      let limite = window.innerHeight - margenInferior;
+      if (esMobile) {
+        const panel = document.querySelector("[data-panel-materia]");
+        const arriba = panel?.getBoundingClientRect().top;
+        if (arriba !== undefined && panel?.firstElementChild?.clientHeight) {
+          limite = Math.min(limite, arriba - 16);
+        }
+      }
+      y = Math.min(y, limite - abajo);
     }
     setViewport({ ...vista, y }, ANIMACION_VISTA);
   }

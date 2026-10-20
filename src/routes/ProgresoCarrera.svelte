@@ -90,7 +90,7 @@
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 <div
   tabindex="-1"
-  class="group relative w-[min(23rem,calc(100vw-1rem))] outline-none"
+  class="group relative w-full sm:w-[min(23rem,calc(100vw-1rem))] outline-none"
   onclick={() => graph.deseleccionarMateria()}
 >
   <div

@@ -81,12 +81,13 @@
         class="pointer-events-none absolute inset-x-2 bottom-2 flex flex-col items-start gap-2 lg:contents"
       >
         <div
+          data-panel-materia
           class="pointer-events-auto w-full lg:absolute lg:inset-x-auto lg:top-4 lg:right-4 lg:w-auto"
         >
           <MateriaSeleccionada />
         </div>
 
-        <div class="pointer-events-auto lg:absolute lg:bottom-4 lg:left-4">
+        <div class="pointer-events-auto w-full sm:w-auto lg:absolute lg:bottom-4 lg:left-4">
           {#if cargado}
             <ProgresoCarrera />
           {/if}
