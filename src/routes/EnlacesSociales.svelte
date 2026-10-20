@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { animar } from "#lib/animar.js";
   import {
     CORREO_SOPORTE as CORREO,
     PERFIL_GITHUB_URL,
@@ -31,7 +32,7 @@
     aria-label="Enlaces de contacto"
     title="Enlaces de contacto"
   >
-    <IdCard size={24} class="wm wm-hover" data-wm="id-card" />
+    <span class="flex shrink-0" use:animar={{ nombre: "id-card" }}><IdCard size={24} /></span>
   </Popover.Trigger>
   <Popover.Portal>
     <Popover.Content
@@ -53,7 +54,7 @@
               <svg
                 aria-hidden="true"
                 viewBox="0 0 24 24"
-                class="size-4 shrink-0"
+                class="size-4 shrink-0 text-[#0A66C2]"
                 fill="currentColor"
               >
                 <path

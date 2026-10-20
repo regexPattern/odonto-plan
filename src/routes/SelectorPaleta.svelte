@@ -1,8 +1,10 @@
 <script lang="ts">
+  import { animar } from "#lib/animar.js";
   import Monitor from "@withicons/svelte/kawaii/icons/monitor";
   import Moon from "@withicons/svelte/kawaii/icons/moon";
   import Palette from "@withicons/svelte/kawaii/icons/palette";
   import Sun from "@withicons/svelte/kawaii/icons/sun";
+  import X from "@withicons/svelte/kawaii/icons/close";
   import { Popover } from "bits-ui";
   import { setMode, userPrefersMode } from "mode-watcher";
   import { PALETAS } from "#lib/palette/index.js";
@@ -24,7 +26,7 @@
     aria-label="Paleta de colores"
     title="Paleta de colores"
   >
-    <Palette size={24} class="wm wm-hover" data-wm="palette" />
+    <span class="flex shrink-0" use:animar={{ nombre: "palette" }}><Palette size={24} /></span>
   </Popover.Trigger>
   <Popover.Portal>
     <Popover.Content
@@ -33,8 +35,14 @@
       sideOffset={8}
       collisionPadding={8}
       aria-labelledby="apariencia-titulo"
-      class="z-50 w-72 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-3 text-sm text-texto motion-safe:data-[state=open]:animate-entrada-panel"
+      class="relative z-50 w-72 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-3 text-sm text-texto motion-safe:data-[state=open]:animate-entrada-panel"
     >
+      <Popover.Close
+        aria-label="Cerrar"
+        class="absolute top-2 right-2 flex size-7 items-center justify-center text-texto hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
+      >
+        <X size={18} aria-hidden="true" />
+      </Popover.Close>
       <h2 id="apariencia-titulo" class="flex items-center gap-2 font-serif text-xl font-medium">
         <Palette size={24} aria-hidden="true" class="shrink-0 text-link-fuerte" />
         Apariencia

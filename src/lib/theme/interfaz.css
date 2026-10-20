@@ -7,7 +7,7 @@
      --superficie-opacidad   opacidad de paneles y botones (0–1; más alto = menos transparente)
      --superficie-opacidad-fuerte  ídem para popovers, que van sobre contenido (0–1)
      --superficie-blur       desenfoque del fondo
-     --superficie-sombra     sombra de los popovers
+     --superficie-sombra     sombra de todas las superficies
      --color-borde           borde de todas las superficies */
 
 :root {
@@ -17,7 +17,7 @@
   --superficie-opacidad: 0.72;
   --superficie-opacidad-fuerte: 0.88;
   --superficie-blur: 24px;
-  --superficie-sombra: var(--shadow-lg);
+  --superficie-sombra: 0 0 12px rgb(0 0 0 / 0.08);
 
   --color-panel: color-mix(
     in srgb,
@@ -69,9 +69,10 @@
   border: 1px solid var(--color-borde);
   background-color: var(--color-panel);
   backdrop-filter: blur(var(--superficie-blur));
+  box-shadow: var(--superficie-sombra);
 }
 
-/* Superficies que se abren sobre otras (popovers): más opacas y con sombra. */
+/* Superficies que se abren sobre otras (popovers): más opacas (misma sombra). */
 @utility superficie-fuerte {
   border: 1px solid var(--color-borde);
   background-color: var(--color-panel-fuerte);
@@ -81,5 +82,5 @@
 
 /* Botones cuadrados de la barra de herramientas. */
 .boton-herramienta {
-  @apply flex size-10 items-center justify-center superficie text-texto transition-colors hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-outline sm:size-11;
+  @apply flex size-10 items-center justify-center superficie text-texto transition-colors hover:bg-hover aria-expanded:bg-seleccion focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-outline sm:size-11;
 }

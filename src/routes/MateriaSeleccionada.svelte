@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { animar } from "#lib/animar.js";
   import { Calendar, Clock, Star, Tooth } from "@withicons/svelte/kawaii";
   import MousePointerClick from "@withicons/svelte/kawaii/icons/mouse-pointer-click";
   import { esCalificacionAprobada } from "#lib/graph/index.js";
@@ -85,23 +86,24 @@
     </h1>
     <div class="grid grid-cols-2 gap-2 lg:grid-cols-1">
       <div class="wm-trigger flex items-start gap-2">
-        <Calendar size={24} class="wm wm-hover shrink-0" data-wm="calendar" aria-hidden="true" />
+        <span class="flex shrink-0" use:animar={{ nombre: "calendar" }}>
+          <Calendar size={24} aria-hidden="true" />
+        </span>
         <div><span class="font-medium">Duración:</span> {materiaSeleccionada.duracion}</div>
       </div>
       <div class="wm-trigger flex items-start gap-2">
-        <Clock
-          size={24}
-          class="wm wm-hover wm-p-wiggle shrink-0"
-          data-wm="clock"
-          aria-hidden="true"
-        />
+        <span class="flex shrink-0" use:animar={{ nombre: "clock", preset: "wiggle" }}>
+          <Clock size={24} aria-hidden="true" />
+        </span>
         <div><span class="font-medium">Carga horaria:</span> {materiaSeleccionada.horas}</div>
       </div>
     </div>
     <div>
       <div class="wm-trigger mb-2 flex items-start gap-2">
         <span class="flex size-6 shrink-0 items-center justify-center" aria-hidden="true">
-          <Star size={28} class="wm wm-hover wm-p-pop shrink-0" data-wm="star" />
+          <span class="flex shrink-0" use:animar={{ nombre: "star", preset: "pop" }}>
+            <Star size={28} />
+          </span>
         </span>
         <label for="calificacion" class="font-medium">Calificación</label>
       </div>
@@ -173,7 +175,7 @@
   {:else}
     <div class="flex items-start gap-2">
       <MousePointerClick size={24} class="shrink-0" aria-hidden="true" />
-      <div>Hacé clic en una materia para ver sus detalles o afuera para volver.</div>
+      <div class="text-sm">Hacé clic en una materia para ver sus detalles o afuera para volver.</div>
     </div>
   {/if}
 </div>

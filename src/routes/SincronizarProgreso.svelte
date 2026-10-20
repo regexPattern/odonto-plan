@@ -1,14 +1,17 @@
 <script lang="ts">
+  import { animar } from "#lib/animar.js";
   import { replaceState } from "$app/navigation";
   import { page } from "$app/state";
   import AlertTriangle from "@withicons/svelte/kawaii/icons/alert-triangle";
   import Clipboard from "@withicons/svelte/kawaii/icons/clipboard";
-  import Check from "@withicons/svelte/kawaii/icons/check";
+  import History from "@withicons/svelte/kawaii/icons/history";
+  import ThumbsUp from "@withicons/svelte/kawaii/icons/thumbs-up";
   import ClipboardCheck from "@withicons/svelte/kawaii/icons/clipboard-check";
   import CloudUpload from "@withicons/svelte/kawaii/icons/cloud-upload";
   import FileDown from "@withicons/svelte/kawaii/icons/file-down";
   import FileUp from "@withicons/svelte/kawaii/icons/file-up";
   import DienteSolido from "@withicons/svelte/solid/icons/tooth";
+  import X from "@withicons/svelte/kawaii/icons/close";
   import { Popover, Tabs } from "bits-ui";
   import { onMount } from "svelte";
   import type { MateriaAprobada } from "#lib/graph/index.js";
@@ -30,18 +33,20 @@
   }));
 
   const boton = "border border-borde-fuerte px-3 py-2 text-base hover:bg-hover disabled:opacity-50";
-  const campo = "w-full border border-borde-fuerte bg-campo px-3 py-2.5 font-mono text-base";
+  const campo = "w-full border border-borde-fuerte bg-campo px-3 py-2.5 font-mono text-sm";
 
   let abierto = $state(false);
   let entrada = $state("");
   let previa = $state<MateriaAprobada[] | null>(null);
   let anterior = $state<MateriaAprobada[] | null>(null);
   let error = $state("");
-  let aviso = $state("");
+  let confirmacion = $state<"" | "cargado" | "revertido">("");
   let seccion = $state("exportar");
   let alto = $state<number>();
   let copiado = $state("");
   let temporizador: ReturnType<typeof setTimeout>;
+  let temporizadorAviso: ReturnType<typeof setTimeout>;
+
 
   const codigo = $derived(codificar(graph.materiasAprobadas));
   const enlace = $derived(crearEnlace(codigo, window.location));
@@ -61,11 +66,11 @@
     if (valor) return;
     previa = null;
     copiado = "";
-    error = aviso = "";
+    error = confirmacion = "";
   }
 
   function previsualizar() {
-    error = aviso = "";
+    error = confirmacion = "";
     previa = null;
     try {
       previa = decodificar(entrada);
@@ -75,7 +80,7 @@
   }
 
   // Guardar antes de aplicar: si el almacenamiento falla, el grafo queda intacto.
-  function aplicar(materias: MateriaAprobada[], mensaje: string) {
+  function aplicar(materias: MateriaAprobada[]) {
     try {
       guardarMateriasAprobadas(materias);
     } catch {
@@ -84,22 +89,30 @@
     }
     graph.materiasAprobadas = materias;
     error = "";
-    aviso = mensaje;
     return true;
+  }
+
+  // Feedback transitorio en el propio botón; al terminar vuelve a mostrar "Revertir" (si aplica).
+  function confirmar(tipo: "cargado" | "revertido") {
+    confirmacion = tipo;
+    clearTimeout(temporizadorAviso);
+    temporizadorAviso = setTimeout(() => (confirmacion = ""), 2000);
   }
 
   function reemplazar() {
     const actual = graph.materiasAprobadas;
-    if (previa && aplicar(previa, "Progreso importado y guardado.")) {
+    if (previa && aplicar(previa)) {
       anterior = actual;
+      confirmar("cargado");
       previa = null;
       entrada = "";
     }
   }
 
   function deshacer() {
-    if (anterior && aplicar(anterior, "Se restauró el progreso anterior a la importación.")) {
+    if (anterior && aplicar(anterior)) {
       anterior = null;
+      confirmar("revertido");
     }
   }
 
@@ -133,7 +146,7 @@
 </script>
 
 {#snippet campoCopiable(id: string, etiqueta: string, texto: string)}
-  <span class="mb-1.5 block text-texto-suave" id="sync-{id}-etiqueta">{etiqueta}</span>
+  <span class="mb-1.5 block text-sm text-texto-suave" id="sync-{id}-etiqueta">{etiqueta}</span>
   <button
     type="button"
     aria-labelledby="sync-{id}-etiqueta"
@@ -171,7 +184,7 @@
     aria-label="Sincronizar progreso"
     title="Sincronizar progreso"
   >
-    <CloudUpload size={24} class="wm wm-hover wm-p-rise" data-wm="cloud-upload" />
+    <span class="flex shrink-0" use:animar={{ nombre: "cloud-upload", preset: "rise" }}><CloudUpload size={24} /></span>
   </Popover.Trigger>
   <Popover.Portal>
     <Popover.Content
@@ -180,8 +193,14 @@
       sideOffset={8}
       collisionPadding={8}
       aria-labelledby="sync-titulo"
-      class="z-50 max-h-(--bits-popover-content-available-height) w-[calc(100vw-1rem)] max-w-md origin-(--bits-popover-content-transform-origin) overflow-y-auto overscroll-contain superficie-fuerte p-4 text-base text-texto motion-safe:data-[state=open]:animate-entrada-panel"
+      class="relative z-50 max-h-(--bits-popover-content-available-height) w-[calc(100vw-1rem)] max-w-md origin-(--bits-popover-content-transform-origin) overflow-y-auto overscroll-contain superficie-fuerte p-4 text-base text-texto motion-safe:data-[state=open]:animate-entrada-panel"
     >
+      <Popover.Close
+        aria-label="Cerrar"
+        class="absolute top-2 right-2 flex size-7 items-center justify-center text-texto hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
+      >
+        <X size={18} aria-hidden="true" />
+      </Popover.Close>
       <h2 id="sync-titulo" class="flex items-center gap-2 font-serif text-xl font-medium">
         <CloudUpload size={24} aria-hidden="true" class="shrink-0 text-link-fuerte" />
         Sincronizar progreso
@@ -203,7 +222,11 @@
         </p>
       </div>
 
-      <Tabs.Root bind:value={seccion} class="mt-4">
+      <Tabs.Root
+        bind:value={seccion}
+        onValueChange={() => (error = confirmacion = "")}
+        class="mt-4"
+      >
         <Tabs.List class="grid grid-cols-2 border border-borde">
           <Tabs.Trigger
             value="exportar"
@@ -278,7 +301,7 @@
                   previsualizar();
                 }}
               >
-                <label class="block" for="sync-entrada">Pegá un código o enlace</label>
+                <label class="block text-sm" for="sync-entrada">Pegá un enlace o código</label>
                 <input
                   id="sync-entrada"
                   bind:value={entrada}
@@ -293,54 +316,60 @@
                 />
               </form>
 
-              {#if previa}
-                <section class="mt-4 border border-borde bg-campo p-4">
-                  <p class="flex items-center gap-3">
-                    <span
-                      class="border border-border-aprobada bg-bg-aprobada px-2.5 py-1 font-serif text-xl leading-none font-medium whitespace-nowrap text-fg-aprobada tabular-nums"
-                    >
-                      {previa.length} / {MATERIAS.length}
-                    </span>
-                    <span class="text-texto-suave">materias aprobadas recibidas</span>
-                  </p>
-                  <p class="mt-3 text-sm text-texto-suave">
-                    Al confirmar se <strong class="font-medium text-texto">reemplaza</strong> tu progreso
-                    actual (no se combina).
-                  </p>
-                  <div class="mt-4 flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      class="flex cursor-pointer items-center gap-1.5 border border-link-border bg-link-bg px-3 py-2 text-base font-medium text-link hover:brightness-125 focus-visible:outline-2 focus-visible:outline-link-outline"
-                      onclick={reemplazar}
-                    >
-                      <Check size={18} aria-hidden="true" class="shrink-0" />
-                      Reemplazar mi progreso
-                    </button>
-                    <button type="button" class={boton} onclick={() => (previa = null)}
-                      >Cancelar</button
-                    >
+              {#if previa || anterior || confirmacion}
+                {#if confirmacion}
+                  <div
+                    role="status"
+                    class="mt-4 flex w-full items-center justify-center gap-1.5 border border-border-aprobada bg-bg-aprobada px-3 py-2 text-sm font-medium text-fg-aprobada motion-safe:animate-qr-aparecer"
+                  >
+                    {#if confirmacion === "cargado"}
+                      <ThumbsUp size={18} aria-hidden="true" class="shrink-0" />
+                      ¡Progreso cargado!
+                    {:else}
+                      <History size={18} aria-hidden="true" class="shrink-0" />
+                      ¡Progreso revertido!
+                    {/if}
                   </div>
-                </section>
-              {/if}
-
-              {#if anterior}
-                <div class="mt-4 border-t border-borde pt-3">
-                  <p class="text-texto-suave">
-                    Podés volver al progreso previo a la importación (se pierden los cambios hechos
-                    después). Solo disponible hasta recargar la página.
-                  </p>
-                  <button type="button" class="{boton} mt-1" onclick={deshacer}>
-                    Deshacer última importación
+                {:else if previa}
+                  <button
+                    type="button"
+                    class="mt-4 flex w-full cursor-pointer items-center justify-center gap-1.5 border border-border-aprobada bg-bg-aprobada px-3 py-2 text-sm font-medium text-fg-aprobada transition-[filter] hover:brightness-110 focus-visible:outline-2 focus-visible:outline-link-outline"
+                    onclick={reemplazar}
+                  >
+                    <ThumbsUp size={18} aria-hidden="true" class="shrink-0" />
+                    <span>
+                      Cargar progreso con
+                      <span class="tabular-nums">{previa.length}</span>
+                      materias aprobadas
+                    </span>
                   </button>
-                </div>
+                {:else}
+                  <button
+                    type="button"
+                    class="{boton} mt-4 flex w-full cursor-pointer items-center justify-center gap-1.5 text-sm!"
+                    onclick={deshacer}
+                  >
+                    <History size={18} aria-hidden="true" class="shrink-0" />
+                    Revertir a mi progreso anterior
+                  </button>
+                  <p class="mt-1.5 text-center text-sm text-texto-tenue">
+                    Solo podés revertir mientras no hayas recargado ni cerrado la página.
+                  </p>
+                {/if}
               {/if}
             </Tabs.Content>
           </div>
         </div>
       </Tabs.Root>
 
-      {#if error}<p role="alert" class="mt-3 text-red-300">{error}</p>{/if}
-      {#if aviso}<p role="status" class="mt-3 text-link-fuerte">{aviso}</p>{/if}
+      {#if error}
+        <p
+          role="alert"
+          class="mt-3 text-sm text-amber-600 dark:text-amber-400"
+        >
+          {error}
+        </p>
+      {/if}
     </Popover.Content>
   </Popover.Portal>
 </Popover.Root>
