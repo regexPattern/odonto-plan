@@ -1,11 +1,8 @@
 <script lang="ts">
-  import { MATERIAS_APROBADAS_STORAGE_KEY } from "$app/env/public";
   import { esCalificacionAprobada } from "#lib/graph/index.js";
   import graph from "#lib/graph/state.svelte.js";
+  import { guardarMateriasAprobadas } from "#lib/graph/storage.js";
 
-  const DEBOUNCE_TIMEOUT_MS = 500;
-
-  let timeout: ReturnType<typeof setTimeout> | undefined;
   let materiaSeleccionada = $derived(graph.materiaSeleccionada);
 
   const handleInput = (event: Event) => {
@@ -21,11 +18,7 @@
     );
     if (calificacion !== null) materiasAprobadas.push({ codigo: codigoMateria, calificacion });
     graph.materiasAprobadas = materiasAprobadas;
-
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      localStorage.setItem(MATERIAS_APROBADAS_STORAGE_KEY, JSON.stringify(graph.materiasAprobadas));
-    }, DEBOUNCE_TIMEOUT_MS);
+    guardarMateriasAprobadas(graph.materiasAprobadas);
   };
 </script>
 

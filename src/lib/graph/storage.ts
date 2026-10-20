@@ -8,8 +8,13 @@ export const cargarMateriasAprobadas = (): MateriaAprobada[] | null => {
   const datosPersistidos = localStorage.getItem(MATERIAS_APROBADAS_STORAGE_KEY);
   if (datosPersistidos === null) return null;
 
-  return JSON.parse(datosPersistidos) as MateriaAprobada[];
+  try {
+    return JSON.parse(datosPersistidos) as MateriaAprobada[];
+  } catch {
+    return null;
+  }
 };
 
 export const guardarMateriasAprobadas = (materiasAprobadas: MateriaAprobada[]) => {
+  localStorage.setItem(MATERIAS_APROBADAS_STORAGE_KEY, JSON.stringify(materiasAprobadas));
 };
