@@ -43,7 +43,45 @@
     return () => observador.disconnect();
   }
 
-  const campo = "w-full border border-borde-fuerte bg-campo px-3 py-2.5 font-mono text-sm";
+  // iOS/iPadOS abre el teclado achicando solo el viewport visual y desplazando la página
+  // para mostrar el input: el panel (posicionado contra el viewport de layout) quedaba
+  // corrido o cortado. Se lo ajusta al viewport visual y se revierte el scroll de la página.
+  function seguirTeclado(nodo: HTMLElement) {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const ajustar = () => {
+      if (window.scrollX || window.scrollY) window.scrollTo(0, 0);
+      const tapado = window.innerHeight - vv.height - vv.offsetTop;
+      if (tapado > 80) {
+        // El panel arranca bajo la barra de herramientas: solo puede ocupar lo que queda
+        // entre su borde superior y el teclado.
+        const arriba = nodo.getBoundingClientRect().top;
+        nodo.style.maxHeight = `${Math.max(160, vv.offsetTop + vv.height - arriba - 8)}px`;
+      } else {
+        nodo.style.maxHeight = "";
+      }
+    };
+    const alEnfocar = (e: FocusEvent) => {
+      if (!(e.target instanceof HTMLInputElement)) return;
+      setTimeout(() => {
+        ajustar();
+        // Se desplaza el contenido del panel (no la página) hasta mostrar el input, sin dejar espacio vacío.
+        if (!(e.target instanceof HTMLElement)) return;
+        const dentro = e.target.getBoundingClientRect().top - nodo.getBoundingClientRect().top;
+        nodo.scrollTo({ top: nodo.scrollTop + dentro - 72, behavior: "smooth" });
+      }, 300);
+    };
+    vv.addEventListener("resize", ajustar);
+    vv.addEventListener("scroll", ajustar);
+    nodo.addEventListener("focusin", alEnfocar);
+    return () => {
+      vv.removeEventListener("resize", ajustar);
+      vv.removeEventListener("scroll", ajustar);
+      nodo.removeEventListener("focusin", alEnfocar);
+    };
+  }
+
+  const campo = "w-full border border-borde-fuerte bg-campo px-3 py-2.5 font-mono text-sm pointer-coarse:text-base";
 
   let abierto = $state(false);
   let entrada = $state("");
@@ -216,6 +254,7 @@
       sideOffset={8}
       collisionPadding={8}
       aria-labelledby="sync-titulo"
+      {@attach seguirTeclado}
       class="relative z-50 max-h-(--bits-popover-content-available-height) w-[calc(100vw-1rem)] max-w-md origin-(--bits-popover-content-transform-origin) overflow-y-auto overscroll-contain superficie-fuerte p-4 text-base text-texto motion-safe:data-[state=closed]:animate-salida-panel motion-safe:data-[state=open]:animate-entrada-panel"
     >
       <Popover.Close
@@ -230,7 +269,7 @@
       </h2>
 
       <div
-        class="mt-3 flex gap-2 border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-900 dark:text-amber-200"
+        class="mt-3 gap-2 border border-amber-500/40 flex bg-amber-500/10 p-3 text-sm text-amber-900 dark:text-amber-200"
         role="note"
       >
         <AlertTriangle
@@ -275,7 +314,7 @@
         >
           <div bind:clientHeight={alto}>
             <Tabs.Content value="exportar" class="pt-4 outline-none">
-              <ol class="list-decimal space-y-1 pl-5 text-texto-suave">
+              <ol class="list-decimal space-y-1 pl-5 text-sm text-texto-suave">
                 <li>
                   En el otro dispositivo, escaneá el QR con la cámara o abrí el enlace en el
                   navegador.
@@ -314,7 +353,9 @@
               <div class="mt-4">{@render campoCopiable("codigo", "Código", codigo)}</div>
             </Tabs.Content>
             <Tabs.Content value="importar" class="pt-4 outline-none">
-              <ol class="list-decimal space-y-1 pl-5 text-texto-suave">
+              <ol
+                class="list-decimal space-y-1 pl-5 text-sm text-texto-suave "
+              >
                 <li>En el otro dispositivo abrí "Enviar a otro dispositivo".</li>
                 <li>Copiá el enlace o el código (o escaneá el QR).</li>
                 <li>Pegalo acá abajo para previsualizar los cambios.</li>
