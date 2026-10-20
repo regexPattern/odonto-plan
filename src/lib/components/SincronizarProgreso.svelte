@@ -33,7 +33,6 @@
     retraso: ((i % DIENTES_POR_LADO) + Math.floor(i / DIENTES_POR_LADO)) * 0.1,
   }));
 
-  const boton = "border border-borde-fuerte px-3 py-2 text-base hover:bg-hover disabled:opacity-50";
   // Bits usa roving tabindex (-1 en la pestaña inactiva); acá Tab recorre ambas pestañas.
   function tabulable(nodo: HTMLElement) {
     const forzar = () => nodo.getAttribute("tabindex") !== "0" && (nodo.tabIndex = 0);
@@ -414,7 +413,7 @@
                 {:else}
                   <button
                     type="button"
-                    class="{boton} mt-4 flex w-full cursor-pointer items-center justify-center gap-1.5 text-sm!"
+                    class="mt-4 flex w-full cursor-pointer items-center justify-center gap-1.5 border border-border-desbloqueada bg-bg-desbloqueada px-3 py-2 text-sm font-medium text-fg-desbloqueada transition-[filter] hover:brightness-110"
                     onclick={deshacer}
                   >
                     <History size={18} aria-hidden="true" class="shrink-0" />
