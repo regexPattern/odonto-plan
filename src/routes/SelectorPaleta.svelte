@@ -1,14 +1,17 @@
 <script lang="ts">
+  import Monitor from "@withicons/svelte/kawaii/icons/monitor";
+  import Moon from "@withicons/svelte/kawaii/icons/moon";
   import Palette from "@withicons/svelte/kawaii/icons/palette";
+  import Sun from "@withicons/svelte/kawaii/icons/sun";
   import { Popover } from "bits-ui";
   import { setMode, userPrefersMode } from "mode-watcher";
   import { PALETAS } from "#lib/palette/index.js";
   import paleta from "#lib/palette/state.svelte.js";
 
   const MODOS = [
-    { id: "system", nombre: "Sistema" },
-    { id: "light", nombre: "Claro" },
-    { id: "dark", nombre: "Oscuro" },
+    { id: "system", nombre: "Sistema", Icono: Monitor },
+    { id: "light", nombre: "Claro", Icono: Sun },
+    { id: "dark", nombre: "Oscuro", Icono: Moon },
   ] as const;
 
   const opcion =
@@ -29,18 +32,24 @@
       align="center"
       sideOffset={8}
       collisionPadding={8}
+      aria-labelledby="apariencia-titulo"
       class="z-50 w-72 origin-(--bits-popover-content-transform-origin) border border-borde bg-panel-fuerte p-3 text-sm text-texto shadow-lg backdrop-blur-xl motion-safe:data-[state=open]:animate-entrada-panel"
     >
-      <section aria-labelledby="modo-titulo">
-        <h2 id="modo-titulo" class="font-serif text-base font-medium">Tema</h2>
-        <div class="mt-2 grid grid-cols-3 gap-1.5">
-          {#each MODOS as { id, nombre } (id)}
+      <h2 id="apariencia-titulo" class="flex items-center gap-2 font-serif text-xl font-medium">
+        <Palette size={24} aria-hidden="true" class="shrink-0 text-link-fuerte" />
+        Apariencia
+      </h2>
+
+      <section class="mt-4" aria-label="Tema">
+        <div class="grid grid-cols-3 border border-borde">
+          {#each MODOS as { id, nombre, Icono } (id)}
             <button
               type="button"
-              class={opcion}
+              class="flex items-center justify-center gap-1.5 px-2 py-2 text-sm font-medium text-texto hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline aria-pressed:bg-seleccion"
               aria-pressed={userPrefersMode.current === id}
               onclick={() => setMode(id)}
             >
+              <Icono size={16} aria-hidden="true" class="shrink-0 text-link-fuerte" />
               {nombre}
             </button>
           {/each}
@@ -51,7 +60,7 @@
       </section>
 
       <section class="mt-4" aria-labelledby="paleta-titulo">
-        <h2 id="paleta-titulo" class="font-serif text-base font-medium">Paleta</h2>
+        <h3 id="paleta-titulo" class="font-serif text-base font-medium">Paleta de colores</h3>
         <ul class="mt-2 space-y-1.5">
           {#each PALETAS as { id, nombre } (id)}
             <li>
