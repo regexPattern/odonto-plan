@@ -34,7 +34,7 @@
         const panel = document.querySelector("[data-panel-materia]");
         const arriba = panel?.getBoundingClientRect().top;
         if (arriba !== undefined && panel?.firstElementChild?.clientHeight) {
-          limite = Math.min(limite, arriba - 40);
+          limite = Math.min(limite, arriba - 50);
         }
       }
       y = Math.min(y, limite - abajo);
