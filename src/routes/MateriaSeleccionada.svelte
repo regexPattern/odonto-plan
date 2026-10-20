@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Calendar, Clock, Star, Tooth } from "@withicons/svelte/kawaii";
+  import MousePointerClick from "@withicons/svelte/kawaii/icons/mouse-pointer-click";
   import { esCalificacionAprobada } from "#lib/graph/index.js";
   import graph from "#lib/graph/state.svelte.js";
   import { guardarMateriasAprobadas } from "#lib/graph/storage.js";
@@ -147,7 +148,10 @@
       {/if}
     </div>
   {:else}
-    <div>Hacé click en una materia para ver sus detalles.</div>
+    <div class="flex items-start gap-2">
+      <MousePointerClick size={24} class="shrink-0" aria-hidden="true" />
+      <div>Hacé click en una materia para ver sus detalles o afuera para volver.</div>
+    </div>
   {/if}
 </div>
 
