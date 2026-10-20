@@ -6,6 +6,7 @@
   import { nodeTypes } from "#lib/graph/index.js";
   import { MAX_ZOOM, MIN_ZOOM } from "#lib/graph/layout.js";
   import graph from "#lib/graph/state.svelte.js";
+  import logo from "#lib/assets/favicon.svg";
   import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
   import AyudaPopover from "#lib/components/AyudaPopover.svelte";
   import ControlesPane from "#lib/components/ControlesPane.svelte";
@@ -16,7 +17,7 @@
   import SincronizarProgreso from "#lib/components/SincronizarProgreso.svelte";
 
   const DESCRIPTION =
-    "Seguí tu progreso en la carrera y mirá qué tan cerca estás de ser odontólogo y odontóloga.";
+    "Seguí tu progreso en la carrera y mirá qué tan cerca estás de ser odontólogo u odontóloga.";
   const INITIAL_VIEWPORT = { x: 0, y: 100, zoom: 1 };
 
   // Montar la sincronización y la barra recién cuando el progreso local ya está cargado.
@@ -79,9 +80,10 @@
          va como panel inferior sobre el progreso; desde lg vuelve a las esquinas. -->
     <Panel position="top-left" class="pointer-events-none! inset-0! m-0!">
       <div
-        class="pointer-events-auto absolute top-2 left-2 flex h-10 items-center border border-transparent sm:h-11 lg:top-4 lg:left-4"
+        class="pointer-events-auto absolute top-2 left-2 flex h-10 items-center gap-2 bg-panel/60 px-2 backdrop-blur-sm sm:h-11 lg:top-4 lg:left-4"
       >
-        <span class="text-lg font-medium sm:text-xl">Odonto Plan</span>
+        <img src={logo} alt="" class="h-6 w-6 shrink-0 sm:h-7 sm:w-7" />
+        <span class="text-lg font-medium tracking-tight sm:text-xl">OdontoPlan</span>
       </div>
 
       <div class="pointer-events-auto absolute top-2 right-2 lg:top-4 lg:right-4">
