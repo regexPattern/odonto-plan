@@ -2,6 +2,8 @@
 @import "@fontsource-variable/inter/wght.css";
 
 @import "tailwindcss";
+@import "@withicons/motion/motion.css";
+@import "@withicons/motion/icons/calendar.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -24,6 +26,10 @@
 
   --color-edge: #52525c;
   --color-edge-activo: #d4d4d8;
+}
+
+.boton-herramienta {
+  @apply flex size-11 items-center justify-center border border-zinc-700/70 bg-[#141414]/50 text-zinc-100 backdrop-blur-xl transition-colors hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-400;
 }
 
 .svelte-flow .svelte-flow__edge-path {

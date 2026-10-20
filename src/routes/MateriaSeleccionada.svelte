@@ -79,18 +79,25 @@
       {materiaSeleccionada.nombre}
     </h1>
     <div class="space-y-2">
-      <div class="flex items-start gap-2">
-        <Calendar size={24} class="shrink-0" aria-hidden="true" />
+      <div class="wm-trigger flex items-start gap-2">
+        <Calendar size={24} class="wm wm-hover shrink-0" data-wm="calendar" aria-hidden="true" />
         <div><span class="font-medium">Duración:</span> {materiaSeleccionada.duracion}</div>
       </div>
-      <div class="flex items-start gap-2">
-        <Clock size={24} class="shrink-0" aria-hidden="true" />
+      <div class="wm-trigger flex items-start gap-2">
+        <Clock
+          size={24}
+          class="wm wm-hover wm-p-wiggle shrink-0"
+          data-wm="clock"
+          aria-hidden="true"
+        />
         <div><span class="font-medium">Carga horaria:</span> {materiaSeleccionada.horas}</div>
       </div>
     </div>
     <div>
-      <div class="mb-2 flex items-start gap-2">
-        <Star size={24} class="shrink-0" aria-hidden="true" />
+      <div class="wm-trigger mb-2 flex items-start gap-2">
+        <span class="flex size-6 shrink-0 items-center justify-center" aria-hidden="true">
+          <Star size={28} class="wm wm-hover wm-p-pop shrink-0" data-wm="star" />
+        </span>
         <label for="calificacion" class="font-medium">Calificación</label>
       </div>
       {#key materiaSeleccionada.codigo}

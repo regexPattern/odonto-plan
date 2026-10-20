@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@withicons/motion':
+        specifier: ^0.5.0
+        version: 0.5.0
       '@withicons/svelte':
         specifier: ^0.5.0
         version: 0.5.0(svelte@5.57.2)
@@ -529,6 +532,9 @@ packages:
 
   '@vitest/spy@5.0.5':
     resolution: {integrity: sha512-lwJRExuH417257Q5wv9QYugN9IMJkoxcrKrYxGPQkBzl7wlNpTUxD/5yNX4ESKVUIShKPgkGchYPFMWOOk0wzw==}
+
+  '@withicons/motion@0.5.0':
+    resolution: {integrity: sha512-J/7akIeLMgyVswvX0dVsN5BJo+G3Mr1ks+S94KFs54hzR+jTDEemDUBGqvgJ2qAAVNaaxm+jwTd2GT20tHRkxA==}
 
   '@withicons/svelte@0.5.0':
     resolution: {integrity: sha512-j0+uu/wBpalo6RgZTwwi9X2oNTUIOydVYzc++APIVaGufTtVKz6vPJHaUxal1sap3TLEkNuEusaNiCMBsklr1w==}
@@ -1532,6 +1538,8 @@ snapshots:
       vite: 8.3.4(@types/node@26.6.5)(jiti@2.7.0)
 
   '@vitest/spy@5.0.5': {}
+
+  '@withicons/motion@0.5.0': {}
 
   '@withicons/svelte@0.5.0(svelte@5.57.2)':
     dependencies:

@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { Background, Panel, SvelteFlow } from "@xyflow/svelte";
+  import Palette from "@withicons/svelte/kawaii/icons/palette";
   import "@xyflow/svelte/dist/style.css";
+  import { Background, Panel, SvelteFlow } from "@xyflow/svelte";
   import { onMount } from "svelte";
   import { nodeTypes } from "#lib/graph/index.js";
   import graph from "#lib/graph/state.svelte.js";
@@ -52,13 +53,27 @@
         class="flex items-center gap-3 border border-zinc-700/70 bg-[#141414]/50 p-2 backdrop-blur-xl"
       >
         <span class="font-serif text-xl font-medium">Odonto Plan</span>
-        {#if cargado}
-          <SincronizarProgreso />
-        {/if}
       </div>
     </Panel>
 
-    <Panel position="top-right" class="!top-16 sm:!top-0">
+    <Panel position="top-center" class="!top-16 sm:!top-0">
+      <div class="flex items-center gap-2" role="group" aria-label="Herramientas">
+        {#if cargado}
+          <SincronizarProgreso />
+        {/if}
+        <button
+          type="button"
+          class="boton-herramienta wm-trigger"
+          aria-label="Paleta de colores (próximamente)"
+          aria-disabled="true"
+          title="Paleta de colores (próximamente)"
+        >
+          <Palette size={28} class="wm wm-hover wm-p-tada" data-wm="palette" />
+        </button>
+      </div>
+    </Panel>
+
+    <Panel position="top-right" class="!top-32 sm:!top-0">
       <MateriaSeleccionada />
     </Panel>
     <Panel position="bottom-center">

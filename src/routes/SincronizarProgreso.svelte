@@ -1,6 +1,7 @@
 <script lang="ts">
   import { replaceState } from "$app/navigation";
   import { page } from "$app/state";
+  import CloudUpload from "@withicons/svelte/kawaii/icons/cloud-upload";
   import { onMount } from "svelte";
   import type { MateriaAprobada } from "#lib/graph/index.js";
   import graph from "#lib/graph/state.svelte.js";
@@ -103,7 +104,15 @@
   });
 </script>
 
-<button type="button" class={boton} onclick={abrir}>Sincronizar progreso</button>
+<button
+  type="button"
+  class="boton-herramienta wm-trigger"
+  aria-label="Sincronizar progreso"
+  title="Sincronizar progreso"
+  onclick={abrir}
+>
+  <CloudUpload size={28} class="wm wm-hover wm-p-rise" data-wm="cloud-upload" />
+</button>
 
 <dialog
   bind:this={dialog}
