@@ -33,7 +33,7 @@
       sideOffset={8}
       collisionPadding={8}
       aria-labelledby="apariencia-titulo"
-      class="z-50 w-72 origin-(--bits-popover-content-transform-origin) border border-borde bg-panel-fuerte p-3 text-sm text-texto shadow-lg backdrop-blur-xl motion-safe:data-[state=open]:animate-entrada-panel"
+      class="z-50 w-72 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-3 text-sm text-texto motion-safe:data-[state=open]:animate-entrada-panel"
     >
       <h2 id="apariencia-titulo" class="flex items-center gap-2 font-serif text-xl font-medium">
         <Palette size={24} aria-hidden="true" class="shrink-0 text-link-fuerte" />

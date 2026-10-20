@@ -34,11 +34,7 @@
   });
 </script>
 
-<div
-  class="flex items-center gap-1.5 sm:gap-2"
-  role="group"
-  aria-label="Controles de vista"
->
+<div class="flex items-center gap-1.5 sm:gap-2" role="group" aria-label="Controles de vista">
   <!-- En mobile alcanza con el gesto de pellizcar. -->
   <button
     type="button"

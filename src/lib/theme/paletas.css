@@ -14,7 +14,6 @@
   --a-800: var(--color-fuchsia-800);
   --a-950: var(--color-fuchsia-950);
   --d-50: var(--color-teal-50);
-  --d-200: var(--color-teal-200);
   --d-300: var(--color-teal-300);
   --d-400: var(--color-teal-400);
   --d-500: var(--color-teal-500);
@@ -42,7 +41,6 @@
   --a-800: var(--color-blue-800);
   --a-950: var(--color-blue-950);
   --d-50: var(--color-amber-50);
-  --d-200: var(--color-amber-200);
   --d-300: var(--color-amber-300);
   --d-400: var(--color-amber-400);
   --d-500: var(--color-amber-500);
@@ -70,7 +68,6 @@
   --a-800: var(--color-emerald-800);
   --a-950: var(--color-emerald-950);
   --d-50: var(--color-lime-50);
-  --d-200: var(--color-lime-200);
   --d-300: var(--color-lime-300);
   --d-400: var(--color-lime-400);
   --d-500: var(--color-lime-500);
@@ -98,7 +95,6 @@
   --a-800: var(--color-orange-800);
   --a-950: var(--color-orange-950);
   --d-50: var(--color-violet-50);
-  --d-200: var(--color-violet-200);
   --d-300: var(--color-violet-300);
   --d-400: var(--color-violet-400);
   --d-500: var(--color-violet-500);
@@ -133,7 +129,6 @@
   --color-edge: var(--n-400);
   --color-edge-activo: var(--n-700);
   --color-link: var(--d-300);
-  --color-link-suave: var(--d-200);
   --color-link-outline: var(--d-400);
   --color-link-border: var(--d-700);
   --color-link-bg: var(--d-800);

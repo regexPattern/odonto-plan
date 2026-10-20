@@ -74,7 +74,7 @@
 
 <div
   class={[
-    "divide-y divide-borde border border-borde bg-panel backdrop-blur-xl *:p-3 max-lg:max-h-[50dvh] max-lg:overflow-y-auto max-lg:overscroll-contain lg:w-72",
+    "divide-y divide-borde superficie *:p-3 max-lg:max-h-[50dvh] max-lg:overflow-y-auto max-lg:overscroll-contain lg:w-72",
     // En mobile el panel solo aparece cuando hay una materia seleccionada.
     !materiaSeleccionada && "max-lg:hidden",
   ]}
@@ -161,7 +161,11 @@
         {/each}
       </div>
       {#if error?.codigo === materiaSeleccionada.codigo}
-        <p id="calificacion-error" role="alert" class="mt-2 text-sm text-amber-600 dark:text-amber-400">
+        <p
+          id="calificacion-error"
+          role="alert"
+          class="mt-2 text-sm text-amber-600 dark:text-amber-400"
+        >
           {error.mensaje}
         </p>
       {/if}

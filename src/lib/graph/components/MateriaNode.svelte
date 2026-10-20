@@ -31,7 +31,7 @@
 
   {#if data.estado === "aprobada" && data.calificacion !== null}
     <span
-      class="absolute -top-3.5 -right-3.5 flex size-7 items-center justify-center rounded-full border-2 border-border-aprobada text-sm leading-none font-bold backdrop-blur-xl motion-safe:transition-colors motion-safe:duration-200"
+      class="absolute -top-3.5 -right-3.5 flex size-7 items-center justify-center rounded-full border-2 border-border-aprobada text-sm leading-none font-bold backdrop-blur-(--superficie-blur) motion-safe:transition-colors motion-safe:duration-200"
     >
       {data.calificacion}
     </span>

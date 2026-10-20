@@ -91,7 +91,7 @@
   <div
     id="detalle-progreso"
     role="tooltip"
-    class="pointer-events-none absolute inset-x-0 bottom-full mb-2 origin-bottom transform-gpu translate-y-2 scale-98 border border-borde bg-panel flex justify-evenly px-3 py-3 gap-3 text-center text-sm opacity-0 backdrop-blur-xl motion-safe:transition-[opacity,translate,scale] motion-safe:duration-180 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)] group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100"
+    class="pointer-events-none absolute inset-x-0 bottom-full mb-2 flex origin-bottom translate-y-2 scale-98 transform-gpu justify-evenly gap-3 superficie px-3 py-3 text-center text-sm opacity-0 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 motion-safe:transition-[opacity,translate,scale] motion-safe:duration-180 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
   >
     <div>
       <p class="text-xl font-medium tabular-nums">
@@ -106,9 +106,7 @@
       <p>electivas<br />aprobadas</p>
     </div>
   </div>
-  <div
-    class="flex items-center gap-2 rounded-full border border-borde bg-panel py-1 pr-4 pl-[11px] backdrop-blur-xl"
-  >
+  <div class="flex items-center gap-2 rounded-full superficie py-1 pr-4 pl-[11px]">
     <div
       class="relative h-8 flex-1"
       role="progressbar"
@@ -137,11 +135,10 @@
     </div>
     <button
       type="button"
-      class="cursor-help whitespace-nowrap text-sm font-medium"
+      class="cursor-help text-sm font-medium whitespace-nowrap"
       aria-describedby="detalle-progreso"
     >
-      <span class="font-semibold tabular-nums text-bg-aprobada">{porcentaje}%</span> completado
+      <span class="font-semibold text-bg-aprobada tabular-nums">{porcentaje}%</span> completado
     </button>
   </div>
 </div>
-

@@ -6,7 +6,8 @@
 @import "@withicons/motion/icons/calendar.css";
 @import "@withicons/motion/icons/palette.css";
 @import "@withicons/motion/icons/id-card.css";
-@import "./paletas.css";
+@import "#lib/theme/paletas.css";
+@import "#lib/theme/interfaz.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant aprobada (&:where(.aprobada));
@@ -15,7 +16,7 @@
 
 @theme {
   /* Placeholders para que Tailwind genere las utilidades; los valores reales los define
-     cada paleta en paletas.css. */
+     cada paleta en lib/theme/paletas.css e interfaz.css. */
   --color-bg-aprobada: transparent;
   --color-border-aprobada: transparent;
   --color-fg-aprobada: transparent;
@@ -31,27 +32,21 @@
   --color-panel-fuerte: transparent;
   --color-borde: transparent;
   --color-borde-fuerte: transparent;
-  --color-borde-activo: transparent;
   --color-hover: transparent;
   --color-seleccion: transparent;
   --color-campo: transparent;
-  --color-dialogo: transparent;
   --color-texto: transparent;
   --color-texto-suave: transparent;
   --color-texto-tenue: transparent;
   --color-pista: transparent;
   --color-pista-anillo: transparent;
   --color-link: transparent;
-  --color-link-suave: transparent;
   --color-link-fuerte: transparent;
   --color-link-outline: transparent;
   --color-link-border: transparent;
   --color-link-bg: transparent;
 
   --animate-entrada-panel: entrada-panel 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  --animate-entrada-fondo: entrada-fondo 180ms ease-out both;
-  --animate-acordeon-abrir: acordeon-abrir 0.2s ease-out;
-  --animate-acordeon-cerrar: acordeon-cerrar 0.2s ease-out;
   --animate-qr-onda: qr-onda 1.4s ease-in-out infinite;
   --animate-qr-aparecer: qr-aparecer 0.25s ease-out;
 
@@ -63,31 +58,6 @@
     to {
       opacity: 1;
       transform: translateY(0) scale(1);
-    }
-  }
-  @keyframes entrada-fondo {
-    from {
-      opacity: 0;
-    }
-  }
-  @keyframes acordeon-abrir {
-    from {
-      height: 0;
-      opacity: 0;
-    }
-    to {
-      height: var(--bits-accordion-content-height);
-      opacity: 1;
-    }
-  }
-  @keyframes acordeon-cerrar {
-    from {
-      height: var(--bits-accordion-content-height);
-      opacity: 1;
-    }
-    to {
-      height: 0;
-      opacity: 0;
     }
   }
   @keyframes qr-onda {
@@ -107,10 +77,6 @@
   }
 }
 
-.boton-herramienta {
-  @apply flex size-10 items-center justify-center border border-borde bg-panel text-texto backdrop-blur-xl transition-colors hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-outline sm:size-11;
-}
-
 .svelte-flow .svelte-flow__edge-path {
   stroke: var(--color-edge);
   stroke-width: 1;
@@ -121,46 +87,6 @@
   stroke: var(--color-edge-activo);
   stroke-width: 2;
   opacity: 1;
-}
-
-/* Colores de la interfaz (paneles, botones, diálogos) según el tema. */
-:root {
-  color-scheme: light;
-  --color-panel: rgb(255 255 255 / 0.6);
-  --color-panel-fuerte: rgb(255 255 255 / 0.8);
-  --color-borde: var(--color-zinc-300);
-  --color-borde-fuerte: var(--color-zinc-400);
-  --color-borde-activo: var(--color-zinc-900);
-  --color-hover: var(--color-zinc-200);
-  --color-seleccion: var(--color-zinc-300);
-  --color-campo: var(--color-zinc-100);
-  --color-dialogo: var(--color-white);
-  --color-texto: var(--color-zinc-900);
-  --color-texto-suave: var(--color-zinc-700);
-  --color-texto-tenue: var(--color-zinc-500);
-  --color-pista: var(--color-zinc-300);
-  --color-pista-anillo: rgb(0 0 0 / 0.1);
-  /* `link` es claro (pensado para fondos oscuros): en tema claro se oscurece para tener contraste. */
-  --color-link-fuerte: color-mix(in oklab, var(--color-link) 35%, black);
-}
-
-:root.dark {
-  color-scheme: dark;
-  --color-panel: rgb(20 20 20 / 0.5);
-  --color-panel-fuerte: rgb(20 20 20 / 0.8);
-  --color-borde: rgb(63 63 70 / 0.7);
-  --color-borde-fuerte: var(--color-zinc-600);
-  --color-borde-activo: var(--color-zinc-200);
-  --color-hover: var(--color-zinc-800);
-  --color-seleccion: var(--color-zinc-700);
-  --color-campo: var(--color-zinc-900);
-  --color-dialogo: var(--color-zinc-950);
-  --color-texto: var(--color-zinc-100);
-  --color-texto-suave: var(--color-zinc-300);
-  --color-texto-tenue: var(--color-zinc-400);
-  --color-pista: var(--color-zinc-700);
-  --color-pista-anillo: rgb(255 255 255 / 0.15);
-  --color-link-fuerte: var(--color-link);
 }
 
 /* Iconos kawaii: sin el corazón decorativo en toda la app. */

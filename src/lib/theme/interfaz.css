@@ -1,0 +1,85 @@
+/* Tema de la interfaz: superficies flotantes sobre el grafo (botones, paneles, popovers) y colores
+   de texto/bordes. Si hacés un fork, esto es lo único que hace falta tocar para cambiar el
+   "material" de todas las superficies a la vez.
+
+   Perillas de las superficies:
+     --superficie-base       color del vidrio (se mezcla con transparente según la opacidad)
+     --superficie-opacidad   opacidad de paneles y botones (0–1; más alto = menos transparente)
+     --superficie-opacidad-fuerte  ídem para popovers, que van sobre contenido (0–1)
+     --superficie-blur       desenfoque del fondo
+     --superficie-sombra     sombra de los popovers
+     --color-borde           borde de todas las superficies */
+
+:root {
+  color-scheme: light;
+
+  --superficie-base: white;
+  --superficie-opacidad: 0.72;
+  --superficie-opacidad-fuerte: 0.88;
+  --superficie-blur: 24px;
+  --superficie-sombra: var(--shadow-lg);
+
+  --color-panel: color-mix(
+    in srgb,
+    var(--superficie-base) calc(var(--superficie-opacidad) * 100%),
+    transparent
+  );
+  --color-panel-fuerte: color-mix(
+    in srgb,
+    var(--superficie-base) calc(var(--superficie-opacidad-fuerte) * 100%),
+    transparent
+  );
+  --color-borde: var(--color-zinc-300);
+  --color-borde-fuerte: var(--color-zinc-400);
+  --color-hover: var(--color-zinc-200);
+  --color-seleccion: var(--color-zinc-300);
+  --color-campo: var(--color-zinc-100);
+  --color-texto: var(--color-zinc-900);
+  --color-texto-suave: var(--color-zinc-700);
+  --color-texto-tenue: var(--color-zinc-500);
+  --color-pista: var(--color-zinc-300);
+  --color-pista-anillo: rgb(0 0 0 / 0.1);
+  /* `link` es claro (pensado para fondos oscuros): en tema claro se oscurece para tener contraste. */
+  --color-link-fuerte: color-mix(in oklab, var(--color-link) 35%, black);
+}
+
+:root.dark {
+  color-scheme: dark;
+
+  --superficie-base: rgb(20 20 20);
+  --superficie-opacidad: 0.62;
+  --superficie-opacidad-fuerte: 0.88;
+
+  --color-borde: rgb(63 63 70 / 0.7);
+  --color-borde-fuerte: var(--color-zinc-600);
+  --color-hover: var(--color-zinc-800);
+  --color-seleccion: var(--color-zinc-700);
+  --color-campo: var(--color-zinc-900);
+  --color-texto: var(--color-zinc-100);
+  --color-texto-suave: var(--color-zinc-300);
+  --color-texto-tenue: var(--color-zinc-400);
+  --color-pista: var(--color-zinc-700);
+  --color-pista-anillo: rgb(255 255 255 / 0.15);
+  --color-link-fuerte: var(--color-link);
+}
+
+/* Material compartido: vidrio esmerilado con borde. Sólo el desenfoque y el borde; el fondo
+   viene de `bg-panel` / `bg-panel-fuerte` según el caso. */
+@utility superficie {
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-panel);
+  backdrop-filter: blur(var(--superficie-blur));
+}
+
+/* Superficies que se abren sobre otras (popovers): más opacas y con sombra. */
+@utility superficie-fuerte {
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-panel-fuerte);
+  backdrop-filter: blur(var(--superficie-blur));
+  box-shadow: var(--superficie-sombra);
+}
+
+/* Botones cuadrados de la barra de herramientas. */
+.boton-herramienta {
+  @apply flex size-10 items-center justify-center superficie text-texto transition-colors hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-outline sm:size-11;
+}

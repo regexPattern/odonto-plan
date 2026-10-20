@@ -180,24 +180,28 @@
       sideOffset={8}
       collisionPadding={8}
       aria-labelledby="sync-titulo"
-      class="z-50 max-h-(--bits-popover-content-available-height) w-[calc(100vw-1rem)] max-w-md origin-(--bits-popover-content-transform-origin) overflow-y-auto overscroll-contain border border-borde bg-panel-fuerte p-4 text-base text-texto shadow-lg backdrop-blur-xl motion-safe:data-[state=open]:animate-entrada-panel"
+      class="z-50 max-h-(--bits-popover-content-available-height) w-[calc(100vw-1rem)] max-w-md origin-(--bits-popover-content-transform-origin) overflow-y-auto overscroll-contain superficie-fuerte p-4 text-base text-texto motion-safe:data-[state=open]:animate-entrada-panel"
     >
       <h2 id="sync-titulo" class="flex items-center gap-2 font-serif text-xl font-medium">
         <CloudUpload size={24} aria-hidden="true" class="shrink-0 text-link-fuerte" />
         Sincronizar progreso
       </h2>
 
-    <div
-      class="mt-3 flex gap-2 border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-900 dark:text-amber-200"
-      role="note"
-    >
-      <AlertTriangle size={18} aria-hidden="true" class="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400" />
-      <p>
-        <strong class="font-medium">La sincronización es manual.</strong> Copiás una instantánea de tus
-        notas. Los cambios posteriores no se actualizan solos, sino que tenés que irlos cargando a medida
-        los vas registrando en cada cuatrimestre.
-      </p>
-    </div>
+      <div
+        class="mt-3 flex gap-2 border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-900 dark:text-amber-200"
+        role="note"
+      >
+        <AlertTriangle
+          size={18}
+          aria-hidden="true"
+          class="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400"
+        />
+        <p>
+          <strong class="font-medium">La sincronización es manual.</strong> Copiás una instantánea de
+          tus notas. Los cambios posteriores no se actualizan solos, sino que tenés que irlos cargando
+          a medida los vas registrando en cada cuatrimestre.
+        </p>
+      </div>
 
       <Tabs.Root bind:value={seccion} class="mt-4">
         <Tabs.List class="grid grid-cols-2 border border-borde">
@@ -221,113 +225,113 @@
           style:height={alto === undefined ? undefined : `${alto}px`}
         >
           <div bind:clientHeight={alto}>
-          <Tabs.Content value="exportar" class="pt-4">
-            <ol class="list-decimal space-y-1 pl-5 text-texto-suave">
-              <li>
-                En el otro dispositivo, escaneá el QR con la cámara o abrí el enlace en el
-                navegador.
-              </li>
-              <li>
-                O también podés copiar el código y pegarlo en "Recibir en este dispositivo" desde el
-                otro dispositivo.
-              </li>
-              <li>Revisá la previsualización y confirmá.</li>
-            </ol>
-            <div class="mx-auto my-4 size-48">
-              {#await generarQR(enlace)}
-                <div
-                  class="grid size-full grid-cols-8 place-items-center overflow-hidden border border-borde bg-campo p-1"
-                  role="status"
-                  aria-label="Generando código QR"
-                >
-                  {#each dientes as { retraso }}
-                    <DienteSolido
-                      size={16}
-                      aria-hidden="true"
-                      class="text-pista motion-safe:animate-qr-onda"
-                      style="animation-delay: {retraso - 1.4}s"
-                    />
-                  {/each}
-                </div>
-              {:then src}
-                <img
-                  {src}
-                  alt="QR para importar tu progreso"
-                  class="size-full bg-white motion-safe:animate-qr-aparecer"
-                />
-              {/await}
-            </div>
-            {@render campoCopiable("enlace", "Enlace", enlace)}
-            <div class="mt-4">{@render campoCopiable("codigo", "Código", codigo)}</div>
-          </Tabs.Content>
-          <Tabs.Content value="importar" class="pt-4">
-            <ol class="list-decimal space-y-1 pl-5 text-texto-suave">
-              <li>En el otro dispositivo abrí "Enviar a otro dispositivo".</li>
-              <li>Copiá el enlace o el código (o escaneá el QR).</li>
-              <li>Pegalo acá abajo para previsualizar los cambios.</li>
-              <li>Si las notas son correctas, confirmá con "Reemplazar mi progreso".</li>
-            </ol>
-            <form
-              class="mt-4 space-y-1.5"
-              onsubmit={(e) => {
-                e.preventDefault();
-                previsualizar();
-              }}
-            >
-              <label class="block" for="sync-entrada">Pegá un código o enlace</label>
-              <input
-                id="sync-entrada"
-                bind:value={entrada}
-                oninput={(e) => {
-                  previa = null;
-                  // Al pegar, previsualiza solo; al tipear espera a Enter.
-                  if ((e as InputEvent).inputType === "insertFromPaste") previsualizar();
-                }}
-                spellcheck="false"
-                autocomplete="off"
-                class={campo}
-              />
-            </form>
-
-            {#if previa}
-              <section class="mt-4 border border-link-border p-4">
-                <p>
-                  Recibís <strong>{previa.length} de {MATERIAS.length}</strong> materias aprobadas.
-                  Al confirmar se <strong>reemplaza</strong> tu progreso actual (no se combina).
-                </p>
-                {#if previa.length}
-                  <details class="mt-2">
-                    <summary class="cursor-pointer">Ver notas recibidas</summary>
-                    <ul>
-                      {#each previa as { codigo, calificacion } (codigo)}
-                        <li>{nombres.get(codigo)}: <strong>{calificacion}</strong></li>
-                      {/each}
-                    </ul>
-                  </details>
-                {/if}
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <button type="button" class="{boton} bg-link-bg" onclick={reemplazar}>
-                    Reemplazar mi progreso
-                  </button>
-                  <button type="button" class={boton} onclick={() => (previa = null)}
-                    >Cancelar</button
+            <Tabs.Content value="exportar" class="pt-4">
+              <ol class="list-decimal space-y-1 pl-5 text-texto-suave">
+                <li>
+                  En el otro dispositivo, escaneá el QR con la cámara o abrí el enlace en el
+                  navegador.
+                </li>
+                <li>
+                  O también podés copiar el código y pegarlo en "Recibir en este dispositivo" desde
+                  el otro dispositivo.
+                </li>
+                <li>Revisá la previsualización y confirmá.</li>
+              </ol>
+              <div class="mx-auto my-4 size-48">
+                {#await generarQR(enlace)}
+                  <div
+                    class="grid size-full grid-cols-8 place-items-center overflow-hidden border border-borde bg-campo p-1"
+                    role="status"
+                    aria-label="Generando código QR"
                   >
-                </div>
-              </section>
-            {/if}
-
-            {#if anterior}
-              <div class="mt-4 border-t border-borde pt-3">
-                <p class="text-texto-suave">
-                  Podés volver al progreso previo a la importación (se pierden los cambios hechos
-                  después). Solo disponible hasta recargar la página.
-                </p>
-                <button type="button" class="{boton} mt-1" onclick={deshacer}>
-                  Deshacer última importación
-                </button>
+                    {#each dientes as { retraso }}
+                      <DienteSolido
+                        size={16}
+                        aria-hidden="true"
+                        class="text-pista motion-safe:animate-qr-onda"
+                        style="animation-delay: {retraso - 1.4}s"
+                      />
+                    {/each}
+                  </div>
+                {:then src}
+                  <img
+                    {src}
+                    alt="QR para importar tu progreso"
+                    class="size-full bg-white motion-safe:animate-qr-aparecer"
+                  />
+                {/await}
               </div>
-            {/if}
-          </Tabs.Content>
+              {@render campoCopiable("enlace", "Enlace", enlace)}
+              <div class="mt-4">{@render campoCopiable("codigo", "Código", codigo)}</div>
+            </Tabs.Content>
+            <Tabs.Content value="importar" class="pt-4">
+              <ol class="list-decimal space-y-1 pl-5 text-texto-suave">
+                <li>En el otro dispositivo abrí "Enviar a otro dispositivo".</li>
+                <li>Copiá el enlace o el código (o escaneá el QR).</li>
+                <li>Pegalo acá abajo para previsualizar los cambios.</li>
+                <li>Si las notas son correctas, confirmá con "Reemplazar mi progreso".</li>
+              </ol>
+              <form
+                class="mt-4 space-y-1.5"
+                onsubmit={(e) => {
+                  e.preventDefault();
+                  previsualizar();
+                }}
+              >
+                <label class="block" for="sync-entrada">Pegá un código o enlace</label>
+                <input
+                  id="sync-entrada"
+                  bind:value={entrada}
+                  oninput={(e) => {
+                    previa = null;
+                    // Al pegar, previsualiza solo; al tipear espera a Enter.
+                    if ((e as InputEvent).inputType === "insertFromPaste") previsualizar();
+                  }}
+                  spellcheck="false"
+                  autocomplete="off"
+                  class={campo}
+                />
+              </form>
+
+              {#if previa}
+                <section class="mt-4 border border-link-border p-4">
+                  <p>
+                    Recibís <strong>{previa.length} de {MATERIAS.length}</strong> materias
+                    aprobadas. Al confirmar se <strong>reemplaza</strong> tu progreso actual (no se combina).
+                  </p>
+                  {#if previa.length}
+                    <details class="mt-2">
+                      <summary class="cursor-pointer">Ver notas recibidas</summary>
+                      <ul>
+                        {#each previa as { codigo, calificacion } (codigo)}
+                          <li>{nombres.get(codigo)}: <strong>{calificacion}</strong></li>
+                        {/each}
+                      </ul>
+                    </details>
+                  {/if}
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    <button type="button" class="{boton} bg-link-bg" onclick={reemplazar}>
+                      Reemplazar mi progreso
+                    </button>
+                    <button type="button" class={boton} onclick={() => (previa = null)}
+                      >Cancelar</button
+                    >
+                  </div>
+                </section>
+              {/if}
+
+              {#if anterior}
+                <div class="mt-4 border-t border-borde pt-3">
+                  <p class="text-texto-suave">
+                    Podés volver al progreso previo a la importación (se pierden los cambios hechos
+                    después). Solo disponible hasta recargar la página.
+                  </p>
+                  <button type="button" class="{boton} mt-1" onclick={deshacer}>
+                    Deshacer última importación
+                  </button>
+                </div>
+              {/if}
+            </Tabs.Content>
           </div>
         </div>
       </Tabs.Root>
