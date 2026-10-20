@@ -11,13 +11,13 @@
   import paleta from "#lib/palette/state.svelte.js";
 
   const MODOS = [
-    { id: "system", nombre: "Sistema", Icono: Monitor },
-    { id: "light", nombre: "Claro", Icono: Sun },
-    { id: "dark", nombre: "Oscuro", Icono: Moon },
+    { id: "system", nombre: "Auto", Icono: Monitor, ajuste: "" },
+    { id: "light", nombre: "Claro", Icono: Sun, ajuste: "" },
+    { id: "dark", nombre: "Oscuro", Icono: Moon, ajuste: "ml-[3px] -mr-[3px]" },
   ] as const;
 
   const opcion =
-    "border border-borde bg-transparent px-3 py-2 text-texto hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline aria-pressed:bg-seleccion";
+    "border border-borde bg-transparent px-3 py-2 text-texto hover:bg-hover aria-pressed:bg-seleccion";
 </script>
 
 <Popover.Root>
@@ -39,7 +39,7 @@
     >
       <Popover.Close
         aria-label="Cerrar"
-        class="absolute top-2 right-2 flex size-7 items-center justify-center text-texto hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
+        class="absolute top-2 right-2 flex size-7 items-center justify-center text-texto hover:bg-hover"
       >
         <X size={18} aria-hidden="true" />
       </Popover.Close>
@@ -49,22 +49,19 @@
       </h2>
 
       <section class="mt-4" aria-label="Tema">
-        <div class="grid grid-cols-3 border border-borde">
-          {#each MODOS as { id, nombre, Icono } (id)}
+        <div class="grid grid-cols-3 gap-1.5 border border-borde p-1.5">
+          {#each MODOS as { id, nombre, Icono, ajuste } (id)}
             <button
               type="button"
-              class="flex items-center justify-center gap-1.5 px-2 py-2 text-sm font-medium text-texto hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline aria-pressed:bg-seleccion"
+              class="flex items-center justify-center gap-1.5 px-2.5 py-2 text-sm font-medium text-texto hover:bg-hover aria-pressed:bg-seleccion"
               aria-pressed={userPrefersMode.current === id}
               onclick={() => setMode(id)}
             >
-              <Icono size={16} aria-hidden="true" class="shrink-0 text-link-fuerte" />
+              <Icono size={16} aria-hidden="true" class="shrink-0 text-link-fuerte {ajuste}" />
               {nombre}
             </button>
           {/each}
         </div>
-        <p class="mt-1.5 text-xs text-texto-tenue">
-          «Sistema» sigue el tema claro u oscuro de tu dispositivo.
-        </p>
       </section>
 
       <section class="mt-4" aria-labelledby="paleta-titulo">

@@ -105,6 +105,17 @@
 }
 
 @layer base {
+  /* Foco visible sólo con teclado; el outline sigue el border-radius del elemento. */
+  :focus-visible {
+    outline: 2px solid var(--color-link-outline);
+    outline-offset: 2px;
+  }
+
+  /* Paneles no interactivos: sin anillo. */
+  [role="tabpanel"]:focus-visible {
+    outline: none;
+  }
+
   button {
     color: inherit;
   }

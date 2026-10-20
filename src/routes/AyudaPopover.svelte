@@ -108,7 +108,7 @@
     >
       <Popover.Close
         aria-label="Cerrar"
-        class="absolute top-2 right-2 flex size-7 items-center justify-center text-texto hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
+        class="absolute top-2 right-2 flex size-7 items-center justify-center text-texto hover:bg-hover"
       >
         <X size={18} aria-hidden="true" />
       </Popover.Close>
@@ -122,7 +122,7 @@
             <button
               type="button"
               onclick={() => resaltar(destino)}
-              class="flex w-full cursor-pointer items-start gap-2 p-1.5 text-sm text-left hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
+              class="flex w-full cursor-pointer items-start gap-2 p-1.5 text-sm text-left hover:bg-hover focus-visible:-outline-offset-2"
             >
               <Icono size={24} class="shrink-0" aria-hidden="true" />
               <span>{texto}</span>

@@ -82,5 +82,5 @@
 
 /* Botones cuadrados de la barra de herramientas. */
 .boton-herramienta {
-  @apply flex size-10 items-center justify-center superficie text-texto transition-colors hover:bg-hover aria-expanded:bg-seleccion focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link-outline sm:size-11;
+  @apply flex size-10 items-center justify-center superficie text-texto transition-colors hover:bg-hover aria-expanded:bg-seleccion sm:size-11;
 }

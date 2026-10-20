@@ -49,7 +49,7 @@
               href={PERFIL_LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center gap-2 px-3 py-2 hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
+              class="flex items-center gap-2 px-3 py-2 hover:bg-hover focus-visible:-outline-offset-2"
             >
               <svg
                 aria-hidden="true"
@@ -71,7 +71,7 @@
               href={PERFIL_GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center gap-2 px-3 py-2 hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
+              class="flex items-center gap-2 px-3 py-2 hover:bg-hover focus-visible:-outline-offset-2"
             >
               <svg
                 aria-hidden="true"
@@ -92,7 +92,7 @@
             <button
               type="button"
               onclick={copiarCorreo}
-              class="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
+              class="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-hover focus-visible:-outline-offset-2"
             >
               {#if copiado}
                 <MailCheck size={16} aria-hidden="true" class="shrink-0 text-link-fuerte" />

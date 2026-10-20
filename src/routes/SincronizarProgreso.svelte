@@ -1,19 +1,19 @@
 <script lang="ts">
-  import { animar } from "#lib/animar.js";
   import { replaceState } from "$app/navigation";
   import { page } from "$app/state";
   import AlertTriangle from "@withicons/svelte/kawaii/icons/alert-triangle";
   import Clipboard from "@withicons/svelte/kawaii/icons/clipboard";
-  import History from "@withicons/svelte/kawaii/icons/history";
-  import ThumbsUp from "@withicons/svelte/kawaii/icons/thumbs-up";
   import ClipboardCheck from "@withicons/svelte/kawaii/icons/clipboard-check";
+  import X from "@withicons/svelte/kawaii/icons/close";
   import CloudUpload from "@withicons/svelte/kawaii/icons/cloud-upload";
   import FileDown from "@withicons/svelte/kawaii/icons/file-down";
   import FileUp from "@withicons/svelte/kawaii/icons/file-up";
+  import History from "@withicons/svelte/kawaii/icons/history";
+  import ThumbsUp from "@withicons/svelte/kawaii/icons/thumbs-up";
   import DienteSolido from "@withicons/svelte/solid/icons/tooth";
-  import X from "@withicons/svelte/kawaii/icons/close";
   import { Popover, Tabs } from "bits-ui";
   import { onMount } from "svelte";
+  import { animar } from "#lib/animar.js";
   import type { MateriaAprobada } from "#lib/graph/index.js";
   import graph from "#lib/graph/state.svelte.js";
   import { guardarMateriasAprobadas } from "#lib/graph/storage.js";
@@ -33,6 +33,15 @@
   }));
 
   const boton = "border border-borde-fuerte px-3 py-2 text-base hover:bg-hover disabled:opacity-50";
+  // Bits usa roving tabindex (-1 en la pestaña inactiva); acá Tab recorre ambas pestañas.
+  function tabulable(nodo: HTMLElement) {
+    const forzar = () => nodo.getAttribute("tabindex") !== "0" && (nodo.tabIndex = 0);
+    forzar();
+    const observador = new MutationObserver(forzar);
+    observador.observe(nodo, { attributes: true, attributeFilter: ["tabindex"] });
+    return () => observador.disconnect();
+  }
+
   const campo = "w-full border border-borde-fuerte bg-campo px-3 py-2.5 font-mono text-sm";
 
   let abierto = $state(false);
@@ -46,7 +55,6 @@
   let copiado = $state("");
   let temporizador: ReturnType<typeof setTimeout>;
   let temporizadorAviso: ReturnType<typeof setTimeout>;
-
 
   const codigo = $derived(codificar(graph.materiasAprobadas));
   const enlace = $derived(crearEnlace(codigo, window.location));
@@ -156,7 +164,7 @@
     type="button"
     aria-labelledby="sync-{id}-etiqueta"
     onclick={() => copiar(id, texto)}
-    class="{campo} flex cursor-pointer items-center gap-2 text-left hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
+    class="{campo} flex cursor-pointer items-center gap-2 text-left hover:bg-hover"
   >
     <span class="grid min-w-0 flex-1" aria-hidden="true">
       <span
@@ -189,7 +197,9 @@
     aria-label="Sincronizar progreso"
     title="Sincronizar progreso"
   >
-    <span class="flex shrink-0" use:animar={{ nombre: "cloud-upload", preset: "rise" }}><CloudUpload size={24} /></span>
+    <span class="flex shrink-0" use:animar={{ nombre: "cloud-upload", preset: "rise" }}
+      ><CloudUpload size={24} /></span
+    >
   </Popover.Trigger>
   <Popover.Portal>
     <Popover.Content
@@ -198,11 +208,11 @@
       sideOffset={8}
       collisionPadding={8}
       aria-labelledby="sync-titulo"
-      class="relative z-50 max-h-(--bits-popover-content-available-height) w-[calc(100vw-1rem)] max-w-md origin-(--bits-popover-content-transform-origin) overflow-y-auto overscroll-contain superficie-fuerte p-4 text-base text-texto motion-safe:data-[state=open]:animate-entrada-panel motion-safe:data-[state=closed]:animate-salida-panel"
+      class="relative z-50 max-h-(--bits-popover-content-available-height) w-[calc(100vw-1rem)] max-w-md origin-(--bits-popover-content-transform-origin) overflow-y-auto overscroll-contain superficie-fuerte p-4 text-base text-texto motion-safe:data-[state=closed]:animate-salida-panel motion-safe:data-[state=open]:animate-entrada-panel"
     >
       <Popover.Close
         aria-label="Cerrar"
-        class="absolute top-2 right-2 flex size-7 items-center justify-center text-texto hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline"
+        class="absolute top-2 right-2 flex size-7 items-center justify-center text-texto hover:bg-hover"
       >
         <X size={18} aria-hidden="true" />
       </Popover.Close>
@@ -221,39 +231,42 @@
           class="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400"
         />
         <p>
-          <strong class="font-medium">La sincronización es manual.</strong> Copiás una instantánea de
-          tus notas. Los cambios posteriores no se actualizan solos, sino que tenés que irlos cargando
-          a medida los vas registrando en cada cuatrimestre.
+          <strong class="font-medium">La sincronización es manual.</strong> Los cambios posteriores no
+          se actualizan solos, sino que tenés que irlos cargando a medida los vas registrando al final
+          de cada cuatrimestre.
         </p>
       </div>
 
       <Tabs.Root
         bind:value={seccion}
+        activationMode="manual"
         onValueChange={() => (error = confirmacion = "")}
         class="mt-4"
       >
-        <Tabs.List class="grid grid-cols-2 border border-borde">
+        <Tabs.List class="grid grid-cols-2 gap-1.5 border border-borde p-1.5">
           <Tabs.Trigger
+            {@attach tabulable}
             value="exportar"
-            class="flex items-center justify-center gap-1.5 px-2 py-2 text-sm font-medium hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline data-[state=active]:bg-seleccion"
+            class="flex items-center justify-center gap-1.5 px-2 py-2 text-sm font-medium hover:bg-hover data-[state=active]:bg-seleccion"
           >
             <FileUp size={16} aria-hidden="true" class="shrink-0 text-link-fuerte" />
             Enviar
           </Tabs.Trigger>
           <Tabs.Trigger
+            {@attach tabulable}
             value="importar"
-            class="flex items-center justify-center gap-1.5 px-2 py-2 text-sm font-medium hover:bg-hover focus-visible:outline-2 focus-visible:outline-link-outline data-[state=active]:bg-seleccion"
+            class="flex items-center justify-center gap-1.5 px-2 py-2 text-sm font-medium hover:bg-hover data-[state=active]:bg-seleccion"
           >
             <FileDown size={16} aria-hidden="true" class="shrink-0 text-link-fuerte" />
             Recibir
           </Tabs.Trigger>
         </Tabs.List>
         <div
-          class="overflow-hidden transition-[height] duration-200 ease-out motion-reduce:transition-none"
-          style:height={alto === undefined ? undefined : `${alto}px`}
+          class="-m-1 overflow-hidden p-1 transition-[height] duration-200 ease-out motion-reduce:transition-none"
+          style:height={alto === undefined ? undefined : `${alto + 8}px`}
         >
           <div bind:clientHeight={alto}>
-            <Tabs.Content value="exportar" class="pt-4">
+            <Tabs.Content value="exportar" class="pt-4 outline-none">
               <ol class="list-decimal space-y-1 pl-5 text-texto-suave">
                 <li>
                   En el otro dispositivo, escaneá el QR con la cámara o abrí el enlace en el
@@ -292,7 +305,7 @@
               {@render campoCopiable("enlace", "Enlace", enlace)}
               <div class="mt-4">{@render campoCopiable("codigo", "Código", codigo)}</div>
             </Tabs.Content>
-            <Tabs.Content value="importar" class="pt-4">
+            <Tabs.Content value="importar" class="pt-4 outline-none">
               <ol class="list-decimal space-y-1 pl-5 text-texto-suave">
                 <li>En el otro dispositivo abrí "Enviar a otro dispositivo".</li>
                 <li>Copiá el enlace o el código (o escaneá el QR).</li>
@@ -338,7 +351,7 @@
                 {:else if previa}
                   <button
                     type="button"
-                    class="mt-4 flex w-full cursor-pointer items-center justify-center gap-1.5 border border-border-aprobada bg-bg-aprobada px-3 py-2 text-sm font-medium text-fg-aprobada transition-[filter] hover:brightness-110 focus-visible:outline-2 focus-visible:outline-link-outline"
+                    class="mt-4 flex w-full cursor-pointer items-center justify-center gap-1.5 border border-border-aprobada bg-bg-aprobada px-3 py-2 text-sm font-medium text-fg-aprobada transition-[filter] hover:brightness-110"
                     onclick={reemplazar}
                   >
                     <ThumbsUp size={18} aria-hidden="true" class="shrink-0" />
@@ -368,10 +381,7 @@
       </Tabs.Root>
 
       {#if error}
-        <p
-          role="alert"
-          class="mt-3 text-sm text-amber-600 dark:text-amber-400"
-        >
+        <p role="alert" class="mt-3 text-sm text-amber-600 dark:text-amber-400">
           {error}
         </p>
       {/if}
