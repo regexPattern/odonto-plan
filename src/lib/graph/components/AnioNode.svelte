@@ -12,7 +12,7 @@
 </script>
 
 <div
-  class="pointer-events-none flex items-center justify-center text-center font-serif text-2xl leading-tight font-medium"
+  class="pointer-events-none flex items-center justify-center text-center text-3xl leading-tight font-semibold"
   style:width={`${data.width}px`}
   style:height={`${data.height}px`}
 >

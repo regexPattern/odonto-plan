@@ -112,7 +112,7 @@
       >
         <X size={18} aria-hidden="true" />
       </Popover.Close>
-      <h2 id="ayuda-titulo" class="flex items-center gap-2 font-serif text-xl font-medium">
+      <h2 id="ayuda-titulo" class="flex items-center gap-2 text-base font-medium sm:text-xl">
         <HelpCircle size={24} aria-hidden="true" class="shrink-0 text-link-fuerte" />
         Ayuda
       </h2>

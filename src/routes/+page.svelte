@@ -59,7 +59,7 @@
       <div
         class="pointer-events-auto absolute top-2 left-2 flex h-10 items-center border border-transparent sm:h-11 lg:top-4 lg:left-4"
       >
-        <span class="font-serif text-lg font-medium sm:text-xl">Odonto Plan</span>
+        <span class="text-lg font-medium sm:text-xl">Odonto Plan</span>
       </div>
 
       <div class="pointer-events-auto absolute top-2 right-2 lg:top-4 lg:right-4">

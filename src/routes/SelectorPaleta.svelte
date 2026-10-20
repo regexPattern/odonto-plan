@@ -43,7 +43,7 @@
       >
         <X size={18} aria-hidden="true" />
       </Popover.Close>
-      <h2 id="apariencia-titulo" class="flex items-center gap-2 font-serif text-xl font-medium">
+      <h2 id="apariencia-titulo" class="flex items-center gap-2 text-base font-medium sm:text-xl">
         <Palette size={24} aria-hidden="true" class="shrink-0 text-link-fuerte" />
         Apariencia
       </h2>
@@ -68,7 +68,7 @@
       </section>
 
       <section class="mt-4" aria-labelledby="paleta-titulo">
-        <h3 id="paleta-titulo" class="font-serif text-base font-medium">Paleta de colores</h3>
+        <h3 id="paleta-titulo" class="text-base font-medium">Paleta de colores</h3>
         <ul class="mt-2 space-y-1.5">
           {#each PALETAS as { id, nombre } (id)}
             <li>
