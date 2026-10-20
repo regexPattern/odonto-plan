@@ -42,7 +42,7 @@
       sideOffset={8}
       collisionPadding={8}
       aria-labelledby="apariencia-titulo"
-      class="relative z-50 w-72 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-3 text-sm text-texto motion-safe:data-[state=closed]:animate-salida-panel motion-safe:data-[state=open]:animate-entrada-panel"
+      class="relative z-50 w-72 max-w-[calc(100vw-1rem)] origin-(--bits-popover-content-transform-origin) superficie-fuerte p-3 text-sm text-texto motion-safe:data-[state=closed]:animate-salida-panel motion-safe:data-[state=open]:animate-entrada-panel"
     >
       <Popover.Close
         aria-label="Cerrar"
@@ -54,8 +54,11 @@
         <Palette size={24} aria-hidden="true" class="shrink-0 text-link-fuerte" />
         Apariencia
       </h2>
+      <p id="tema-descripcion" class="mt-2 text-texto-tenue">
+        Elegí el tema claro, oscuro o automático para seguir la configuración de tu dispositivo.
+      </p>
 
-      <section class="mt-4" aria-label="Tema">
+      <section class="mt-3" aria-label="Tema" aria-describedby="tema-descripcion">
         <div class="grid grid-cols-3 gap-1.5 border border-borde p-1.5">
           {#each MODOS as { id, nombre, Icono, ajuste } (id)}
             <button
@@ -73,18 +76,25 @@
 
       <section class="mt-4" aria-labelledby="paleta-titulo">
         <h3 id="paleta-titulo" class="text-base font-medium">Paleta de colores</h3>
-        <ul class="mt-2 space-y-1.5">
-          {#each PALETAS as { id, nombre } (id)}
+        <p id="paleta-descripcion" class="mt-1 text-texto-tenue">
+          Elegí tus colores preferidos para distinguir las materias aprobadas, disponibles y
+          bloqueadas.
+        </p>
+        <ul
+          class="mt-3 grid grid-cols-[repeat(auto-fit,minmax(min(100%,7rem),1fr))] gap-1.5"
+          aria-describedby="paleta-descripcion"
+        >
+          {#each PALETAS as { id }, indice (id)}
             <li>
               <!-- `data-palette` hace que las muestras usen los colores de esta paleta. -->
               <button
                 type="button"
                 data-palette={id}
-                class="{opcion} flex w-full items-center justify-between gap-3 text-left"
+                class="{opcion} flex w-full items-center justify-center"
+                aria-label={indice === 0 ? "Paleta predeterminada" : `Paleta ${indice + 1}`}
                 aria-pressed={paleta.actual === id}
                 onclick={() => paleta.elegir(id)}
               >
-                {nombre}
                 <span class="flex shrink-0 gap-1" aria-hidden="true">
                   <span class="size-5 border-2 border-border-aprobada bg-bg-aprobada"></span>
                   <span class="size-5 border-2 border-border-desbloqueada bg-bg-desbloqueada"

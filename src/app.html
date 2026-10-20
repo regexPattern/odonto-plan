@@ -11,7 +11,17 @@
         const paleta =
           localStorage.getItem(`${clave}:v${version}`) ??
           (version === 1 ? localStorage.getItem(clave) : null);
-        if (paleta) document.documentElement.dataset.palette = paleta;
+        // Mantener sincronizado con PALETAS_LEGACY en src/lib/palette/index.ts.
+        const anteriores = {
+          oceano: "blue-amber",
+          bosque: "emerald-lime",
+          atardecer: "orange-violet",
+        };
+        if (paleta) {
+          document.documentElement.dataset.palette = Object.hasOwn(anteriores, paleta)
+            ? anteriores[paleta]
+            : paleta;
+        }
       } catch {}
     </script>
     %sveltekit.head%

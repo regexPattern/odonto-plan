@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { animar } from "#lib/animar.js";
   import { Calendar, Clock, Star, Tooth } from "@withicons/svelte/kawaii";
+  import { animar } from "#lib/animar.js";
   import { esCalificacionAprobada } from "#lib/graph/index.js";
   import graph from "#lib/graph/state.svelte.js";
   import { guardarMateriasAprobadas } from "#lib/graph/storage.js";
@@ -74,7 +74,7 @@
 
 <div
   class={[
-    "divide-y divide-borde superficie *:p-3 max-lg:max-h-[50dvh] max-lg:overflow-y-auto max-lg:overscroll-contain lg:w-72",
+    "divide-y divide-borde superficie *:p-3 max-lg:max-h-[50dvh] max-lg:overflow-y-auto max-lg:overscroll-contain sm:w-72",
     // El panel solo aparece cuando hay una materia seleccionada.
     !materiaSeleccionada && "hidden",
   ]}
@@ -83,7 +83,7 @@
     <h1 class="text-lg leading-snug font-medium sm:text-xl">
       {materiaSeleccionada.nombre}
     </h1>
-    <div class="grid grid-cols-2 gap-2 lg:grid-cols-1">
+    <div class="grid grid-cols-2 gap-2 sm:grid-cols-1">
       <div class="wm-trigger flex items-start gap-2">
         <span class="flex shrink-0" use:animar={{ nombre: "calendar" }}>
           <Calendar size={24} aria-hidden="true" />
@@ -143,7 +143,7 @@
             aria-hidden="true"
           ></span>
           <span
-            class="pointer-events-none absolute top-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 text-(--slider-fg) [&>svg]:drop-shadow-[0_1px_2px_rgb(0_0_0/0.4)] motion-safe:transition-colors motion-safe:duration-200 [&>svg>path:first-child]:fill-(--slider-bg) [&>svg>path:first-child]:[fill-opacity:1] motion-safe:[&>svg>path:first-child]:transition-[fill] motion-safe:[&>svg>path:first-child]:duration-200"
+            class="pointer-events-none absolute top-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 text-(--slider-fg) motion-safe:transition-colors motion-safe:duration-200 [&>svg]:drop-shadow-[0_1px_2px_rgb(0_0_0/0.4)] [&>svg>path:first-child]:fill-(--slider-bg) [&>svg>path:first-child]:[fill-opacity:1] motion-safe:[&>svg>path:first-child]:transition-[fill] motion-safe:[&>svg>path:first-child]:duration-200"
             style:left={`calc(${calificacion * 10}% + ${12 - calificacion * 2.4}px)`}
             aria-hidden="true"
           >

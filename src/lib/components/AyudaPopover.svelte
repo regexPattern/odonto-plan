@@ -140,10 +140,10 @@
 </Popover.Root>
 
 <style>
-  /* 3 pulsos de ~1.67s = 5s en total. En modo claro el color se oscurece para que destaque. */
+  /* 2 pulsos de 1.5s = 3s en total. En modo claro el color se oscurece para que destaque. */
   :global(.ayuda-destacada) {
     --halo: color-mix(in oklab, var(--color-link-outline) 70%, black);
-    animation: ayuda-halo 1.667s ease-out 3;
+    animation: ayuda-halo 1.5s ease-out 2;
   }
 
   :global(.dark .ayuda-destacada) {

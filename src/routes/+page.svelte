@@ -3,11 +3,7 @@
   import { Background, Panel, SvelteFlow } from "@xyflow/svelte";
   import { mode } from "mode-watcher";
   import { onMount } from "svelte";
-  import { nodeTypes } from "#lib/graph/index.js";
-  import { MAX_ZOOM, MIN_ZOOM } from "#lib/graph/layout.js";
-  import graph from "#lib/graph/state.svelte.js";
   import logo from "#lib/assets/favicon.svg";
-  import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
   import AyudaPopover from "#lib/components/AyudaPopover.svelte";
   import ControlesPane from "#lib/components/ControlesPane.svelte";
   import EnlacesSociales from "#lib/components/EnlacesSociales.svelte";
@@ -15,6 +11,10 @@
   import ProgresoCarrera from "#lib/components/ProgresoCarrera.svelte";
   import SelectorPaleta from "#lib/components/SelectorPaleta.svelte";
   import SincronizarProgreso from "#lib/components/SincronizarProgreso.svelte";
+  import { nodeTypes } from "#lib/graph/index.js";
+  import { MAX_ZOOM, MIN_ZOOM } from "#lib/graph/layout.js";
+  import graph from "#lib/graph/state.svelte.js";
+  import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
 
   const DESCRIPTION =
     "Seguí tu progreso en la carrera y mirá qué tan cerca estás de ser odontólogo u odontóloga.";
@@ -105,13 +105,14 @@
         <EnlacesSociales />
       </div>
 
-      <!-- En mobile ficha y progreso se apilan; desde lg cada uno se ancla a su esquina. -->
+      <!-- Ficha y progreso se apilan a la izquierda, con ancho acotado desde sm;
+           desde lg cada uno se ancla a su esquina. -->
       <div
         class="pointer-events-none absolute inset-x-2 bottom-2 flex flex-col items-start gap-2 lg:contents"
       >
         <div
           data-panel-materia
-          class="pointer-events-auto w-full lg:absolute lg:inset-x-auto lg:top-20 lg:right-4 lg:w-auto"
+          class="pointer-events-auto w-full sm:w-72 lg:absolute lg:inset-x-auto lg:top-20 lg:right-4 lg:w-auto"
         >
           <MateriaSeleccionada />
         </div>
