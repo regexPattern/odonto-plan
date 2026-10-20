@@ -4,7 +4,7 @@
   import ZoomOut from "@withicons/svelte/kawaii/icons/zoom-out";
   import { useSvelteFlow } from "@xyflow/svelte";
   import { untrack } from "svelte";
-  import { vistaParaAnio } from "#lib/graph/layout.js";
+  import { ANIMACION_VISTA, vistaParaAnio } from "#lib/graph/layout.js";
   import graph from "#lib/graph/state.svelte.js";
   import { PLAN } from "#lib/plan/index.js";
 
@@ -14,7 +14,7 @@
   const options = { duration: 200 };
 
   // Primer año con alguna materia sin aprobar (el año "actual" de cursada).
-  function restablecerVista(opciones: { duration: number } = options) {
+  function restablecerVista(opciones: { duration: number; ease?: (t: number) => number } = ANIMACION_VISTA) {
     const aprobadas = new Set(graph.materiasAprobadas.map(({ codigo }) => codigo));
     // Las electivas no cuentan: no hace falta aprobarlas todas.
     const obligatorios = PLAN.anios.filter(({ materias }) =>

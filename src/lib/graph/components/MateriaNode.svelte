@@ -1,10 +1,30 @@
 <script lang="ts">
   import type { NodeProps } from "@xyflow/svelte";
-  import { Handle, Position } from "@xyflow/svelte";
+  import { Handle, Position, useSvelteFlow } from "@xyflow/svelte";
   import type { MateriaNodeType } from "#lib/graph/index.js";
+  import { ANIMACION_VISTA, vistaParaAnio } from "#lib/graph/layout.js";
   import { PLAN } from "#lib/plan/index.js";
 
-  let { data }: NodeProps<MateriaNodeType> = $props();
+  let { id, data }: NodeProps<MateriaNodeType> = $props();
+  const { setViewport, getNode } = useSvelteFlow();
+
+  function centrarAnio() {
+    const anio = PLAN.anios.findIndex(({ materias }) =>
+      materias.some(({ codigo }) => codigo === data.codigo),
+    );
+    if (anio === -1) return;
+    const vista = vistaParaAnio(anio, window.innerWidth);
+    // Parte de la vista original del año (encabezado visible) y solo sube el contenido
+    // si la materia no entra, dejándola con margen contra el borde inferior.
+    let y = vista.y;
+    const nodo = getNode(id);
+    if (nodo) {
+      const margenInferior = 100;
+      const abajo = (nodo.position.y + data.height) * vista.zoom;
+      y = Math.min(y, window.innerHeight - margenInferior - abajo);
+    }
+    setViewport({ ...vista, y }, ANIMACION_VISTA);
+  }
 
   const tieneCorrelativas = $derived(Boolean(PLAN.correlatividades[data.codigo]?.length));
   const tieneDependientes = $derived(
@@ -26,6 +46,8 @@
   ]}
   style:width={`${data.width}px`}
   style:height={`${data.height}px`}
+  onclick={centrarAnio}
+  role="presentation"
 >
   {data.nombre}
 

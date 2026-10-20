@@ -1,13 +1,13 @@
 <script lang="ts">
   import { useSvelteFlow, type NodeProps } from "@xyflow/svelte";
   import type { AnioNodeType } from "#lib/graph/index.js";
-  import { vistaParaAnio } from "#lib/graph/layout.js";
+  import { ANIMACION_VISTA, vistaParaAnio } from "#lib/graph/layout.js";
 
   let { data }: NodeProps<AnioNodeType> = $props();
   const { setViewport } = useSvelteFlow();
 
   function centrarAnio() {
-    setViewport(vistaParaAnio(data.indice, window.innerWidth), { duration: 200 });
+    setViewport(vistaParaAnio(data.indice, window.innerWidth), ANIMACION_VISTA);
   }
 </script>
 
@@ -19,8 +19,8 @@
   <button
     type="button"
     class="nodrag nopan pointer-events-auto cursor-pointer px-8 py-1"
-    title="Doble clic para centrar este año"
-    ondblclick={(event) => {
+    title="Clic para centrar este año"
+    onclick={(event) => {
       event.stopPropagation();
       centrarAnio();
     }}

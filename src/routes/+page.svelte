@@ -14,7 +14,7 @@
   import SelectorPaleta from "./SelectorPaleta.svelte";
   import SincronizarProgreso from "./SincronizarProgreso.svelte";
 
-  const INITIAL_VIEWPORT = { x: 0, y: 140, zoom: 1 };
+  const INITIAL_VIEWPORT = { x: 0, y: 100, zoom: 1 };
 
   // Montar la sincronización y la barra recién cuando el progreso local ya está cargado.
   let cargado = $state(false);
