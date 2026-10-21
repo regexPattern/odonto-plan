@@ -265,7 +265,7 @@
       collisionPadding={8}
       aria-labelledby="sync-titulo"
       {@attach seguirTeclado}
-      class="relative z-50 max-h-(--bits-popover-content-available-height) w-[calc(100vw-1rem)] max-w-md origin-(--bits-popover-content-transform-origin) overflow-y-auto overscroll-contain superficie-fuerte p-4 text-base text-texto motion-safe:data-[state=closed]:animate-salida-panel motion-safe:data-[state=open]:animate-entrada-panel"
+      class="relative z-50 max-h-(--bits-popover-content-available-height) w-[calc(100vw-1rem)] max-w-md origin-(--bits-popover-content-transform-origin) overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden superficie-fuerte p-4 text-base text-texto motion-safe:data-[state=closed]:animate-salida-panel motion-safe:data-[state=open]:animate-entrada-panel"
     >
       <Popover.Close
         aria-label="Cerrar"
