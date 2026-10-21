@@ -24,6 +24,11 @@ class GraphState {
     this.activarEdgesMateria(null);
   }
 
+  // En pantallas chicas la ficha compite por el espacio con los popovers de la barra.
+  public deseleccionarMateriaEnMobile() {
+    if (!window.matchMedia("(min-width: 1024px)").matches) this.deseleccionarMateria();
+  }
+
   public get materiasAprobadas(): MateriaAprobada[] {
     return this.nodes.flatMap(({ type, data }) =>
       type === "materia" && data.estado === "aprobada" && esCalificacionAprobada(data.calificacion)

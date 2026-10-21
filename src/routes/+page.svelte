@@ -3,6 +3,7 @@
   import { Background, Panel, SvelteFlow } from "@xyflow/svelte";
   import { mode } from "mode-watcher";
   import { onMount } from "svelte";
+  import CloudUpload from "@withicons/svelte/kawaii/icons/cloud-upload";
   import logo from "#lib/assets/favicon.svg";
   import AyudaPopover from "#lib/components/AyudaPopover.svelte";
   import ControlesPane from "#lib/components/ControlesPane.svelte";
@@ -99,6 +100,11 @@
         <div class="mx-1 hidden h-8 w-px bg-borde sm:block" aria-hidden="true"></div>
         {#if cargado}
           <SincronizarProgreso />
+        {:else}
+          <!-- Reserva el lugar del botón (mismo tamaño) para que no salte al montarse. -->
+          <button class="boton-herramienta" disabled aria-hidden="true" tabindex="-1">
+            <span class="flex shrink-0"><CloudUpload size={24} /></span>
+          </button>
         {/if}
         <SelectorPaleta />
         <div class="mx-1 hidden h-8 w-px bg-borde sm:block" aria-hidden="true"></div>
