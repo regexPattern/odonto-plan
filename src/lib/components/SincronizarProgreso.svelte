@@ -8,6 +8,7 @@
   import CloudUpload from "@withicons/svelte/kawaii/icons/cloud-upload";
   import FileDown from "@withicons/svelte/kawaii/icons/file-down";
   import FileUp from "@withicons/svelte/kawaii/icons/file-up";
+  import Hash from "@withicons/svelte/kawaii/icons/hash";
   import History from "@withicons/svelte/kawaii/icons/history";
   import ThumbsUp from "@withicons/svelte/kawaii/icons/thumbs-up";
   import DienteSolido from "@withicons/svelte/solid/icons/tooth";
@@ -80,7 +81,8 @@
     };
   }
 
-  const campo = "w-full border border-borde-fuerte bg-campo px-3 py-2.5 font-mono text-sm pointer-coarse:text-base";
+  const campo =
+    "w-full border border-borde-fuerte bg-campo px-3 py-2.5 font-mono text-sm pointer-coarse:text-base";
 
   let abierto = $state(false);
   let entrada = $state("");
@@ -268,7 +270,7 @@
       </h2>
 
       <div
-        class="mt-3 gap-2 border border-amber-500/40 flex bg-amber-500/10 p-3 text-sm text-amber-900 dark:text-amber-200"
+        class="mt-3 flex gap-2 border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-900 dark:text-amber-200"
         role="note"
       >
         <AlertTriangle
@@ -319,10 +321,20 @@
                   navegador.
                 </li>
                 <li>
-                  O también podés copiar el código y pegarlo en "Recibir en este dispositivo" desde
-                  el otro dispositivo.
+                  También podés copiar el código y, en el otro dispositivo, abrir
+                  <button
+                    type="button"
+                    class="cursor-pointer text-link-fuerte underline underline-offset-2 hover:no-underline"
+                    onclick={() => {
+                      seccion = "importar";
+                      error = confirmacion = "";
+                    }}>Recibir</button
+                  > y pegarlo ahí.
                 </li>
-                <li>Revisá la previsualización y confirmá.</li>
+                <li>
+                  En el otro dispositivo, revisá la cantidad de materias aprobadas y confirmá la
+                  carga.
+                </li>
               </ol>
               <div class="mx-auto my-4 size-48">
                 {#await generarQR(enlace)}
@@ -352,13 +364,11 @@
               <div class="mt-4">{@render campoCopiable("codigo", "Código", codigo)}</div>
             </Tabs.Content>
             <Tabs.Content value="importar" class="pt-4 outline-none">
-              <ol
-                class="list-decimal space-y-1 pl-5 text-sm text-texto-suave "
-              >
-                <li>En el otro dispositivo abrí "Enviar a otro dispositivo".</li>
+              <ol class="list-decimal space-y-1 pl-5 text-sm text-texto-suave">
+                <li>En el otro dispositivo abrí "Enviar".</li>
                 <li>Copiá el enlace o el código (o escaneá el QR).</li>
                 <li>Pegalo acá abajo para previsualizar los cambios.</li>
-                <li>Si las notas son correctas, confirmá con "Reemplazar mi progreso".</li>
+                <li>Si las materias aprobadas son correctas, confirmá con "Cargar progreso".</li>
               </ol>
               <form
                 class="mt-4 space-y-1.5"
@@ -368,19 +378,26 @@
                 }}
               >
                 <label class="block text-sm" for="sync-entrada">Pegá un enlace o código</label>
-                <input
-                  id="sync-entrada"
-                  bind:value={entrada}
-                  oninput={(e) => {
-                    previa = null;
-                    // Al pegar, previsualiza solo; al tipear espera a Enter.
-                    if (e instanceof InputEvent && e.inputType === "insertFromPaste")
-                      previsualizar();
-                  }}
-                  spellcheck="false"
-                  autocomplete="off"
-                  class={campo}
-                />
+                <div class="relative">
+                  <Hash
+                    size={16}
+                    aria-hidden="true"
+                    class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2"
+                  />
+                  <input
+                    id="sync-entrada"
+                    bind:value={entrada}
+                    oninput={(e) => {
+                      previa = null;
+                      // Al pegar, previsualiza solo; al tipear espera a Enter.
+                      if (e instanceof InputEvent && e.inputType === "insertFromPaste")
+                        previsualizar();
+                    }}
+                    spellcheck="false"
+                    autocomplete="off"
+                    class="{campo} pr-10"
+                  />
+                </div>
               </form>
 
               {#if previa || anterior || confirmacion}
