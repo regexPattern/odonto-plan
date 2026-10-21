@@ -111,7 +111,10 @@
   }
 
   function alCambiarAbierto(valor: boolean) {
-    if (valor) return;
+    if (valor) {
+      graph.deseleccionarMateriaEnMobile();
+      return;
+    }
     previa = null;
     copiado = "";
     error = confirmacion = "";
@@ -147,7 +150,13 @@
   function confirmar(tipo: "cargado" | "revertido") {
     confirmacion = tipo;
     clearTimeout(temporizadorAviso);
-    temporizadorAviso = setTimeout(() => (confirmacion = ""), 2000);
+    temporizadorAviso = setTimeout(() => {
+      confirmacion = "";
+      if (tipo === "cargado") {
+        abierto = false;
+        alCambiarAbierto(false);
+      }
+    }, 2000);
   }
 
   function reemplazar() {
@@ -365,10 +374,20 @@
             </Tabs.Content>
             <Tabs.Content value="importar" class="pt-4 outline-none">
               <ol class="list-decimal space-y-1 pl-5 text-sm text-texto-suave">
-                <li>En el otro dispositivo abrí "Enviar".</li>
-                <li>Copiá el enlace o el código (o escaneá el QR).</li>
-                <li>Pegalo acá abajo para previsualizar los cambios.</li>
-                <li>Si las materias aprobadas son correctas, confirmá con "Cargar progreso".</li>
+                <li>
+                  En el otro dispositivo abrí
+                  <button
+                    type="button"
+                    class="cursor-pointer text-link-fuerte underline underline-offset-2 hover:no-underline"
+                    onclick={() => {
+                      seccion = "exportar";
+                      error = confirmacion = "";
+                    }}>Enviar</button
+                  >.
+                </li>
+                <li>Escaneá el QR, o copiá el enlace o el código.</li>
+                <li>Pegalo acá abajo y vas a ver cuántas materias aprobadas se van a cargar.</li>
+                <li>Si la cantidad es correcta, tocá "Cargar progreso".</li>
               </ol>
               <form
                 class="mt-4 space-y-1.5"
@@ -436,10 +455,13 @@
                     <History size={18} aria-hidden="true" class="shrink-0" />
                     Revertir a mi progreso anterior
                   </button>
-                  <p class="mt-1.5 text-center text-sm text-texto-tenue">
-                    Solo podés revertir mientras no hayas recargado ni cerrado la página.
-                  </p>
                 {/if}
+              {/if}
+              {#if !error}
+                <p class="mt-3 text-sm text-amber-600 dark:text-amber-400">
+                  Luego de cargar el progreso podés revertir los cambios, pero solo mientras no hayas
+                  recargado ni cerrado la página.
+                </p>
               {/if}
             </Tabs.Content>
           </div>

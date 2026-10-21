@@ -112,7 +112,7 @@
           style={`--progreso: ${calificacion * 10}%; --slider-bg: var(--color-bg-${materiaSeleccionada.estado}); --slider-fg: var(--color-fg-${materiaSeleccionada.estado})`}
         >
           <div
-            class="absolute inset-x-3 inset-y-[7px] rounded-full bg-pista ring-1 ring-pista-anillo"
+            class="absolute inset-x-5 inset-y-[7px] rounded-full bg-pista ring-1 ring-pista-anillo"
             aria-hidden="true"
           >
             {#if materiaSeleccionada.estado !== "bloqueada"}
@@ -144,7 +144,7 @@
           ></span>
           <span
             class="pointer-events-none absolute top-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 text-(--slider-fg) motion-safe:transition-colors motion-safe:duration-200 [&>svg]:drop-shadow-[0_1px_2px_rgb(0_0_0/0.4)] [&>svg>path:first-child]:fill-(--slider-bg) [&>svg>path:first-child]:[fill-opacity:1] motion-safe:[&>svg>path:first-child]:transition-[fill] motion-safe:[&>svg>path:first-child]:duration-200"
-            style:left={`calc(${calificacion * 10}% + ${12 - calificacion * 2.4}px)`}
+            style:left={`calc(${calificacion * 10}% + ${20 - calificacion * 4}px)`}
             aria-hidden="true"
           >
             <Tooth size={24} />
@@ -155,7 +155,7 @@
         {#each Array.from({ length: 11 }, (_, numero) => numero) as numero}
           <span
             class="absolute -translate-x-1/2"
-            style:left={`calc(${numero * 10}% + ${12 - numero * 2.4}px)`}
+            style:left={`calc(${numero * 10}% + ${20 - numero * 4}px)`}
           >
             {numero}
           </span>
@@ -193,9 +193,9 @@
   }
 
   .calificacion-input::-webkit-slider-thumb {
-    width: 24px;
-    height: 24px;
-    margin-top: -3px;
+    width: 40px;
+    height: 32px;
+    margin-top: -7px;
     appearance: none;
     border: 0;
     background: transparent;
@@ -203,8 +203,8 @@
   }
 
   .calificacion-input::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
+    width: 40px;
+    height: 32px;
     border: 0;
     background: transparent;
     box-shadow: none;
