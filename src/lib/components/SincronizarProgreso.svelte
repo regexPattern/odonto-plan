@@ -459,8 +459,8 @@
               {/if}
               {#if !error}
                 <p class="mt-3 text-sm text-amber-600 dark:text-amber-400">
-                  Luego de cargar el progreso podés revertir los cambios, pero solo mientras no hayas
-                  recargado ni cerrado la página.
+                  Luego de cargar el progreso podés revertir los cambios, pero solo mientras no
+                  hayas recargado ni cerrado la página.
                 </p>
               {/if}
             </Tabs.Content>

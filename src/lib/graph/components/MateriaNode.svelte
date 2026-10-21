@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { tick } from "svelte";
   import type { NodeProps } from "@xyflow/svelte";
   import { Handle, Position, useSvelteFlow } from "@xyflow/svelte";
+  import { tick } from "svelte";
   import type { MateriaNodeType } from "#lib/graph/index.js";
   import { ANIMACION_VISTA, vistaParaAnio } from "#lib/graph/layout.js";
   import { PLAN } from "#lib/plan/index.js";

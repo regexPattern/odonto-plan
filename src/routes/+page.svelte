@@ -1,9 +1,9 @@
 <script lang="ts">
   import "@xyflow/svelte/dist/style.css";
+  import CloudUpload from "@withicons/svelte/kawaii/icons/cloud-upload";
   import { Background, Panel, SvelteFlow } from "@xyflow/svelte";
   import { mode } from "mode-watcher";
   import { onMount } from "svelte";
-  import CloudUpload from "@withicons/svelte/kawaii/icons/cloud-upload";
   import logo from "#lib/assets/favicon.svg";
   import AyudaPopover from "#lib/components/AyudaPopover.svelte";
   import ControlesPane from "#lib/components/ControlesPane.svelte";
@@ -84,7 +84,9 @@
         class="pointer-events-auto absolute top-2 left-2 flex h-10 items-center gap-2 bg-panel/60 px-2 backdrop-blur-sm sm:h-11 lg:top-4 lg:left-4"
       >
         <img src={logo} alt="" class="h-6 w-6 shrink-0 sm:h-7 sm:w-7" />
-        <span class="text-lg font-medium tracking-tight max-[390px]:sr-only sm:text-xl">OdontoPlan</span>
+        <span class="text-lg font-medium tracking-tight max-[390px]:sr-only sm:text-xl"
+          >OdontoPlan</span
+        >
       </div>
 
       <div class="pointer-events-auto absolute top-2 right-2 lg:top-4 lg:right-4">

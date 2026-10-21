@@ -14,7 +14,9 @@
   const options = { duration: 200 };
 
   // Primer año con alguna materia sin aprobar (el año "actual" de cursada).
-  function restablecerVista(opciones: { duration: number; ease?: (t: number) => number } = ANIMACION_VISTA) {
+  function restablecerVista(
+    opciones: { duration: number; ease?: (t: number) => number } = ANIMACION_VISTA,
+  ) {
     const aprobadas = new Set(graph.materiasAprobadas.map(({ codigo }) => codigo));
     // Las electivas no cuentan: no hace falta aprobarlas todas.
     const obligatorios = PLAN.anios.filter(({ materias }) =>

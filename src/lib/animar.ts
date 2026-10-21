@@ -6,7 +6,10 @@ import type { Action } from "svelte/action";
  * puntero. El foco sólo dispara si es visible (teclado): al cerrar un popover el foco vuelve al
  * botón y no debe reanimar el ícono.
  */
-export const animar: Action<HTMLElement, { nombre: string; preset?: string }> = (node, opciones) => {
+export const animar: Action<HTMLElement, { nombre: string; preset?: string }> = (
+  node,
+  opciones,
+) => {
   const disparador = node.closest<HTMLElement>(".wm-trigger") ?? node;
   const filtrarFoco = (e: FocusEvent) => {
     if (!(e.target as HTMLElement).matches(":focus-visible")) e.stopImmediatePropagation();

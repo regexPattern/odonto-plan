@@ -121,14 +121,14 @@
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 <div
   tabindex="-1"
-  class="group relative w-full sm:w-[min(23rem,calc(100vw-1rem))] outline-none"
+  class="group relative w-full outline-none sm:w-[min(23rem,calc(100vw-1rem))]"
   onclick={() => graph.deseleccionarMateria()}
 >
   <div
     id="detalle-progreso"
     data-visible={detalleAyuda}
     role="tooltip"
-    class="pointer-events-none absolute inset-x-0 bottom-full mb-2 flex origin-bottom translate-y-2 scale-98 transform-gpu justify-evenly gap-3 superficie px-3 py-3 text-center text-sm opacity-0 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 data-[visible=true]:translate-y-0 data-[visible=true]:scale-100 data-[visible=true]:opacity-100 motion-safe:transition-[opacity,translate,scale] motion-safe:duration-400 group-hover:duration-180 group-focus-within:duration-180 data-[visible=true]:duration-180 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
+    class="pointer-events-none absolute inset-x-0 bottom-full mb-2 flex origin-bottom translate-y-2 scale-98 transform-gpu justify-evenly gap-3 superficie px-3 py-3 text-center text-sm opacity-0 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-focus-within:duration-180 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:duration-180 data-[visible=true]:translate-y-0 data-[visible=true]:scale-100 data-[visible=true]:opacity-100 data-[visible=true]:duration-180 motion-safe:transition-[opacity,translate,scale] motion-safe:duration-400 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
   >
     <div>
       <p class="text-xl font-medium tabular-nums">
