@@ -17,8 +17,10 @@
   import graph from "#lib/graph/state.svelte.js";
   import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
 
+  const TITLE = "OdontoPlan";
   const DESCRIPTION =
-    "Seguí tu progreso en la carrera y mirá qué tan cerca estás de ser odontólogo u odontóloga.";
+    "Seguí tu progreso, marcá tus materias aprobadas y mirá cuánto te falta para recibirte de odontólogo u odontóloga en la Facultad de Odontología de la Universidad de Buenos Aires (FOUBA).";
+  const CANONICAL_URL = "https://odonto-plan.regexpattern.dev/";
   const INITIAL_VIEWPORT = { x: 0, y: 100, zoom: 1 };
 
   // Montar la sincronización y la barra recién cuando el progreso local ya está cargado.
@@ -32,7 +34,8 @@
 </script>
 
 <svelte:head>
-  <title>OdontoPlan</title>
+  <title>{TITLE}</title>
+  <link rel="canonical" href={CANONICAL_URL} />
   <meta name="description" content={DESCRIPTION} />
   <meta name="author" content="Odonto Plan" />
   <meta name="application-name" content="Odonto Plan" />
@@ -40,7 +43,8 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="es_AR" />
   <meta property="og:site_name" content="Odonto Plan" />
-  <meta property="og:title" content="Odonto Plan" />
+  <meta property="og:title" content={TITLE} />
+  <meta property="og:url" content={CANONICAL_URL} />
   <meta property="og:description" content={DESCRIPTION} />
   <!-- Reemplazar static/opengraph.png por la imagen final (1200 × 630 px). -->
   <meta property="og:image" content="/opengraph.png" />
@@ -49,7 +53,7 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Odonto Plan" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Odonto Plan" />
+  <meta name="twitter:title" content={TITLE} />
   <meta name="twitter:description" content={DESCRIPTION} />
   <meta name="twitter:image" content="/opengraph.png" />
   <meta name="twitter:image:alt" content="Odonto Plan" />
