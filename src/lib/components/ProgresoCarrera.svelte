@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Tooth } from "@withicons/svelte/kawaii";
+  import Cargador from "@withicons/svelte/solid/icons/loader";
   import graph from "#lib/graph/state.svelte.js";
   import { PLAN } from "#lib/plan/index.js";
 
@@ -121,19 +122,6 @@
   }
 </script>
 
-{#snippet dientes(inicio: number)}
-  <span class="flex gap-0.5" aria-hidden="true">
-    {#each [0, 1, 2] as i}
-      <span
-        class="flex text-texto-tenue motion-safe:animate-qr-onda [&_svg>path:first-child]:fill-pista [&_svg>path:first-child]:[fill-opacity:1]"
-        style="animation-delay: {(inicio + i) * 0.15 - 1.4}s"
-      >
-        <Tooth size={16} />
-      </span>
-    {/each}
-  </span>
-{/snippet}
-
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 <div
   tabindex="-1"
@@ -173,9 +161,8 @@
         class="-mr-1 flex h-8 flex-1 items-center justify-center gap-2 text-sm font-medium whitespace-nowrap"
         role="status"
       >
-        {@render dientes(0)}
+        <Cargador size={16} class="animate-spin text-texto-tenue motion-reduce:animate-none" aria-hidden="true" />
         <span class="texto-shimmer">Cargando progreso...</span>
-        {@render dientes(3)}
       </div>
     {:else}
       <div
