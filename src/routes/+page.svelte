@@ -17,19 +17,20 @@
   import { MAX_ZOOM, MIN_ZOOM } from "#lib/graph/layout.js";
   import graph from "#lib/graph/state.svelte.js";
   import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
-  import { cargarViewport, guardarViewport, VISTA_CBC } from "#lib/graph/viewport.js";
+  import { guardarViewport, VISTA_CBC } from "#lib/graph/viewport.js";
 
   const TITLE = "OdontoPlan";
   const DESCRIPTION =
     "Seguí tu progreso, marcá tus materias aprobadas y mirá cuánto te falta para recibirte de odontólogo u odontóloga en la Facultad de Odontología de la Universidad de Buenos Aires (FOUBA).";
   const CANONICAL_URL = "https://odonto-plan.regexpattern.dev/";
   let viewport = $state({ ...VISTA_CBC });
+  let controles: ControlesPane | undefined = $state();
 
   // Montar la sincronización y la barra recién cuando el progreso local ya está cargado.
   let cargado = $state(false);
+  let introduccionLista = $state(false);
 
   onMount(async () => {
-    viewport = cargarViewport();
     const materiasAprobadas = cargarMateriasAprobadas();
     if (materiasAprobadas !== null) graph.materiasAprobadas = materiasAprobadas;
     cargado = true;
@@ -41,6 +42,7 @@
 
   async function vistaInicializada() {
     await tick();
+    await controles?.inicializarVista();
     delete document.documentElement.dataset.vistaPendiente;
   }
 </script>
@@ -111,7 +113,9 @@
         </div>
 
         <div class="pointer-events-auto absolute top-2 right-2 lg:top-4 lg:right-4">
-          <AyudaPopover />
+          {#if introduccionLista}
+            <AyudaPopover />
+          {/if}
         </div>
 
         <div
@@ -119,7 +123,7 @@
           role="group"
           aria-label="Herramientas"
         >
-          <ControlesPane />
+          <ControlesPane bind:this={controles} />
           <div class="mx-1 hidden h-8 w-px bg-borde sm:block" aria-hidden="true"></div>
           {#if cargado}
             <SincronizarProgreso />
@@ -155,5 +159,5 @@
       <Background />
     </SvelteFlow>
   </div>
-  <IntroduccionPlan />
+  <IntroduccionPlan onlista={() => (introduccionLista = true)} />
 </main>

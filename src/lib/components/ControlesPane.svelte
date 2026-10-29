@@ -5,10 +5,16 @@
   import { useSvelteFlow } from "@xyflow/svelte";
   import { ANIMACION_VISTA, vistaParaAnio } from "#lib/graph/layout.js";
   import graph from "#lib/graph/state.svelte.js";
+  import { cargarViewport } from "#lib/graph/viewport.js";
   import { PLAN } from "#lib/plan/index.js";
 
   const { setViewport, zoomIn, zoomOut } = useSvelteFlow();
   const options = { duration: 200 };
+
+  export function inicializarVista() {
+    // Actualiza también el controlador de gestos, no solo el transform visual.
+    return setViewport(cargarViewport(), { duration: 0 });
+  }
 
   // Primer año con alguna materia sin aprobar (el año "actual" de cursada).
   function restablecerVista(
@@ -26,7 +32,18 @@
     if (anio === -1) anio = PLAN.anios.length - 1;
     setViewport(vistaParaAnio(anio, window.innerWidth), opciones);
   }
+
+  // Al cambiar el ancho del viewport (rotar, abrir un plegable, redimensionar) se recentra el año actual.
+  // Se ignoran los cambios de solo alto (p. ej. la barra del navegador en mobile).
+  let anchoPrevio = typeof window === "undefined" ? 0 : window.innerWidth;
+  function alRedimensionar() {
+    if (window.innerWidth === anchoPrevio) return;
+    anchoPrevio = window.innerWidth;
+    restablecerVista({ duration: 0 });
+  }
 </script>
+
+<svelte:window onresize={alRedimensionar} />
 
 <div class="flex items-center gap-1.5 sm:gap-2" role="group" aria-label="Controles de vista">
   <!-- En mobile alcanza con el gesto de pellizcar. -->

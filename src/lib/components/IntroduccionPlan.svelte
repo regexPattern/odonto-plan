@@ -12,6 +12,7 @@
 
   // Se prerenderiza abierta (también la ve Google); app.html la oculta antes del primer paint
   // si ya fue vista, y acá se quita del DOM al hidratar.
+  let { onlista }: { onlista: () => void } = $props();
   let cerrada = $state(false);
   let diente = $state<HTMLElement>();
   let fiesta = $state<HTMLElement>();
@@ -25,6 +26,7 @@
     try {
       if (leerPersistido(INTRO_VISTA_STORAGE_KEY) !== null) {
         cerrada = true;
+        onlista();
         return;
       }
     } catch {
@@ -64,6 +66,7 @@
   <div
     id="intro-app"
     out:salida
+    onoutroend={onlista}
     class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-white p-4 text-texto dark:bg-[#141414]"
   >
     <div
