@@ -54,7 +54,7 @@
 
 <div
   class={[
-    "relative flex items-center justify-center border-2 px-3 py-2 text-center leading-tight font-medium motion-safe:transition-colors motion-safe:duration-200",
+    "materia-superficie relative flex items-center justify-center border-2 px-3 py-2 text-center leading-tight font-medium motion-safe:transition-colors motion-safe:duration-500",
     data.estado,
     "aprobada:border-border-aprobada aprobada:bg-bg-aprobada aprobada:text-fg-aprobada",
     "desbloqueada:border-border-desbloqueada desbloqueada:bg-bg-desbloqueada desbloqueada:text-fg-desbloqueada",
@@ -62,14 +62,14 @@
   ]}
   style:width={`${data.width}px`}
   style:height={`${data.height}px`}
-  onclick={centrarAnio}
+  ondblclick={centrarAnio}
   role="presentation"
 >
   {data.nombre}
 
   {#if data.estado === "aprobada" && data.calificacion !== null}
     <span
-      class="absolute -top-3.5 -right-3.5 flex size-7 items-center justify-center rounded-full border-2 border-border-aprobada text-sm leading-none font-bold backdrop-blur-(--superficie-blur) motion-safe:transition-colors motion-safe:duration-200"
+      class="absolute -top-3.5 -right-3.5 flex size-7 items-center justify-center rounded-full border-2 border-border-aprobada text-sm leading-none font-bold backdrop-blur-(--superficie-blur)"
     >
       {data.calificacion}
     </span>

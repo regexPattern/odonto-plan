@@ -139,7 +139,7 @@
             class="calificacion-input peer relative m-0 block h-8 w-full cursor-pointer bg-transparent p-0 outline-none aria-disabled:cursor-not-allowed"
           />
           <span
-            class="pointer-events-none absolute inset-x-1.5 inset-y-px rounded-[15px] border-2 border-(--slider-bg) opacity-0 peer-focus-visible:opacity-100 motion-safe:transition-colors motion-safe:duration-200"
+            class="pointer-events-none absolute inset-x-3.5 inset-y-px rounded-[15px] border-2 border-(--slider-bg) opacity-0 peer-focus-visible:opacity-100 motion-safe:transition-colors motion-safe:duration-200"
             aria-hidden="true"
           ></span>
           <span
