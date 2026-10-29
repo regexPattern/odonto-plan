@@ -30,7 +30,7 @@
       id: "materia",
       icono: MousePointerClick,
       selector: ".svelte-flow__node-materia",
-      texto: "Hacé clic en una materia para ver sus detalles o afuera para volver.",
+      texto: "Hacé clic en una materia para ver sus detalles; doble clic para centrar su año.",
     },
     {
       id: "progreso",

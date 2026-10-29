@@ -24,6 +24,19 @@
         }
       } catch {}
     </script>
+    <script>
+      try {
+        const { x, y, zoom } = JSON.parse(localStorage.getItem("odonto-plan:viewport:v1"));
+        if ([x, y, zoom].every(Number.isFinite) && zoom >= 0.4 && zoom <= 1) {
+          document.documentElement.style.setProperty(
+            "--vista-inicial",
+            `translate(${x}px, ${y}px) scale(${zoom})`,
+          );
+          document.documentElement.dataset.vistaPendiente = "";
+        }
+      } catch {}
+      document.documentElement.dataset.progresoPendiente = "";
+    </script>
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">

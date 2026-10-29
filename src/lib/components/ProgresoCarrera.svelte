@@ -3,6 +3,8 @@
   import graph from "#lib/graph/state.svelte.js";
   import { PLAN } from "#lib/plan/index.js";
 
+  let { cargando = false }: { cargando?: boolean } = $props();
+
   // Solo hace falta aprobar 2 electivas.
   const ELECTIVAS_REQUERIDAS = 2;
   const codigosElectivas = new Set(
@@ -63,6 +65,7 @@
   let completa: boolean | null = null;
 
   $effect(() => {
+    if (cargando) return;
     const ahora = totalMaterias > 0 && aprobadas >= totalMaterias;
     // Solo al pasar a 100% (no al cargar una carrera ya completa).
     if (ahora && completa === false) void lanzarConfetti();
@@ -118,67 +121,96 @@
   }
 </script>
 
+{#snippet dientes(inicio: number)}
+  <span class="flex gap-0.5" aria-hidden="true">
+    {#each [0, 1, 2] as i}
+      <span
+        class="flex text-texto-tenue motion-safe:animate-qr-onda [&_svg>path:first-child]:fill-pista [&_svg>path:first-child]:[fill-opacity:1]"
+        style="animation-delay: {(inicio + i) * 0.15 - 1.4}s"
+      >
+        <Tooth size={16} />
+      </span>
+    {/each}
+  </span>
+{/snippet}
+
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 <div
   tabindex="-1"
-  class="group relative w-full outline-none sm:w-[min(23rem,calc(100vw-1rem))]"
+  class={[
+    "group relative w-full outline-none motion-safe:transition-[width] motion-safe:duration-500 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]",
+    cargando ? "sm:w-80" : "sm:w-[min(23rem,calc(100vw-1rem))]",
+  ]}
   onclick={() => graph.deseleccionarMateria()}
 >
-  <div
-    id="detalle-progreso"
-    data-visible={detalleAyuda}
-    role="tooltip"
-    class="pointer-events-none absolute inset-x-0 bottom-full mb-2 flex origin-bottom translate-y-2 scale-98 transform-gpu justify-evenly gap-3 superficie px-3 py-3 text-center text-sm opacity-0 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-focus-within:duration-180 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:duration-180 data-[visible=true]:translate-y-0 data-[visible=true]:scale-100 data-[visible=true]:opacity-100 data-[visible=true]:duration-180 motion-safe:transition-[opacity,translate,scale] motion-safe:duration-400 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
-  >
-    <div>
-      <p class="text-xl font-medium tabular-nums">
-        <span class="text-bg-aprobada">{obligatoriasAprobadas}</span> de {totalObligatorias}
-      </p>
-      <p>obligatorias<br />aprobadas</p>
+  {#if !cargando}
+    <div
+      id="detalle-progreso"
+      data-visible={detalleAyuda}
+      role="tooltip"
+      class="pointer-events-none absolute inset-x-0 bottom-full mb-2 flex origin-bottom translate-y-2 scale-98 transform-gpu justify-evenly gap-3 superficie px-3 py-3 text-center text-sm opacity-0 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-focus-within:duration-180 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:duration-180 data-[visible=true]:translate-y-0 data-[visible=true]:scale-100 data-[visible=true]:opacity-100 data-[visible=true]:duration-180 motion-safe:transition-[opacity,translate,scale] motion-safe:duration-400 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
+    >
+      <div>
+        <p class="text-xl font-medium tabular-nums">
+          <span class="text-bg-aprobada">{obligatoriasAprobadas}</span> de {totalObligatorias}
+        </p>
+        <p>obligatorias<br />aprobadas</p>
+      </div>
+      <div>
+        <p class="text-xl font-medium tabular-nums">
+          <span class="text-bg-aprobada">{electivasAprobadas}</span> de {ELECTIVAS_REQUERIDAS}
+        </p>
+        <p>electivas<br />aprobadas</p>
+      </div>
     </div>
-    <div>
-      <p class="text-xl font-medium tabular-nums">
-        <span class="text-bg-aprobada">{electivasAprobadas}</span> de {ELECTIVAS_REQUERIDAS}
-      </p>
-      <p>electivas<br />aprobadas</p>
-    </div>
-  </div>
+  {/if}
   <div
     data-ayuda="progreso"
     class="flex items-center gap-2 rounded-full superficie py-1 pr-4 pl-[11px]"
   >
-    <div
-      class="relative h-8 flex-1"
-      role="progressbar"
-      aria-label="Progreso de la carrera"
-      aria-valuemin="0"
-      aria-valuemax={totalMaterias}
-      aria-valuenow={aprobadas}
-      aria-valuetext={`${aprobadas} de ${totalMaterias} materias aprobadas (${porcentaje}%)`}
-      style={`--p: ${progreso / 100}`}
-    >
+    {#if cargando}
       <div
-        class="absolute inset-x-0 inset-y-[7px] overflow-hidden rounded-full bg-pista ring-1 ring-pista-anillo"
-        aria-hidden="true"
+        class="-mr-1 flex h-8 flex-1 items-center justify-center gap-2 text-sm font-medium whitespace-nowrap"
+        role="status"
+      >
+        {@render dientes(0)}
+        <span class="texto-shimmer">Cargando progreso...</span>
+        {@render dientes(3)}
+      </div>
+    {:else}
+      <div
+        class="relative h-8 flex-1 motion-safe:animate-qr-aparecer"
+        role="progressbar"
+        aria-label="Progreso de la carrera"
+        aria-valuemin="0"
+        aria-valuemax={totalMaterias}
+        aria-valuenow={aprobadas}
+        aria-valuetext={`${aprobadas} de ${totalMaterias} materias aprobadas (${porcentaje}%)`}
+        style={`--p: ${progreso / 100}`}
       >
         <div
-          class="absolute inset-0 bg-bg-aprobada [clip-path:inset(0_calc(100%-(100%-24px)*var(--p)-6px)_0_0)]"
-        ></div>
+          class="absolute inset-x-0 inset-y-[7px] overflow-hidden rounded-full bg-pista ring-1 ring-pista-anillo"
+          aria-hidden="true"
+        >
+          <div
+            class="absolute inset-0 bg-bg-aprobada [clip-path:inset(0_calc(100%-(100%-24px)*var(--p)-6px)_0_0)]"
+          ></div>
+        </div>
+        <span
+          class="pointer-events-none absolute top-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 text-fg-aprobada drop-shadow-[0_1px_2px_rgb(0_0_0/0.4)] [&_svg>path:first-child]:fill-bg-aprobada [&_svg>path:first-child]:[fill-opacity:1]"
+          style:left="calc(12px + (100% - 24px) * var(--p))"
+          aria-hidden="true"
+        >
+          <Tooth size={24} />
+        </span>
       </div>
-      <span
-        class="pointer-events-none absolute top-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 text-fg-aprobada drop-shadow-[0_1px_2px_rgb(0_0_0/0.4)] [&_svg>path:first-child]:fill-bg-aprobada [&_svg>path:first-child]:[fill-opacity:1]"
-        style:left="calc(12px + (100% - 24px) * var(--p))"
-        aria-hidden="true"
+      <button
+        type="button"
+        class="cursor-help text-sm font-medium whitespace-nowrap motion-safe:animate-qr-aparecer"
+        aria-describedby="detalle-progreso"
       >
-        <Tooth size={24} />
-      </span>
-    </div>
-    <button
-      type="button"
-      class="cursor-help text-sm font-medium whitespace-nowrap"
-      aria-describedby="detalle-progreso"
-    >
-      <span class="font-semibold text-bg-aprobada tabular-nums">{porcentaje}%</span> completado
-    </button>
+        <span class="font-semibold text-bg-aprobada tabular-nums">{porcentaje}%</span> completado
+      </button>
+    {/if}
   </div>
 </div>

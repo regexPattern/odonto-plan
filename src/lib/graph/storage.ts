@@ -10,7 +10,15 @@ export const cargarMateriasAprobadas = (): MateriaAprobada[] | null => {
     const datosPersistidos = leerPersistido(MATERIAS_APROBADAS_STORAGE_KEY);
     if (datosPersistidos === null) return null;
 
-    return JSON.parse(datosPersistidos) as MateriaAprobada[];
+    const datos: unknown = JSON.parse(datosPersistidos);
+    if (!Array.isArray(datos)) return null;
+    return datos.filter(
+      (materia): materia is MateriaAprobada =>
+        materia !== null &&
+        typeof materia === "object" &&
+        typeof materia.codigo === "string" &&
+        typeof materia.calificacion === "number",
+    );
   } catch {
     return null;
   }

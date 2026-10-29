@@ -1,4 +1,4 @@
-import type { Edge, XYPosition } from "@xyflow/svelte";
+import { Position, type Edge, type XYPosition } from "@xyflow/svelte";
 import type { MateriaPlan } from "#lib/plan/index.js";
 import { PLAN } from "#lib/plan/index.js";
 import type { AnioNodeType, MateriaNodeType, PlanNodeType } from ".";
@@ -6,6 +6,7 @@ import type { AnioNodeType, MateriaNodeType, PlanNodeType } from ".";
 const MATERIA_WIDTH = 256;
 const MATERIA_HEIGHT = 72;
 const ANIO_NODE_HEIGHT = 40;
+const HANDLE_SIZE = 6;
 const CUATRI_GAP_X = 80;
 export const ANUAL_WIDTH = MATERIA_WIDTH * 2 + CUATRI_GAP_X;
 export const ANIO_GAP_X = ANUAL_WIDTH + 160;
@@ -109,6 +110,8 @@ for (const [anio, anioPlan] of PLAN.anios.entries()) {
 const anioNodes: AnioNodeType[] = PLAN.anios.map((anioPlan, anioIndex) => ({
   id: `anio-${anioIndex}`,
   style: "pointer-events: none;",
+  width: ANUAL_WIDTH,
+  height: ANIO_NODE_HEIGHT,
   position: {
     x: anioIndex * ANIO_GAP_X,
     y: 0,
@@ -122,22 +125,43 @@ const anioNodes: AnioNodeType[] = PLAN.anios.map((anioPlan, anioIndex) => ({
   type: "anio",
 }));
 
+const conDependientes = new Set(Object.values(PLAN.correlatividades).flat());
+
+const handle = (type: "source" | "target", x: number) => ({
+  type,
+  position: type === "source" ? Position.Right : Position.Left,
+  x: x - HANDLE_SIZE / 2,
+  y: (MATERIA_HEIGHT - HANDLE_SIZE) / 2,
+  width: HANDLE_SIZE,
+  height: HANDLE_SIZE,
+});
+
 const materiaNodes: MateriaNodeType[] = PLAN.anios.flatMap((a) =>
-  a.materias.map((m) => ({
-    id: m.codigo,
-    position: posicionesMaterias.get(m.codigo)!,
-    data: {
-      codigo: m.codigo,
-      nombre: m.nombre,
-      duracion: m.duracion,
-      horas: m.horas,
-      estado: PLAN.correlatividades[m.codigo]?.length ? "bloqueada" : "desbloqueada",
-      calificacion: null,
-      width: m.duracion === "Anual" ? ANUAL_WIDTH : MATERIA_WIDTH,
+  a.materias.map((m) => {
+    const width = m.duracion === "Anual" ? ANUAL_WIDTH : MATERIA_WIDTH;
+    const tieneCorrelativas = PLAN.correlatividades[m.codigo]?.length > 0;
+    return {
+      id: m.codigo,
+      position: posicionesMaterias.get(m.codigo)!,
+      width,
       height: MATERIA_HEIGHT,
-    },
-    type: "materia",
-  })),
+      handles: [
+        ...(tieneCorrelativas ? [handle("target", 0)] : []),
+        ...(conDependientes.has(m.codigo) ? [handle("source", width)] : []),
+      ],
+      data: {
+        codigo: m.codigo,
+        nombre: m.nombre,
+        duracion: m.duracion,
+        horas: m.horas,
+        estado: tieneCorrelativas ? "bloqueada" : "desbloqueada",
+        calificacion: null,
+        width,
+        height: MATERIA_HEIGHT,
+      },
+      type: "materia",
+    };
+  }),
 );
 
 export const rawNodes: PlanNodeType[] = [...anioNodes, ...materiaNodes];
