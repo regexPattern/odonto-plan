@@ -101,16 +101,14 @@
       <!-- Una sola capa para maquetar todo con Tailwind: en mobile la ficha de la materia
          va como panel inferior sobre el progreso; desde lg vuelve a las esquinas. -->
       <Panel position="top-left" class="pointer-events-none! inset-0! m-0!">
-        <a
-          href="#sobre"
-          aria-label="OdontoPlan: información y plan de estudios"
+        <div
           class="pointer-events-auto absolute top-2 left-2 flex h-10 items-center gap-2 bg-panel/60 px-2 backdrop-blur-sm sm:h-11 lg:top-4 lg:left-4"
         >
           <img src={logo} alt="" class="h-6 w-6 shrink-0 sm:h-7 sm:w-7" />
           <span class="text-lg font-medium tracking-tight max-[390px]:sr-only sm:text-xl"
             >OdontoPlan</span
           >
-        </a>
+        </div>
 
         <div class="pointer-events-auto absolute top-2 right-2 lg:top-4 lg:right-4">
           <AyudaPopover />

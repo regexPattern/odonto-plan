@@ -13,7 +13,7 @@
   import graph from "#lib/graph/state.svelte.js";
   import { guardarPersistido, leerPersistido } from "#lib/storage.js";
 
-  // Primera visita (o siempre en dev): el popup se abre solo.
+  // Primera visita: el popup se abre solo.
   let abierto = $state(false);
 
   // Ayuda y ficha de materia se excluyen: abrir una cierra la otra.
@@ -78,10 +78,6 @@
 
   onMount(() => {
     if (!browser) return;
-    if (import.meta.env.DEV) {
-      abierto = true;
-      return;
-    }
     try {
       if (leerPersistido(AYUDA_VISTA_STORAGE_KEY) === null) {
         guardarPersistido(AYUDA_VISTA_STORAGE_KEY, "1");

@@ -5,6 +5,7 @@
     PERFIL_LINKEDIN_URL,
   } from "$app/env/public";
   import ArrowUpRight from "@withicons/svelte/kawaii/icons/arrow-up-right";
+  import X from "@withicons/svelte/kawaii/icons/close";
   import IdCard from "@withicons/svelte/kawaii/icons/id-card";
   import Mail from "@withicons/svelte/kawaii/icons/mail";
   import MailCheck from "@withicons/svelte/kawaii/icons/mail-check";
@@ -41,9 +42,23 @@
       align="center"
       sideOffset={8}
       collisionPadding={8}
-      class="z-50 min-w-40 origin-(--bits-popover-content-transform-origin) superficie-fuerte p-1 text-sm text-texto motion-safe:data-[state=closed]:animate-salida-panel motion-safe:data-[state=open]:animate-entrada-panel"
+      aria-labelledby="contacto-titulo"
+      class="relative z-50 w-72 max-w-[calc(100vw-1rem)] origin-(--bits-popover-content-transform-origin) superficie-fuerte p-3 text-sm text-texto motion-safe:data-[state=closed]:animate-salida-panel motion-safe:data-[state=open]:animate-entrada-panel"
     >
-      <nav aria-label="Redes sociales">
+      <Popover.Close
+        aria-label="Cerrar"
+        class="absolute top-2 right-2 flex size-7 items-center justify-center text-texto hover:bg-hover"
+      >
+        <X size={18} aria-hidden="true" />
+      </Popover.Close>
+      <h2 id="contacto-titulo" class="flex items-center gap-2 text-base font-medium sm:text-xl">
+        <IdCard size={24} aria-hidden="true" class="shrink-0 text-link-fuerte" />
+        Contacto
+      </h2>
+      <p class="mt-2 text-texto-tenue">
+        Escribime por cualquier consulta, sugerencia o reporte de error.
+      </p>
+      <nav class="mt-3" aria-label="Redes sociales">
         <ul>
           <li>
             <a

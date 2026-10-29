@@ -36,6 +36,12 @@
         }
       } catch {}
       document.documentElement.dataset.progresoPendiente = "";
+      try {
+        // Mantener sincronizado con INTRO_VISTA_STORAGE_KEY en src/lib/components/IntroduccionPlan.svelte.
+        if (localStorage.getItem("odonto-plan:intro-vista:v1") !== null) {
+          document.documentElement.dataset.introVista = "";
+        }
+      } catch {}
     </script>
     %sveltekit.head%
   </head>

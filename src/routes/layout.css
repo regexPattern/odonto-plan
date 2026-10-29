@@ -5,6 +5,7 @@
 @import "@withicons/motion/icons/calendar.css";
 @import "@withicons/motion/icons/palette.css";
 @import "@withicons/motion/icons/id-card.css";
+@import "@withicons/motion/icons/party-popper.css";
 @import "#lib/theme/paletas.css";
 @import "#lib/theme/interfaz.css";
 
@@ -118,6 +119,10 @@
 
 html[data-vista-pendiente] .svelte-flow__viewport {
   transform: var(--vista-inicial) !important;
+}
+
+html[data-intro-vista] #intro-app {
+  display: none;
 }
 
 html[data-progreso-pendiente] .materia-superficie {
