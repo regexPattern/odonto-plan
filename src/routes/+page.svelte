@@ -19,7 +19,7 @@
   import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
   import { guardarViewport, VISTA_CBC } from "#lib/graph/viewport.js";
 
-  const TITLE = "OdontoPlan";
+  const TITLE = "OdontoPlan | Plan de estudios y correlativas de Odontología UBA";
   const DESCRIPTION =
     "Seguí tu progreso, marcá tus materias aprobadas y mirá cuánto te falta para recibirte de odontólogo u odontóloga en la Facultad de Odontología de la Universidad de Buenos Aires (FOUBA).";
   const CANONICAL_URL = "https://odonto-plan.regexpattern.dev/";
