@@ -6,7 +6,7 @@
   },
   "routes": [
     {
-      "pattern": "odonto-plan.regexpattern.dev",
+      "pattern": "odonto-plan.carlosecp.com",
       "custom_domain": true,
     },
   ],

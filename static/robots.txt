@@ -2,4 +2,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://odonto-plan.regexpattern.dev/sitemap.xml
+Sitemap: https://odonto-plan.carlosecp.com/sitemap.xml

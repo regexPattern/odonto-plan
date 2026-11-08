@@ -22,7 +22,7 @@
   const TITLE = "OdontoPlan | Plan de estudios y correlativas de Odontología UBA";
   const DESCRIPTION =
     "Seguí tu progreso, marcá tus materias aprobadas y mirá cuánto te falta para recibirte de odontólogo u odontóloga en la Facultad de Odontología de la Universidad de Buenos Aires (FOUBA).";
-  const CANONICAL_URL = "https://odonto-plan.regexpattern.dev/";
+  const CANONICAL_URL = "https://odonto-plan.carlosecp.com/";
   let viewport = $state({ ...VISTA_CBC });
   let controles: ControlesPane | undefined = $state();
 
@@ -61,7 +61,7 @@
   <meta property="og:url" content={CANONICAL_URL} />
   <meta property="og:description" content={DESCRIPTION} />
   <!-- Reemplazar static/opengraph.png por la imagen final (1200 × 630 px). -->
-  <meta property="og:image" content="https://odonto-plan.regexpattern.dev/opengraph.png" />
+  <meta property="og:image" content="https://odonto-plan.carlosecp.com/opengraph.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -69,7 +69,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={TITLE} />
   <meta name="twitter:description" content={DESCRIPTION} />
-  <meta name="twitter:image" content="https://odonto-plan.regexpattern.dev/opengraph.png" />
+  <meta name="twitter:image" content="https://odonto-plan.carlosecp.com/opengraph.png" />
   <meta name="twitter:image:alt" content="Odonto Plan" />
 </svelte:head>
 
