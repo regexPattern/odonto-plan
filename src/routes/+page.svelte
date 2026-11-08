@@ -21,7 +21,7 @@
 
   const TITLE = "OdontoPlan | Plan de estudios y correlativas de Odontología UBA";
   const DESCRIPTION =
-    "Seguí tu progreso, marcá tus materias aprobadas y mirá cuánto te falta para recibirte de odontólogo u odontóloga en la Facultad de Odontología de la Universidad de Buenos Aires (FOUBA).";
+    "Plan de estudios y correlativas de Odontología UBA. Marcá tus materias aprobadas y mirá cuánto te falta para recibirte.";
   const CANONICAL_URL = "https://odonto-plan.carlosecp.com/";
   let viewport = $state({ ...VISTA_CBC });
   let controles: ControlesPane | undefined = $state();
