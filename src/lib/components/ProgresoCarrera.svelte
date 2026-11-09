@@ -161,7 +161,11 @@
         class="-mr-1 flex h-8 flex-1 items-center justify-center gap-2 text-sm font-medium whitespace-nowrap"
         role="status"
       >
-        <Cargador size={16} class="animate-spin text-texto-tenue motion-reduce:animate-none" aria-hidden="true" />
+        <Cargador
+          size={16}
+          class="animate-spin text-texto-tenue motion-reduce:animate-none"
+          aria-hidden="true"
+        />
         <span class="texto-shimmer">Cargando progreso...</span>
       </div>
     {:else}

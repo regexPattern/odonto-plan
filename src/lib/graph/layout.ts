@@ -13,12 +13,6 @@ export const ANIO_GAP_X = ANUAL_WIDTH + 160;
 export const MIN_ZOOM = 0.4;
 export const MAX_ZOOM = 1;
 
-/** Animación de desplazamiento entre años: easeInOutCubic, suave al arrancar y al frenar. */
-export const ANIMACION_VISTA = {
-  duration: 550,
-  ease: (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2),
-};
-
 /**
  * Vista que centra la columna de un año. En pantallas angostas baja el zoom para que
  * el año entre completo en el ancho, sin tener que achicar los nodos.

@@ -30,7 +30,8 @@
       id: "materia",
       icono: MousePointerClick,
       selector: ".svelte-flow__node-materia",
-      texto: "Hacé clic en una materia para ver sus detalles. Hacé clic en el año para centrarlo en la pantalla.",
+      texto:
+        "Hacé clic en una materia para ver sus detalles. Hacé clic en el año para centrarlo en la pantalla.",
     },
     {
       id: "progreso",

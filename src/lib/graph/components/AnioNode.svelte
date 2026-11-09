@@ -1,13 +1,14 @@
 <script lang="ts">
   import { useSvelteFlow, type NodeProps } from "@xyflow/svelte";
   import type { AnioNodeType } from "#lib/graph/index.js";
-  import { ANIMACION_VISTA, vistaParaAnio } from "#lib/graph/layout.js";
+  import { animarVista } from "#lib/graph/animacion.js";
+  import { vistaParaAnio } from "#lib/graph/layout.js";
 
   let { data }: NodeProps<AnioNodeType> = $props();
-  const { setViewport } = useSvelteFlow();
+  const flow = useSvelteFlow();
 
   function centrarAnio() {
-    setViewport(vistaParaAnio(data.indice, window.innerWidth), ANIMACION_VISTA);
+    animarVista(flow, vistaParaAnio(data.indice, window.innerWidth));
   }
 </script>
 

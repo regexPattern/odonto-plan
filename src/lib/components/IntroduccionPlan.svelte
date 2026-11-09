@@ -35,10 +35,7 @@
     mover("bounce");
     botonEmpezar?.focus({ preventScroll: true });
     // Animación por defecto del party popper cuando el texto ya apareció.
-    const t = setTimeout(
-      () => fiesta && motion(fiesta, "party-popper", { trigger: "once" }),
-      1700,
-    );
+    const t = setTimeout(() => fiesta && motion(fiesta, "party-popper", { trigger: "once" }), 1700);
     return () => clearTimeout(t);
   });
 
@@ -88,14 +85,15 @@
           <div class="globo relative mt-6 superficie-fuerte p-5 text-left sm:p-6">
             <p class="flex items-center gap-1.5 text-base text-texto-suave">
               <span>
-                ¡Hola! Bienvenido/a a
+                ¡Hola! Te damos la bienvenida a
                 <span class="font-medium tracking-tight text-texto">OdontoPlan</span>
               </span>
               <span bind:this={fiesta} class="flex shrink-0 text-amber-500"
                 ><PartyPopper size={28} aria-hidden="true" /></span
               >
             </p>
-            <h1 id="intro-titulo" class="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">
+            <hr class="my-4 border-borde" />
+            <h1 id="intro-titulo" class="text-xl font-semibold tracking-tight sm:text-2xl">
               Plan de estudios y correlativas de Odontología UBA
             </h1>
             <div class="mt-3 space-y-3 leading-relaxed text-texto-suave">
@@ -105,16 +103,16 @@
               </p>
               <p>
                 Explorá las materias desde el CBC, consultá sus correlativas y marcá las que ya
-                aprobaste.
+                aprobaste. Así sabés qué materias podés cursar el próximo cuatrimestre y cuántas te
+                faltan para recibirte.
               </p>
-              <p>Tu progreso se guarda en este navegador.</p>
             </div>
           </div>
           <button
             bind:this={botonEmpezar}
             type="button"
             onclick={cerrar}
-            class="group mt-5 inline-flex items-center gap-2 border border-borde-fuerte bg-transparent px-5 py-2 font-medium text-texto hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-2"
+            class="group mt-6 inline-flex cursor-pointer items-center gap-2 rounded-full bg-texto px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-texto/85 focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-zinc-900"
           >
             Empezar
             <ArrowRight size={18} aria-hidden="true" class="intro-flecha" />

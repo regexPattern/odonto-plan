@@ -3,13 +3,15 @@
   import { Handle, Position, useSvelteFlow } from "@xyflow/svelte";
   import { tick } from "svelte";
   import type { MateriaNodeType } from "#lib/graph/index.js";
-  import { ANIMACION_VISTA, vistaParaAnio } from "#lib/graph/layout.js";
+  import { animarVista } from "#lib/graph/animacion.js";
+  import { vistaParaAnio } from "#lib/graph/layout.js";
   import { PLAN } from "#lib/plan/index.js";
 
   let { id, data }: NodeProps<MateriaNodeType> = $props();
-  const { setViewport, getNode } = useSvelteFlow();
+  const flow = useSvelteFlow();
+  const { getNode, getViewport } = flow;
 
-  async function centrarAnio() {
+  async function asegurarVisible() {
     const anio = PLAN.anios.findIndex(({ materias }) =>
       materias.some(({ codigo }) => codigo === data.codigo),
     );
@@ -22,24 +24,35 @@
       await tick();
       await new Promise((resolver) => requestAnimationFrame(resolver));
     }
+    const margenInferior = 100;
+    let limite = window.innerHeight - margenInferior;
+    if (esMobile) {
+      const panel = document.querySelector("[data-panel-materia]");
+      const arriba = panel?.getBoundingClientRect().top;
+      if (arriba !== undefined && panel?.firstElementChild?.clientHeight) {
+        limite = Math.min(limite, arriba - 50);
+      }
+    }
+    const nodo = getNode(id);
+    // Si la materia ya se ve completa, no se mueve la vista.
+    if (nodo) {
+      const actual = getViewport();
+      const izquierda = nodo.position.x * actual.zoom + actual.x;
+      const derecha = (nodo.position.x + data.width) * actual.zoom + actual.x;
+      const arriba = nodo.position.y * actual.zoom + actual.y;
+      const abajo = (nodo.position.y + data.height) * actual.zoom + actual.y;
+      const visible =
+        izquierda >= 0 && derecha <= window.innerWidth && arriba >= vista.y && abajo <= limite;
+      if (visible) return;
+    }
     // Parte de la vista original del año (encabezado visible) y solo sube el contenido
     // si la materia no entra, dejándola con margen contra el borde inferior.
     let y = vista.y;
-    const nodo = getNode(id);
     if (nodo) {
-      const margenInferior = 100;
       const abajo = (nodo.position.y + data.height) * vista.zoom;
-      let limite = window.innerHeight - margenInferior;
-      if (esMobile) {
-        const panel = document.querySelector("[data-panel-materia]");
-        const arriba = panel?.getBoundingClientRect().top;
-        if (arriba !== undefined && panel?.firstElementChild?.clientHeight) {
-          limite = Math.min(limite, arriba - 50);
-        }
-      }
       y = Math.min(y, limite - abajo);
     }
-    setViewport({ ...vista, y }, ANIMACION_VISTA);
+    animarVista(flow, { ...vista, y });
   }
 
   const tieneCorrelativas = $derived(Boolean(PLAN.correlatividades[data.codigo]?.length));
@@ -62,7 +75,7 @@
   ]}
   style:width={`${data.width}px`}
   style:height={`${data.height}px`}
-  ondblclick={centrarAnio}
+  onclick={asegurarVisible}
   role="presentation"
 >
   {data.nombre}

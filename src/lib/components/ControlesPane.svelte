@@ -3,12 +3,14 @@
   import ZoomIn from "@withicons/svelte/kawaii/icons/zoom-in";
   import ZoomOut from "@withicons/svelte/kawaii/icons/zoom-out";
   import { useSvelteFlow } from "@xyflow/svelte";
-  import { ANIMACION_VISTA, vistaParaAnio } from "#lib/graph/layout.js";
+  import { animarVista } from "#lib/graph/animacion.js";
+  import { vistaParaAnio } from "#lib/graph/layout.js";
   import graph from "#lib/graph/state.svelte.js";
   import { cargarViewport } from "#lib/graph/viewport.js";
   import { PLAN } from "#lib/plan/index.js";
 
-  const { setViewport, zoomIn, zoomOut } = useSvelteFlow();
+  const flow = useSvelteFlow();
+  const { setViewport, zoomIn, zoomOut } = flow;
   const options = { duration: 200 };
 
   export function inicializarVista() {
@@ -17,9 +19,7 @@
   }
 
   // Primer año con alguna materia sin aprobar (el año "actual" de cursada).
-  function restablecerVista(
-    opciones: { duration: number; ease?: (t: number) => number } = ANIMACION_VISTA,
-  ) {
+  function restablecerVista(opciones?: { duracion: number }) {
     const aprobadas = new Set(graph.materiasAprobadas.map(({ codigo }) => codigo));
     // Las electivas no cuentan: no hace falta aprobarlas todas.
     const obligatorios = PLAN.anios.filter(({ materias }) =>
@@ -30,7 +30,7 @@
     );
     // Carrera completa: va a la última columna (electivas).
     if (anio === -1) anio = PLAN.anios.length - 1;
-    setViewport(vistaParaAnio(anio, window.innerWidth), opciones);
+    animarVista(flow, vistaParaAnio(anio, window.innerWidth), opciones);
   }
 
   // Al cambiar el ancho del viewport (rotar, abrir un plegable, redimensionar) se recentra el año actual.
@@ -39,7 +39,7 @@
   function alRedimensionar() {
     if (window.innerWidth === anchoPrevio) return;
     anchoPrevio = window.innerWidth;
-    restablecerVista({ duration: 0 });
+    restablecerVista({ duracion: 0 });
   }
 </script>
 
