@@ -98,8 +98,8 @@
             </h1>
             <div class="mt-3 space-y-3 leading-relaxed text-texto-suave">
               <p>
-                Seguí tu progreso en la carrera de Odontología de la Facultad de Odontología de la
-                Universidad de Buenos Aires (FOUBA).
+                Seguí tu progreso en la Facultad de Odontología de la Universidad de Buenos Aires
+                (FOUBA).
               </p>
               <p>
                 Explorá las materias desde el CBC, consultá sus correlativas y marcá las que ya
