@@ -19,10 +19,20 @@
   import { cargarMateriasAprobadas } from "#lib/graph/storage.js";
   import { guardarViewport, VISTA_CBC } from "#lib/graph/viewport.js";
 
-  const TITLE = "OdontoPlan | Plan de estudios y correlativas de Odontología UBA";
+  const SITE_NAME = "OdontoPlan";
+  const TITLE = `Plan de estudios y correlativas de Odontología UBA | ${SITE_NAME}`;
   const DESCRIPTION =
     "Plan de estudios y correlativas de Odontología UBA. Marcá tus materias aprobadas y mirá cuánto te falta para recibirte.";
   const CANONICAL_URL = "https://odonto-plan.carlosecp.com/";
+  // Datos estructurados WebSite: Google los usa para el nombre del sitio en los resultados.
+  const WEBSITE_JSON_LD = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_NAME,
+    alternateName: ["Odonto Plan", "OdontoPlan UBA"],
+    url: CANONICAL_URL,
+    inLanguage: "es-AR",
+  });
   let viewport = $state({ ...VISTA_CBC });
   let controles: ControlesPane | undefined = $state();
 
@@ -51,12 +61,12 @@
   <title>{TITLE}</title>
   <link rel="canonical" href={CANONICAL_URL} />
   <meta name="description" content={DESCRIPTION} />
-  <meta name="author" content="Odonto Plan" />
-  <meta name="application-name" content="Odonto Plan" />
+  <meta name="author" content={SITE_NAME} />
+  <meta name="application-name" content={SITE_NAME} />
   <meta name="robots" content="index, follow" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="es_AR" />
-  <meta property="og:site_name" content="Odonto Plan" />
+  <meta property="og:site_name" content={SITE_NAME} />
   <meta property="og:title" content={TITLE} />
   <meta property="og:url" content={CANONICAL_URL} />
   <meta property="og:description" content={DESCRIPTION} />
@@ -65,12 +75,13 @@
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Odonto Plan" />
+  <meta property="og:image:alt" content={SITE_NAME} />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={TITLE} />
   <meta name="twitter:description" content={DESCRIPTION} />
   <meta name="twitter:image" content="https://odonto-plan.carlosecp.com/opengraph.png" />
-  <meta name="twitter:image:alt" content="Odonto Plan" />
+  <meta name="twitter:image:alt" content={SITE_NAME} />
+  {@html `<script type="application/ld+json">${WEBSITE_JSON_LD}</script>`}
 </svelte:head>
 
 <main>
